@@ -1,0 +1,4 @@
+Save these files in this folder (names are lowercase and case-sensitive):
+  (logo.jpeg retired - logos now live in public/brand/*.svg)
+  favicon.ico  - browser tab icon (optional)
+Delete this note after adding them.
