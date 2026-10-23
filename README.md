@@ -1,16 +1,24 @@
-# safenest-www: SafeNest Home Care public website
+# safe-home-test: DEMO of the new SafeNest Home Care website
 
-Live at https://www.safenesthomecare.com (root domain redirects to www).
+**This is a test copy.** It is not the live site (https://www.safenesthomecare.com) and must never be attached to the live domains.
+It is kept out of search engines (meta tag, `X-Robots-Tag` header, `robots.txt`) and uses its own database (`DB_NAME=safenest_demo`), so test messages never mix with real ones.
 
 React (CRA + Tailwind + shadcn) frontend in `frontend/`, FastAPI + MongoDB backend in `backend/`,
 served from one Vercel project (`api/index.py` exposes the backend at `/api/*`).
 
-## Deploy
-1. `frontend/public/logo.jpeg` and the favicon/app icons are already included.
-2. Push to GitHub, import the repo in Vercel (root directory = repo root; settings come from `vercel.json`).
-3. Add the environment variables from `.env.example` in Vercel (MONGO_URL is required; the Resend ones are optional).
-4. Vercel > Settings > Domains > add `www.safenesthomecare.com` and `safenesthomecare.com` (set root to redirect to www).
-5. Namecheap > Advanced DNS: CNAME, host `www`, value = the target Vercel shows (usually `cname.vercel-dns.com`); A record, host `@`, value = the IP Vercel shows. Delete old Emergent/`home` records.
+## Deploy the demo
+1. Push this repo to GitHub (`safe-home-test`) and import it in Vercel (root directory = repo root; settings come from `vercel.json`).
+2. Add the environment variables from `.env.example` in Vercel. `MONGO_URL` is required (use a **test** cluster or a separate database). Leave `CONTACT_TO_EMAIL` blank so no email reaches the live inbox. Set `CORS_ORIGINS` to the demo's `https://<project>.vercel.app` address.
+3. Open the `*.vercel.app` address Vercel gives you. **Do not add `www.safenesthomecare.com` or `safenesthomecare.com` and do not touch Namecheap DNS.**
+
+## Test checklist (before promoting)
+- **Home story:** scroll through all 8 scenes on a real phone and a laptop; the day clock and dots work; tapping a dot jumps to that scene; "Skip the story" appears when you press Tab.
+- **Reduced motion:** turn on "reduce motion" in the phone/OS settings; the story becomes 8 still cards with captions.
+- **Phone width (360px) and tablet (768px):** no sideways scrolling; the menu is a hamburger below 1180px and contains the phone number, Employee Portal and Get Started.
+- **Every page:** Services (scene on each card), About, Testimonials, FAQ (opens/closes with keyboard), Contact.
+- **Contact form:** send a test message; it shows "The door is open, <name>." and a new row appears in the `safenest_demo` database. Also try with the server offline to see the error message and phone number.
+- **Speed:** run Lighthouse (mobile) on the demo address; target load under 3 seconds.
+- **Content to confirm with the owner:** placeholder testimonials in `frontend/src/data/mock.js`; claims ("100% satisfaction", "100+ / hundreds of families", "24/7", "certified" caregivers with background checks).
 
 ## A Day at Home (scroll story)
 The home page opens with a scroll-driven illustrated story: eight moments of a caregiver visit, from the knock at 8:00 AM to the lit window at 7:30 PM. The light shifts from dawn gold to evening blue as you scroll. The same scenes illustrate the Services, About, FAQ and Contact pages.
@@ -35,22 +43,15 @@ Design rules worth keeping:
 - Backend: `pip install -r requirements.txt && cd backend && uvicorn server:app --reload --port 8000` (needs `backend/.env` with MONGO_URL, DB_NAME)
 - Frontend: `cd frontend && cp .env.local.example .env.local && yarn && yarn start`
 
-## Domain naming (one Vercel project + one GitHub repo per site)
-| Audience | Subdomain | Repo |
-|---|---|---|
-| Public | www (and root) | safenest-www |
-| Clients/families | clients | safenest-clients |
-| Employees | team | safenest-team |
-| Admin | admin | safenest-admin |
-| Careers | careers | safenest-careers |
-| Shared API (optional) | api | safenest-api |
+## Promote to live (only after the checklist passes)
+1. **Remove the three no-index items** (otherwise Google will not list the live site):
+   - the `<meta name="robots" ...>` line in `frontend/public/index.html`
+   - `frontend/public/robots.txt` (delete it, or replace with a normal one that allows crawling)
+   - the `headers` block (`X-Robots-Tag`) in `vercel.json`
+2. Set the real environment variables in the **live** Vercel project: live `MONGO_URL`, `DB_NAME=safenest`, `CORS_ORIGINS=https://www.safenesthomecare.com,https://safenesthomecare.com`, and the Resend values with `CONTACT_TO_EMAIL` set to the real inbox.
+3. Replace placeholder testimonials and verify the claims listed above.
+4. Decide on the license: `LICENSE` is AGPL-3.0, which requires publishing the source of a modified network service. Keep it, or switch to a proprietary notice.
+5. Deploy to the live project (push to the live repo or promote this one), then in Vercel > Settings > Domains make sure `www.safenesthomecare.com` and `safenesthomecare.com` are attached (root redirects to www). DNS stays as it is today unless the Vercel target changes (Namecheap: CNAME `www` to the value Vercel shows; A record `@` to the IP Vercel shows).
+6. After going live: send one real contact-form message and confirm it arrives (MongoDB, and email if Resend is set); run Lighthouse on the live home page.
 
-New site: create repo `safenest-<type>` > import in Vercel > add `<type>.safenesthomecare.com` > Namecheap CNAME host `<type>`.
-Client/employee portals hold health data: plan for PHIPA (access control, audit logs, Canadian regions).
-
-## Before going live
-- Replace the placeholder testimonials in `frontend/src/data/mock.js` with real, consented ones, and confirm the claims on the site ("100% satisfaction", "100+ / hundreds of families", "24/7", caregivers "certified" with background checks).
-- `LICENSE` is AGPL-3.0, which requires publishing the source of a modified network service. Confirm that is what you want for a business site (or switch to a proprietary notice).
-- Send one real test message through the contact form and confirm it reaches MongoDB (and email, if Resend is set).
-- Run Lighthouse (mobile) on the deployed home page; target load under 3 seconds.
-- Project history and decisions: `docs/STATUS.md` and `docs/carry-forward/`.
+Project history and decisions: `docs/STATUS.md` and `docs/carry-forward/`.
