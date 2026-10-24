@@ -1,5 +1,8 @@
 # Project status
 
+## UI preview (this repo: safe-home-test)
+Published with GitHub Pages by `.github/workflows/demo-pages.yml` (demo mode: `#/` addresses, "DEMO · UI PREVIEW" tag, fake contact form, no-index). One-time owner step: Settings > Pages > Source = GitHub Actions. Verified: real build under a sub-path (all images/scenes/pages work, 0 errors), workflow steps run clean (`yarn install --frozen-lockfile`, `yarn build`), live-style build unchanged (no tag, real form POST, normal addresses), repo scanned for secrets (none).
+
 **State:** feature-complete for the "A Day at Home" redesign. Optional sound/haptics layer (plan Phase 5) deliberately skipped.
 
 ## Done
