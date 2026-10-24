@@ -3,8 +3,10 @@ import { Phone, Send } from 'lucide-react';
 import BrandIcon from '../components/BrandIcon';
 import StoryScene, { SCENES } from '../components/story/StoryScene';
 import { companyInfo } from '../data/mock';
+import { asset } from '../lib/asset';
 import { toast } from 'sonner';
 import axios from 'axios';
+import { DEMO } from '../lib/demo';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -35,10 +37,13 @@ const Contact = () => {
     setIsSubmitting(true);
 
     try {
-      const response = await axios.post(`${API}/contact`, formData);
+      // UI-preview build has no server: pretend to send so the whole flow can be tested.
+      const response = DEMO
+        ? await new Promise((resolve) => setTimeout(() => resolve({ status: 200 }), 700))
+        : await axios.post(`${API}/contact`, formData);
       
       if (response.status === 200) {
-        toast.success('Thank you for reaching out! We will contact you within 24 hours.');
+        toast.success(DEMO ? 'Demo only: nothing was sent.' : 'Thank you for reaching out! We will contact you within 24 hours.');
         setSentTo(formData.name.trim().split(' ')[0] || 'friend');
         setFormData({ name: '', email: '', phone: '', message: '' });
       }
@@ -223,6 +228,7 @@ const Contact = () => {
                   </div>
                   <h2 className="heading-2" style={{ marginBottom: '0.5rem' }}>The door is open, {sentTo}.</h2>
                   <p className="body-medium" style={{ color: '#353535', lineHeight: '1.8', marginBottom: '1.2rem' }}>
+                    {DEMO && <strong style={{ display: 'block', color: 'var(--sn-ember)' }}>Demo only: nothing was sent.</strong>}
                     Thank you for reaching out! We will contact you within 24 hours. If it is urgent, call us at{' '}
                     <a href={`tel:${companyInfo.phone}`} style={{ color: '#0066B3', fontWeight: 600 }}>{companyInfo.phone}</a>.
                   </p>
@@ -386,7 +392,7 @@ const Contact = () => {
                     cursor: isSubmitting ? 'not-allowed' : 'pointer'
                   }}
                 >
-                  {isSubmitting ? (<><img src="/brand/loader.svg" alt="" width="28" height="28" /> Sending...</>) : (
+                  {isSubmitting ? (<><img src={asset('/brand/loader.svg')} alt="" width="28" height="28" /> Sending...</>) : (
                     <>
                       <Send size={18} />
                       Knock on Our Door

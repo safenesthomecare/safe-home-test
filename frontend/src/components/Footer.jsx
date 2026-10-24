@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Phone, Mail, MapPin } from 'lucide-react';
 import { companyInfo } from '../data/mock';
+import { asset } from '../lib/asset';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -23,7 +24,7 @@ const Footer = () => {
           {/* Company Info */}
           <div>
             <img 
-              src="/brand/logo-on-dark.svg" 
+              src={asset('/brand/logo-on-dark.svg')} 
               alt="SafeNest Home Care" 
               style={{ height: '84px', width: 'auto', marginBottom: '1rem' }}
             />
@@ -121,7 +122,7 @@ const Footer = () => {
           }}>
             <span>© {currentYear} SafeNest Home Care. All rights reserved.</span>
             <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-              Made with <img src="/brand/heart-pulse.svg" alt="love" width="22" height="22" style={{ display: 'inline-block', verticalAlign: 'middle' }} /> in Ontario
+              Made with <img src={asset('/brand/heart-pulse.svg')} alt="love" width="22" height="22" style={{ display: 'inline-block', verticalAlign: 'middle' }} /> in Ontario
             </span>
           </p>
         </div>

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Phone } from 'lucide-react';
 import { companyInfo } from '../data/mock';
+import { asset } from '../lib/asset';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -24,7 +25,7 @@ const Header = () => {
         {/* Logo */}
         <Link to="/" className="logo-container" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
           <img 
-            src="/brand/logo-horizontal.svg" 
+            src={asset('/brand/logo-horizontal.svg')} 
             alt="SafeNest Home Care" 
             className="logo"
             style={{ height: '52px', width: 'auto' }}

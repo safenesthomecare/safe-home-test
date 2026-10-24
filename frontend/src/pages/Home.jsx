@@ -5,6 +5,7 @@ import BrandIcon from '../components/BrandIcon';
 import TwigDivider from '../components/TwigDivider';
 import StoryPinned from '../components/story/StoryPinned';
 import { companyInfo, services, whyChooseUs, stats } from '../data/mock';
+import { asset } from '../lib/asset';
 
 const Home = () => {
   const iconMap = {
@@ -22,7 +23,7 @@ const Home = () => {
       <section className="hero-section">
         <div className="hero-content">
           <img
-            src="/brand/symbol-animated.svg"
+            src={asset('/brand/symbol-animated.svg')}
             alt="SafeNest Home Care: two people sheltering a home in a nest"
             className="hero-symbol"
             width="320"

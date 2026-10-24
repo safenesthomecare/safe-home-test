@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { asset } from '../lib/asset';
 
 // Hand-drawn twig that draws itself when it scrolls into view.
 export default function TwigDivider() {
@@ -12,7 +13,7 @@ export default function TwigDivider() {
   }, []);
   return (
     <div ref={ref} className="twig-divider" aria-hidden="true">
-      {show && <img src="/brand/twig-divider.svg" alt="" width="640" height="48" />}
+      {show && <img src={asset('/brand/twig-divider.svg')} alt="" width="640" height="48" />}
     </div>
   );
 }

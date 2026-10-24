@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Star } from 'lucide-react';
 import { testimonials } from '../data/mock';
 
@@ -173,9 +174,9 @@ const Testimonials = () => {
           <p className="body-large" style={{ marginBottom: '2rem', color: '#353535' }}>
             Experience the SafeNest difference for yourself. Contact us today to learn more about our personalized home care services.
           </p>
-          <a href="/contact" className="btn-primary">
+          <Link to="/contact" className="btn-primary">
             Request Your Free Consultation
-          </a>
+          </Link>
         </div>
       </section>
     </div>

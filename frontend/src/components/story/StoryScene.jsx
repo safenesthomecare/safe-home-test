@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { asset } from '../../lib/asset';
 
 // "A Day at Home" — scene registry + renderer.
 // Each scene is a layered SVG (public/story). Layers are <g id="layer-*" data-depth="0.2-1">.
@@ -19,7 +20,7 @@ const SHIFT_PX = 80; // total parallax travel of the nearest layer
 const cache = new Map();
 const load = (src) => {
   if (!cache.has(src)) {
-    cache.set(src, fetch(src).then((r) => { if (!r.ok) throw new Error(src); return r.text(); }).catch((e) => { cache.delete(src); throw e; }));
+    cache.set(src, fetch(asset(src)).then((r) => { if (!r.ok) throw new Error(src); return r.text(); }).catch((e) => { cache.delete(src); throw e; }));
   }
   return cache.get(src);
 };

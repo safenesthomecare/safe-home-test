@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { ChevronDown } from 'lucide-react';
 import { faqs } from '../data/mock';
 import StoryScene, { SCENES } from '../components/story/StoryScene';
@@ -123,9 +124,9 @@ const FAQ = () => {
             We're here to help! Our team is ready to answer any additional questions you may have about our services and how we can support your family.
           </p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', justifyContent: 'center' }}>
-            <a href="/contact" className="btn-primary">
+            <Link to="/contact" className="btn-primary">
               Contact Us
-            </a>
+            </Link>
             <a href="tel:437-663-6353" className="btn-secondary">
               Call 437-663-6353
             </a>
