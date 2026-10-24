@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/safe-home-test/static/css/main.234839df.css",
+    "main.js": "/safe-home-test/static/js/main.a4824425.js",
+    "index.html": "/safe-home-test/index.html",
+    "main.234839df.css.map": "/safe-home-test/static/css/main.234839df.css.map",
+    "main.a4824425.js.map": "/safe-home-test/static/js/main.a4824425.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.234839df.css",
+    "static/js/main.a4824425.js"
+  ]
+}

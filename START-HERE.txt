@@ -1,0 +1,17 @@
+SafeNest demo - missing files pack (same folder tree as the repo)
+
+WHAT CHANGED
+GitHub's upload skips hidden (dot) files, so the automatic publisher (.github) can't be added.
+New route that needs NO hidden files: the finished preview site is included ready-made in /docs.
+
+STEPS (about 3 minutes)
+1. Upload the whole "docs" folder into the repo root (drag the folder onto Add file > Upload files). Files merge with the existing docs/ notes.
+2. Commit to main.
+3. Repo Settings > Pages > Source: "Deploy from a branch" > Branch: main, Folder: /docs > Save.
+4. Wait ~1 minute, open https://<your-username>.github.io/safe-home-test/
+   (repo name must stay "safe-home-test"; the site was built for that address.)
+5. Delete the empty file frontend/na.md (harmless, optional).
+
+OPTIONAL
+"readable-copies-of-hidden-files" holds the 4 dot-files as normal files (.txt). Only for reading/backup; not needed for the preview.
+If you rename the repo, the /docs copy must be rebuilt - ask me.
