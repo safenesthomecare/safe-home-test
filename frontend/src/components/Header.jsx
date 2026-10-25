@@ -4,6 +4,7 @@ import { Menu, X, Phone } from 'lucide-react';
 import { companyInfo } from '../data/mock';
 import { asset } from '../lib/asset';
 import ArtifactIcon from './story/ArtifactIcon';
+import DayPath from './story/DayPath';
 import { PAGES } from '../lib/pageStory';
 
 const Header = () => {
@@ -147,6 +148,8 @@ const Header = () => {
           </nav>
         </div>
       )}
+
+      <DayPath />
 
       <style jsx>{`
         /* Full menu needs ~1160px; below that use the hamburger menu so nothing is cut off */

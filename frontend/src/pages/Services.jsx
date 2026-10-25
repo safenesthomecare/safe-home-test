@@ -5,6 +5,7 @@ import ArtifactIcon from '../components/story/ArtifactIcon';
 import PageMark from '../components/story/PageMark';
 import StoryScene, { SCENES } from '../components/story/StoryScene';
 import { services, additionalServices } from '../data/mock';
+import { StoryProp } from '../components/story/props';
 
 const Services = () => {
   const serviceIcon = { 1: 'personal-care', 2: 'companionship', 3: 'medication', 4: 'walks', 5: 'services' };
@@ -20,6 +21,7 @@ const Services = () => {
         textAlign: 'center'
       }}>
         <div className="container" style={{ maxWidth: '900px', margin: '0 auto' }}>
+          <StoryProp name="bowl" side="r" inset />
           <PageMark />
           <h1 className="heading-hero" style={{ marginBottom: '1rem' }}>Our Care Services</h1>
           <p className="body-large" style={{ color: '#353535' }}>
@@ -31,6 +33,7 @@ const Services = () => {
       {/* Main Services */}
       <section style={{ padding: '5rem 1.2rem', background: 'var(--bg-page)' }}>
         <div className="container">
+          <StoryProp name="pillbox" side="r" />
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))',
@@ -125,6 +128,7 @@ const Services = () => {
       {/* How It Works */}
       <section style={{ padding: '5rem 1.2rem', background: 'white' }}>
         <div className="container" style={{ maxWidth: '1000px', margin: '0 auto' }}>
+          <StoryProp name="plant" side="l" />
           <h2 className="heading-1" style={{ textAlign: 'center', marginBottom: '3rem' }}>
             How It Works
           </h2>

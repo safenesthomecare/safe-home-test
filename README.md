@@ -26,7 +26,7 @@ Pages use `#/` addresses (for example `.../#/services`); that is normal for this
 - Not used here (kept so promoting to live is easy): `backend/`, `api/`, `vercel.json`, `.env.example`.
 
 ## The story, on every page
-Each page is one moment of a caregiver's day. A site-wide layer (`frontend/src/components/story/RouteStory.jsx`) shows the page's illustrated scene behind the content, moves its layers at different speeds as you scroll, tints the light for that time, and drifts small icons past the edges. Text sits on frosted cream panels so it stays readable (4.5:1) over any scene.
+Each page is one moment of a caregiver's day. A site-wide layer (`frontend/src/components/story/RouteStory.jsx`) shows the page's illustrated scene behind the content, moves its layers at different speeds as you scroll, tints the light for that time, and drifts small icons past the edges. Each page scrolls through 3 beats (the badge and the scene change together). Text sits on soft, feathered cream panels so it stays readable (4.5:1) over any scene. Moving between pages plays a short time-lapse (colour sweep, clock ticks to the new time); a small caregiver walks along the header's day rail; on desktop the scene leans slightly with the mouse; tap a perched prop to read its caption. All motion stops with reduced-motion settings.
 
 | Page | Time | Task | Scene |
 |---|---|---|---|
@@ -43,6 +43,8 @@ Each page is one moment of a caregiver's day. A site-wide layer (`frontend/src/c
 | `frontend/src/lib/storyTokens.js` + `src/story.css` | Logo colour codes and layer styles |
 | `frontend/src/components/story/RouteStory.jsx` | The scroll engine, backdrop, props and time badge |
 | `frontend/src/components/story/ArtifactIcon.jsx` | The icon set (from the SafeNest Story UI Kit artifact) |
+| `frontend/src/components/story/DayPath.jsx` | Header day rail with the walking caregiver |
+| `frontend/src/components/story/props.jsx` | 12 illustrated props + `StoryProp` (perch on a panel edge, animates when scrolled into view) |
 | `frontend/src/components/story/StoryScene.jsx` | Scene registry and renderer (Shadow DOM) |
 | `frontend/public/story/scene-N-*.svg` | The 8 layered illustrations |
 | `docs/PENDING-ASSETS.md` | Icons and props not drawn yet |

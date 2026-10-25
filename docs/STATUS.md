@@ -27,3 +27,6 @@ Detailed per-task logs: `docs/carry-forward/` (Phase.X-Goal.X-Task.X-CF-N.md).
 - Story v2 (CF-31): pinned Home story removed; every page has its own time, task, scene, icons (RouteStory). See README "The story, on every page".
 - Phase 4 done (CF-32): QA + speed checks, docs rebuilt.
 - Pending assets drawn (CF-33): 35 icons, nothing flagged.
+
+- Story v4 (CF-34): beats, illustrated props, feathered panels.
+- Story v5 (CF-35): page-to-page time-lapse, walking caregiver in header, pointer tilt (desktop), tap-a-prop captions, reduced-motion pass.

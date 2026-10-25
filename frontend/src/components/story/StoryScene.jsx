@@ -25,12 +25,49 @@ const load = (src) => {
   return cache.get(src);
 };
 
+
+// Story beats: each page scrolls through 3 moments (data-beat 0..2). Beat styles move/brighten existing layers with
+// `transform` and `filter` only (the `translate` property is reserved for scroll parallax).
+const BEAT_CSS = `
+[data-depth]{transition:transform 900ms ease}
+#layer-light,#layer-beam,#layer-glow{transform-box:fill-box;transform-origin:center}
+svg{transition:filter 900ms ease}
+:host([data-scene="knock"][data-beat="1"]) #layer-people{transform:translateX(26px)}
+:host([data-scene="knock"][data-beat="1"]) #layer-light{transform:scale(1.1)}
+:host([data-scene="knock"][data-beat="2"]) #layer-people{transform:translateX(52px)}
+:host([data-scene="knock"][data-beat="2"]) #layer-light{transform:scale(1.2)}
+:host([data-scene="knock"][data-beat="2"]) svg{filter:brightness(1.05) saturate(1.1)}
+:host([data-scene="morning"][data-beat="1"]) #layer-beam{transform:scale(1.18)}
+:host([data-scene="morning"][data-beat="1"]) svg{filter:brightness(1.04)}
+:host([data-scene="morning"][data-beat="2"]) #layer-beam{transform:scale(1.3)}
+:host([data-scene="morning"][data-beat="2"]) #layer-people{transform:translateX(20px)}
+:host([data-scene="morning"][data-beat="2"]) svg{filter:brightness(1.08) saturate(1.08)}
+:host([data-scene="care"][data-beat="1"]) #layer-light{transform:scale(1.15)}
+:host([data-scene="care"][data-beat="1"]) #layer-people{transform:translateX(-14px)}
+:host([data-scene="care"][data-beat="2"]) #layer-people{transform:translateX(14px)}
+:host([data-scene="care"][data-beat="2"]) #layer-light{transform:scale(1.25)}
+:host([data-scene="care"][data-beat="2"]) svg{filter:brightness(1.06) saturate(1.06)}
+:host([data-scene="walk"][data-beat="1"]) #layer-people{transform:translateX(36px)}
+:host([data-scene="walk"][data-beat="1"]) #layer-leaves{transform:translateY(-14px)}
+:host([data-scene="walk"][data-beat="2"]) #layer-people{transform:translateX(72px)}
+:host([data-scene="walk"][data-beat="2"]) #layer-leaves{transform:translateY(-28px)}
+:host([data-scene="tea"][data-beat="1"]) #layer-people{transform:translateY(-4px)}
+:host([data-scene="tea"][data-beat="1"]) #layer-light{transform:scale(1.1)}
+:host([data-scene="tea"][data-beat="2"]) #layer-light{transform:scale(1.22)}
+:host([data-scene="tea"][data-beat="2"]) svg{filter:brightness(1.05) saturate(1.1)}
+:host([data-scene="window"][data-beat="1"]) #layer-glow{transform:scale(1.1)}
+:host([data-scene="window"][data-beat="1"]) svg{filter:brightness(.93)}
+:host([data-scene="window"][data-beat="2"]) #layer-glow{transform:scale(1.3)}
+:host([data-scene="window"][data-beat="2"]) svg{filter:brightness(.86) saturate(1.1)}
+@media (prefers-reduced-motion:reduce){[data-depth],svg{transition:none}}
+`;
+
 const SHADOW_CSS = `
 :host{display:block;position:relative;overflow:hidden;line-height:0}
 :host([data-paused]) *{animation-play-state:paused !important}
 :host([data-bleed]) svg{scale:1.12}
 svg{position:absolute;top:0;height:100%;width:auto;min-width:100%;aspect-ratio:12/7;left:calc(var(--fx,.5) * 100%);transform:translateX(calc(var(--fx,.5) * -100%))}
-[data-depth]{translate:0 calc((var(--p,.5) - .5) * var(--d,.5) * var(--shift,80) * -1px);will-change:translate}
+[data-depth]{translate:calc(var(--tx,0) * var(--d,.5) * -16px) calc((var(--p,.5) - .5) * var(--d,.5) * var(--shift,80) * -1px + var(--ty,0) * var(--d,.5) * -8px);will-change:translate}
 @media (prefers-reduced-motion:reduce){[data-depth]{translate:none;will-change:auto}}
 `;
 
@@ -38,7 +75,7 @@ svg{position:absolute;top:0;height:100%;width:auto;min-width:100%;aspect-ratio:1
  * progress: 0..1 scroll progress through this scene (0.5 = centred, no offset).
  * Parent (Phase 3 scroll engine) supplies it; defaults to centred.
  */
-export default function StoryScene({ scene, progress = 0.5, inheritProgress = false, shift = SHIFT_PX, bleed = false, className = '', style }) {
+export default function StoryScene({ scene, progress = 0.5, inheritProgress = false, shift = SHIFT_PX, bleed = false, beat = 0, className = '', style }) {
   const host = useRef(null);
   const [failed, setFailed] = useState(false);
 
@@ -50,7 +87,7 @@ export default function StoryScene({ scene, progress = 0.5, inheritProgress = fa
     setFailed(false);
     load(scene.src).then((svg) => {
       if (!live) return;
-      root.innerHTML = `<style>${SHADOW_CSS}</style>${svg}`;
+      root.innerHTML = `<style>${SHADOW_CSS}${BEAT_CSS}</style>${svg}`;
       root.querySelectorAll('[data-depth]').forEach((g) => g.style.setProperty('--d', g.getAttribute('data-depth')));
       const s = root.querySelector('svg');
       if (s) { s.setAttribute('aria-hidden', 'true'); s.setAttribute('preserveAspectRatio', 'xMidYMid slice'); }
@@ -78,6 +115,8 @@ export default function StoryScene({ scene, progress = 0.5, inheritProgress = fa
       className={`sn-story-scene ${className}`}
       data-failed={failed || undefined}
       data-bleed={bleed || undefined}
+      data-scene={scene ? scene.id : undefined}
+      data-beat={beat}
       style={{ ...(inheritProgress ? {} : { '--p': p }), '--shift': shift, '--fx': scene ? scene.focus : 0.5, aspectRatio: '12 / 7', background: 'var(--sn-sky-mist)', ...style }}
     />
   );

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ChevronDown } from 'lucide-react';
 import { faqs } from '../data/mock';
 import PageMark from '../components/story/PageMark';
+import { StoryProp } from '../components/story/props';
 
 const FAQ = () => {
   const [openId, setOpenId] = useState(null);
@@ -20,6 +21,7 @@ const FAQ = () => {
         textAlign: 'center'
       }}>
         <div className="container" style={{ maxWidth: '900px', margin: '0 auto' }}>
+          <StoryProp name="cane" side="l" inset />
           <PageMark />
           <h1 className="heading-hero" style={{ marginBottom: '1rem' }}>Frequently Asked Questions</h1>
           <p className="body-large" style={{ color: '#353535' }}>
@@ -31,6 +33,7 @@ const FAQ = () => {
       {/* FAQ Accordion */}
       <section style={{ padding: '5rem 1.2rem', background: 'var(--bg-page)' }}>
         <div className="container" style={{ maxWidth: '900px', margin: '0 auto' }}>
+          <StoryProp name="note" side="r" />
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             {faqs.map((faq, idx) => {
               const open = openId === faq.id;

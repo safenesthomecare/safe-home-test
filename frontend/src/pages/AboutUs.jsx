@@ -2,6 +2,7 @@ import React from 'react';
 import { companyInfo } from '../data/mock';
 import PageMark from '../components/story/PageMark';
 import StoryScene, { SCENES } from '../components/story/StoryScene';
+import { StoryProp } from '../components/story/props';
 
 const AboutUs = () => {
   return (
@@ -13,6 +14,7 @@ const AboutUs = () => {
         textAlign: 'center'
       }}>
         <div className="container" style={{ maxWidth: '900px', margin: '0 auto' }}>
+          <StoryProp name="teacup" side="r" inset />
           <PageMark />
           <h1 className="heading-hero" style={{ marginBottom: '1rem' }}>About SafeNest Home Care</h1>
           <p className="body-large" style={{ color: '#353535' }}>
@@ -65,6 +67,7 @@ const AboutUs = () => {
       {/* Our Story */}
       <section style={{ padding: '5rem 1.2rem', background: 'var(--bg-section)' }}>
         <div className="container" style={{ maxWidth: '1100px', margin: '0 auto' }}>
+          <StoryProp name="kettle" side="r" />
           <h2 className="heading-1" style={{ textAlign: 'center', marginBottom: '2rem' }}>
             Our Story
           </h2>
@@ -102,6 +105,7 @@ const AboutUs = () => {
       {/* Our Values */}
       <section style={{ padding: '5rem 1.2rem', background: 'white' }}>
         <div className="container">
+          <StoryProp name="plant" side="l" />
           <h2 className="heading-1" style={{ textAlign: 'center', marginBottom: '3rem' }}>
             Our Core Values
           </h2>

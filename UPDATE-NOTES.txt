@@ -1,14 +1,15 @@
-Updates only (story v3). Same folder tree as the repo: upload over your repo (drag the folders in), commit to main.
+UPDATE-NOTES: copy these folders over your repo (same paths), then delete the files listed below.
 
-DELETE these old files in the repo (GitHub: open file > trash icon):
-  frontend/src/components/story/StoryPinned.jsx
-  frontend/src/components/story/DayClock.jsx
-  docs/static/js/main.a4824425.js
-  docs/static/js/main.a4824425.js.LICENSE.txt
-  docs/static/js/main.a4824425.js.map
-  docs/static/css/main.234839df.css
-  docs/static/css/main.234839df.css.map
-  frontend/na.md   (empty, optional)
+DELETE:
+frontend/src/components/story/DayClock.jsx
+frontend/src/components/story/StoryPinned.jsx
+frontend/na.md
+docs/static/css/main.234839df.css.map
+docs/static/css/main.234839df.css
+docs/static/js/main.a4824425.js.LICENSE.txt
+docs/static/js/main.a4824425.js
+docs/static/js/main.a4824425.js.map
 
-Keep everything else. Hidden files (.github, .gitignore, .env.example) are not touched.
-Pages: Settings > Pages > main / docs. Then open https://<your-username>.github.io/safe-home-test/
+Also delete any older docs/static/js/main.*.js(.map, .LICENSE.txt) and docs/static/css/main.*.css(.map) except:
+  main.c8941bdf.js (+.map, .LICENSE.txt) and main.8d076225.css (+.map)
+(this covers hashes left by the earlier v4 update).
