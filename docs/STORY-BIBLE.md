@@ -1,5 +1,8 @@
 # A Day at Home — Story Bible (Phase 1)
 
+> **v2 (site-wide story).** The scenes below are no longer one pinned "day" on Home. Each page now owns one moment: Home 8:00 AM (knock), About 9:30 (morning), Services 11:30 (care), FAQ 2:00 PM (walk), Testimonials 4:30 (tea), Contact 7:30 PM (window). The breakfast and medication scenes appear as Services card headers. The lighting arc (section 1.3) is used per page: a page's `day` value sets its tint and scrolling only drifts it slightly. Pinned scrolling, the day clock and "Skip the story" were removed. See README "The story, on every page" and `frontend/src/lib/pageStory.js`.
+
+
 Defaults: illustrated people, 8 scenes, public site only.
 
 ## 1.1 Script (one scroll step = one moment of care)

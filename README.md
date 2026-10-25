@@ -4,16 +4,17 @@ A **UI-only test copy** of the redesigned site, published with GitHub Pages so y
 It is **not** the live site (https://www.safenesthomecare.com). It is kept out of search engines (meta tag + `robots.txt`) and shows a small "DEMO · UI PREVIEW" tag. The contact form only pretends to send ("Demo only: nothing was sent.").
 
 ## See it (one-time setup)
-1. Push this repo to GitHub as a **public** repository.
-2. Repo **Settings > Pages > Build and deployment > Source = "GitHub Actions"**.
-3. Push to `main` (or open the **Actions** tab > "Deploy UI preview" > **Run workflow**). The first run takes about 2 to 3 minutes.
-4. Open `https://<your-username>.github.io/<repo-name>/`. If the run fails, the Actions tab shows the error.
+The built preview is committed in `docs/` (no hidden files or Actions needed).
+1. Push this repo to GitHub as a **public** repository named `safe-home-test`.
+2. **Settings > Pages > Source = "Deploy from a branch"**, Branch `main`, Folder **/docs** (not root).
+3. Open `https://<your-username>.github.io/safe-home-test/` after about a minute.
 
-The preview is rebuilt automatically on every push to `main`. Pages use `#/` addresses (for example `.../#/services`); that is normal for this preview.
+After changing the code, rebuild `docs/`: `cd frontend && REACT_APP_DEMO=true PUBLIC_URL=/safe-home-test yarn build`, then copy `frontend/build/*` into `docs/` (keep the `.md` notes there) and add `404.html` as a copy of `index.html`.
+Pages use `#/` addresses (for example `.../#/services`); that is normal for this preview.
 
 ## UI test checklist
-- **Home story:** scroll through all 8 scenes on a real phone and a laptop; the day clock and dots work; tapping a dot jumps to that scene; "Skip the story" appears when you press Tab.
-- **Reduced motion:** turn on "reduce motion" in the phone/OS settings; the story becomes 8 still cards with captions.
+- **Story on every page:** each page has its own scene behind it (scroll to see the layers shift), icons drifting at the edges, and a time badge (Home 8:00 AM, About 9:30, Services 11:30, FAQ 2:00 PM, Testimonials 4:30, Contact 7:30 PM).
+- **Reduced motion:** turn on "reduce motion" in the phone/OS settings; the scenes and icons stay still.
 - **Phone (360px) and tablet (768px):** no sideways scrolling; below 1180px the menu is a hamburger and contains the phone number, Employee Portal and Get Started.
 - **Every page:** Services (a scene on each card), About, Testimonials, FAQ (opens and closes with the keyboard), Contact.
 - **Contact form:** fill it in and send; you should see "The door is open, <name>." with "Demo only: nothing was sent."
@@ -24,24 +25,29 @@ The preview is rebuilt automatically on every push to `main`. Pages use `#/` add
 - Uses: `frontend/` only (built with `REACT_APP_DEMO=true`, which turns on `#/` addresses, the demo tag and the fake contact form).
 - Not used here (kept so promoting to live is easy): `backend/`, `api/`, `vercel.json`, `.env.example`.
 
-## A Day at Home (scroll story)
-The home page opens with a scroll-driven illustrated story: eight moments of a caregiver visit, from the knock at 8:00 AM to the lit window at 7:30 PM. The light shifts from dawn gold to evening blue as you scroll. The same scenes illustrate the Services, About, FAQ and Contact pages.
+## The story, on every page
+Each page is one moment of a caregiver's day. A site-wide layer (`frontend/src/components/story/RouteStory.jsx`) shows the page's illustrated scene behind the content, moves its layers at different speeds as you scroll, tints the light for that time, and drifts small icons past the edges. Text sits on frosted cream panels so it stays readable (4.5:1) over any scene.
+
+| Page | Time | Task | Scene |
+|---|---|---|---|
+| Home | 8:00 AM | Caregiver arrives | knock |
+| About | 9:30 AM | Getting to know you over tea | morning |
+| Services | 11:30 AM | Hands-on care | care |
+| FAQ | 2:00 PM | Questions on the afternoon walk | walk |
+| Testimonials | 4:30 PM | Afternoon tea and family notes | tea |
+| Contact | 7:30 PM | Evening handover | window |
 
 | File | Job |
 |---|---|
-| `frontend/public/story/scene-N-*.svg` | The 8 layered illustrations (32 KB total) |
-| `frontend/src/components/story/StoryScene.jsx` | Scene list (`SCENES`: clock, headline, text, service, alt, crop focus) + the renderer |
-| `frontend/src/components/story/StoryPinned.jsx` | Pinned scroll section, crossfade, lighting tint, captions, skip link |
-| `frontend/src/components/story/DayClock.jsx` | Sun-arc clock + one dot per scene (click to jump) |
-| `docs/STORY-BIBLE.md` | Script, art direction, lighting arc |
+| `frontend/src/lib/pageStory.js` | Page map (time, task, scene, icons, colour code), light tint, pending-asset lists |
+| `frontend/src/lib/storyTokens.js` + `src/story.css` | Logo colour codes and layer styles |
+| `frontend/src/components/story/RouteStory.jsx` | The scroll engine, backdrop, props and time badge |
+| `frontend/src/components/story/ArtifactIcon.jsx` | The icon set (from the SafeNest Story UI Kit artifact) |
+| `frontend/src/components/story/StoryScene.jsx` | Scene registry and renderer (Shadow DOM) |
+| `frontend/public/story/scene-N-*.svg` | The 8 layered illustrations |
+| `docs/PENDING-ASSETS.md` | Icons and props not drawn yet |
 
-Design rules worth keeping:
-- **Scene contract:** viewBox `0 0 1200 700`; layers are `<g id="layer-*" data-depth="0.2-1">` (higher depth moves more in the parallax); looping animation lives inside the SVG as CSS; every scene respects `prefers-reduced-motion`.
-- Scenes render inside a Shadow DOM so their internal CSS and animation names cannot clash.
-- **Accessibility:** reduced-motion visitors get all 8 scenes stacked as static captioned cards; screen readers get the caption text via a live region; keyboard users get a "Skip the story" link and labelled scene buttons; caption text is 10:1 or better against its panel.
-- **Phones:** in narrow portrait the caption docks under the picture; each scene has a `focus` value (0 to 1) that aims the crop at the action.
-- **Adding a scene:** draw an SVG to the contract, put it in `frontend/public/story/`, add an entry to `SCENES` (with `day` 0-1 for the lighting arc, plus `focus`) and a minutes value in `DayClock.jsx` (`MINUTES`). Nothing else changes.
-- Header note: `body { overflow-x: clip }` (not `hidden`) in `App.css` is required for the pinned section to stay stuck.
+Rules worth keeping: `body { overflow-x: clip }` (not hidden); a sticky figure only when it has its own column (`.sn-sticky-fig`, 900px up); scene contract is viewBox 0 0 1200 700 with `<g id="layer-*" data-depth="0.2-1">` layers and CSS animation inside the SVG. To add a page: add an entry to `PAGES` in `pageStory.js`.
 
 ## Local dev
 - Preview mode (no server needed): `cd frontend && yarn && REACT_APP_DEMO=true yarn start` (Windows PowerShell: `$env:REACT_APP_DEMO="true"; yarn start`).

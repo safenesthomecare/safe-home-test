@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import ArtifactIcon from './story/ArtifactIcon';
 import { Phone, Mail, MapPin } from 'lucide-react';
 import { companyInfo } from '../data/mock';
 import { asset } from '../lib/asset';
@@ -60,12 +61,12 @@ const Footer = () => {
               Quick Links
             </h3>
             <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-              <Link to="/" style={{ color: 'rgba(255, 255, 255, 0.8)', textDecoration: 'none', fontSize: '0.875rem', transition: 'color 0.2s ease' }}>Home</Link>
-              <Link to="/about" style={{ color: 'rgba(255, 255, 255, 0.8)', textDecoration: 'none', fontSize: '0.875rem', transition: 'color 0.2s ease' }}>About Us</Link>
-              <Link to="/services" style={{ color: 'rgba(255, 255, 255, 0.8)', textDecoration: 'none', fontSize: '0.875rem', transition: 'color 0.2s ease' }}>Services</Link>
-              <Link to="/testimonials" style={{ color: 'rgba(255, 255, 255, 0.8)', textDecoration: 'none', fontSize: '0.875rem', transition: 'color 0.2s ease' }}>Testimonials</Link>
-              <Link to="/faq" style={{ color: 'rgba(255, 255, 255, 0.8)', textDecoration: 'none', fontSize: '0.875rem', transition: 'color 0.2s ease' }}>FAQ</Link>
-              <Link to="/contact" style={{ color: 'rgba(255, 255, 255, 0.8)', textDecoration: 'none', fontSize: '0.875rem', transition: 'color 0.2s ease' }}>Contact</Link>
+              <Link to="/" style={{ color: 'rgba(255, 255, 255, 0.8)', textDecoration: 'none', fontSize: '0.875rem', transition: 'color 0.2s ease', display: 'inline-flex', alignItems: 'center', gap: '0.6rem' }}><ArtifactIcon name="home" size={12} tile />Home</Link>
+              <Link to="/about" style={{ color: 'rgba(255, 255, 255, 0.8)', textDecoration: 'none', fontSize: '0.875rem', transition: 'color 0.2s ease', display: 'inline-flex', alignItems: 'center', gap: '0.6rem' }}><ArtifactIcon name="about" size={12} tile />About Us</Link>
+              <Link to="/services" style={{ color: 'rgba(255, 255, 255, 0.8)', textDecoration: 'none', fontSize: '0.875rem', transition: 'color 0.2s ease', display: 'inline-flex', alignItems: 'center', gap: '0.6rem' }}><ArtifactIcon name="services" size={12} tile />Services</Link>
+              <Link to="/testimonials" style={{ color: 'rgba(255, 255, 255, 0.8)', textDecoration: 'none', fontSize: '0.875rem', transition: 'color 0.2s ease', display: 'inline-flex', alignItems: 'center', gap: '0.6rem' }}><ArtifactIcon name="testimonials" size={12} tile />Testimonials</Link>
+              <Link to="/faq" style={{ color: 'rgba(255, 255, 255, 0.8)', textDecoration: 'none', fontSize: '0.875rem', transition: 'color 0.2s ease', display: 'inline-flex', alignItems: 'center', gap: '0.6rem' }}><ArtifactIcon name="faq" size={12} tile />FAQ</Link>
+              <Link to="/contact" style={{ color: 'rgba(255, 255, 255, 0.8)', textDecoration: 'none', fontSize: '0.875rem', transition: 'color 0.2s ease', display: 'inline-flex', alignItems: 'center', gap: '0.6rem' }}><ArtifactIcon name="contact" size={12} tile />Contact</Link>
               <a href={companyInfo.teamPortalUrl} target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(255, 255, 255, 0.8)', textDecoration: 'none', fontSize: '0.875rem', transition: 'color 0.2s ease' }}>Employee Portal</a>
             </nav>
           </div>

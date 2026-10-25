@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Phone, Send } from 'lucide-react';
-import BrandIcon from '../components/BrandIcon';
+import ArtifactIcon from '../components/story/ArtifactIcon';
+import PageMark from '../components/story/PageMark';
 import StoryScene, { SCENES } from '../components/story/StoryScene';
 import { companyInfo } from '../data/mock';
 import { asset } from '../lib/asset';
@@ -64,6 +65,7 @@ const Contact = () => {
         textAlign: 'center'
       }}>
         <div className="container" style={{ maxWidth: '900px', margin: '0 auto' }}>
+          <PageMark />
           <h1 className="heading-hero" style={{ marginBottom: '1rem' }}>Get in Touch</h1>
           <p className="body-large" style={{ color: '#353535' }}>
             Ready to start your journey with SafeNest? We're here to answer your questions and help you find the perfect care solution.
@@ -103,7 +105,7 @@ const Contact = () => {
                     flexShrink: 0,
                     color: '#0066B3'
                   }}>
-                    <BrandIcon name="phone" size={26} />
+                    <ArtifactIcon name="phone" size={26} />
                   </div>
                   <div>
                     <div style={{ 
@@ -138,7 +140,7 @@ const Contact = () => {
                     flexShrink: 0,
                     color: '#FF8C42'
                   }}>
-                    <BrandIcon name="mail" size={26} />
+                    <ArtifactIcon name="mail" size={26} />
                   </div>
                   <div>
                     <div style={{ 
@@ -174,7 +176,7 @@ const Contact = () => {
                     flexShrink: 0,
                     color: '#0066B3'
                   }}>
-                    <BrandIcon name="location" size={26} />
+                    <ArtifactIcon name="location" size={26} />
                   </div>
                   <div>
                     <div style={{ 

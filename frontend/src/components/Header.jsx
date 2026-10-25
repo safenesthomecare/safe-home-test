@@ -3,18 +3,20 @@ import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Phone } from 'lucide-react';
 import { companyInfo } from '../data/mock';
 import { asset } from '../lib/asset';
+import ArtifactIcon from './story/ArtifactIcon';
+import { PAGES } from '../lib/pageStory';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
 
   const navLinks = [
-    { path: '/', label: 'Home' },
-    { path: '/about', label: 'About Us' },
-    { path: '/services', label: 'Services' },
-    { path: '/testimonials', label: 'Testimonials' },
-    { path: '/faq', label: 'FAQ' },
-    { path: '/contact', label: 'Contact' }
+    { path: '/', label: 'Home', page: PAGES.home },
+    { path: '/about', label: 'About Us', page: PAGES.about },
+    { path: '/services', label: 'Services', page: PAGES.services },
+    { path: '/testimonials', label: 'Testimonials', page: PAGES.testimonials },
+    { path: '/faq', label: 'FAQ', page: PAGES.faq },
+    { path: '/contact', label: 'Contact', page: PAGES.contact }
   ];
 
   const isActive = (path) => location.pathname === path;
@@ -45,13 +47,15 @@ const Header = () => {
                 fontWeight: '500',
                 textTransform: 'uppercase',
                 letterSpacing: '0.025em',
-                color: isActive(link.path) ? '#0066B3' : '#353535',
+                color: isActive(link.path) ? `var(--sc-${link.page.tone})` : '#353535',
                 textDecoration: 'none',
-                padding: '0.5rem 1rem',
+                padding: '0.5rem 0.75rem',
                 transition: 'color 0.2s ease',
-                borderBottom: isActive(link.path) ? '2px solid #0066B3' : '2px solid transparent'
+                display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
+                borderBottom: isActive(link.path) ? `2px solid var(--sc-${link.page.tone})` : '2px solid transparent'
               }}
             >
+              <ArtifactIcon name={link.page.icon} size={18} />
               {link.label}
             </Link>
           ))}
@@ -117,14 +121,16 @@ const Header = () => {
                   fontWeight: '500',
                   textTransform: 'uppercase',
                   letterSpacing: '0.025em',
-                  color: isActive(link.path) ? '#0066B3' : '#353535',
+                  color: isActive(link.path) ? `var(--sc-${link.page.tone})` : '#353535',
                   textDecoration: 'none',
                   padding: '0.75rem 1rem',
-                  background: isActive(link.path) ? 'rgba(0, 102, 179, 0.1)' : 'transparent',
+                  display: 'flex', alignItems: 'center', gap: '0.6rem',
+                  background: isActive(link.path) ? 'rgba(0, 38, 63, 0.06)' : 'transparent',
                   borderRadius: '0.5rem',
                   transition: 'all 0.2s ease'
                 }}
               >
+                <ArtifactIcon name={link.page.icon} size={20} />
                 {link.label}
               </Link>
             ))}

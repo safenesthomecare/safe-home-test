@@ -1,5 +1,6 @@
 import React from 'react';
 import { companyInfo } from '../data/mock';
+import PageMark from '../components/story/PageMark';
 import StoryScene, { SCENES } from '../components/story/StoryScene';
 
 const AboutUs = () => {
@@ -12,6 +13,7 @@ const AboutUs = () => {
         textAlign: 'center'
       }}>
         <div className="container" style={{ maxWidth: '900px', margin: '0 auto' }}>
+          <PageMark />
           <h1 className="heading-hero" style={{ marginBottom: '1rem' }}>About SafeNest Home Care</h1>
           <p className="body-large" style={{ color: '#353535' }}>
             More than just care providers – we're your extended family, dedicated to bringing warmth, comfort, and compassion into your home.
@@ -68,9 +70,9 @@ const AboutUs = () => {
           </h2>
           
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 340px), 1fr))', gap: '2.5rem', alignItems: 'start' }}>
-          <figure style={{ margin: 0, position: 'sticky', top: '100px' }}>
+          <figure className="sn-sticky-fig" style={{ margin: 0 }}>
             <div style={{ borderRadius: 'var(--sn-radius-lg)', overflow: 'hidden', boxShadow: 'var(--sn-shadow-md)' }}>
-              <StoryScene scene={SCENES.find((sc) => sc.id === 'tea')} />
+              <StoryScene scene={SCENES.find((sc) => sc.id === 'breakfast')} />
             </div>
             <figcaption style={{ fontFamily: 'var(--sn-font-script)', fontSize: '1.5rem', color: 'var(--sn-ember)', textAlign: 'center', marginTop: '0.75rem' }}>
               Tea, stories, and someone who listens.

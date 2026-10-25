@@ -1,14 +1,11 @@
 # Project status
 
-## UI preview (this repo: safe-home-test)
-Published with GitHub Pages by `.github/workflows/demo-pages.yml` (demo mode: `#/` addresses, "DEMO · UI PREVIEW" tag, fake contact form, no-index). One-time owner step: Settings > Pages > Source = GitHub Actions. Verified: real build under a sub-path (all images/scenes/pages work, 0 errors), workflow steps run clean (`yarn install --frozen-lockfile`, `yarn build`), live-style build unchanged (no tag, real form POST, normal addresses), repo scanned for secrets (none).
-
 **State:** feature-complete for the "A Day at Home" redesign. Optional sound/haptics layer (plan Phase 5) deliberately skipped.
 
 ## Done
 - Phase 1: story script, art direction, lighting arc (`docs/STORY-BIBLE.md`)
 - Phase 2: 8 layered SVG scenes (`frontend/public/story/`)
-- Phase 3: scene renderer, pinned scroll engine, day clock + scene dots
+- Phase 3 (superseded): pinned scroll engine + day clock, replaced by the site-wide story (CF-31)
 - Phase 4: Home (story), Services (scene cards), Testimonials (handwritten notes), Contact ("knock on the door"), About, FAQ (accessible accordion)
 - Phase 6: contrast and keyboard audit, offscreen animation pause, speed check, 360px pass on the real build, header breakpoint fix
 
@@ -26,3 +23,7 @@ Published with GitHub Pages by `.github/workflows/demo-pages.yml` (demo mode: `#
 5. Optional: sound toggle + haptics (needs licensed audio)
 
 Detailed per-task logs: `docs/carry-forward/` (Phase.X-Goal.X-Task.X-CF-N.md).
+
+- Story v2 (CF-31): pinned Home story removed; every page has its own time, task, scene, icons (RouteStory). See README "The story, on every page".
+- Phase 4 done (CF-32): QA + speed checks, docs rebuilt.
+- Pending assets drawn (CF-33): 35 icons, nothing flagged.

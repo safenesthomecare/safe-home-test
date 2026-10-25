@@ -1,18 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Check } from 'lucide-react';
-import BrandIcon from '../components/BrandIcon';
+import ArtifactIcon from '../components/story/ArtifactIcon';
+import PageMark from '../components/story/PageMark';
 import StoryScene, { SCENES } from '../components/story/StoryScene';
 import { services, additionalServices } from '../data/mock';
 
 const Services = () => {
-  const iconMap = {
-    'user-check': 'care',
-    'heart-handshake': 'companionship',
-    'accessibility': 'mobility',
-    'activity': 'medication',
-    'home': 'home'
-  };
+  const serviceIcon = { 1: 'personal-care', 2: 'companionship', 3: 'medication', 4: 'walks', 5: 'services' };
   // Each core service is illustrated by its moment from "A Day at Home".
   const sceneFor = { 1: 'care', 2: 'breakfast', 3: 'medication', 4: 'walk', 5: 'tea' };
 
@@ -25,6 +20,7 @@ const Services = () => {
         textAlign: 'center'
       }}>
         <div className="container" style={{ maxWidth: '900px', margin: '0 auto' }}>
+          <PageMark />
           <h1 className="heading-hero" style={{ marginBottom: '1rem' }}>Our Care Services</h1>
           <p className="body-large" style={{ color: '#353535' }}>
             Comprehensive, compassionate home care solutions tailored to meet your unique needs and support your independence.
@@ -41,7 +37,6 @@ const Services = () => {
             gap: '2rem'
           }}>
             {services.map((service) => {
-              const iconName = iconMap[service.icon];
               const scene = SCENES.find((sc) => sc.id === sceneFor[service.id]);
               return (
                 <div key={service.id} style={{
@@ -58,25 +53,9 @@ const Services = () => {
                   {scene && (
                     <div style={{ position: 'relative', margin: '-2rem -2rem 1.4rem' }}>
                       <StoryScene scene={scene} />
-                      <span style={{
-                        position: 'absolute', left: 12, bottom: 12, padding: '2px 10px', borderRadius: 999,
-                        background: 'rgba(0,38,63,.7)', color: 'var(--sn-window-gold)', fontSize: '.8125rem', lineHeight: 1.6
-                      }}>{scene.clock}</span>
                     </div>
                   )}
-                  <div style={{ 
-                    width: '56px', 
-                    height: '56px', 
-                    borderRadius: '50%', 
-                    background: 'var(--sn-sky-mist)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    marginBottom: '1.2rem',
-                    color: '#0066B3'
-                  }}>
-                    {iconName && <BrandIcon name={iconName} size={30} />}
-                  </div>
+                  <ArtifactIcon name={serviceIcon[service.id]} size={30} tile style={{ marginBottom: '1.2rem', alignSelf: 'flex-start' }} />
                   
                   <h3 className="heading-2" style={{ marginBottom: '1rem', color: '#232323' }}>
                     {service.title}

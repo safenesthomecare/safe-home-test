@@ -1,0 +1,14 @@
+Updates only (story v3). Same folder tree as the repo: upload over your repo (drag the folders in), commit to main.
+
+DELETE these old files in the repo (GitHub: open file > trash icon):
+  frontend/src/components/story/StoryPinned.jsx
+  frontend/src/components/story/DayClock.jsx
+  docs/static/js/main.a4824425.js
+  docs/static/js/main.a4824425.js.LICENSE.txt
+  docs/static/js/main.a4824425.js.map
+  docs/static/css/main.234839df.css
+  docs/static/css/main.234839df.css.map
+  frontend/na.md   (empty, optional)
+
+Keep everything else. Hidden files (.github, .gitignore, .env.example) are not touched.
+Pages: Settings > Pages > main / docs. Then open https://<your-username>.github.io/safe-home-test/

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronDown } from 'lucide-react';
 import { faqs } from '../data/mock';
-import StoryScene, { SCENES } from '../components/story/StoryScene';
+import PageMark from '../components/story/PageMark';
 
 const FAQ = () => {
   const [openId, setOpenId] = useState(null);
@@ -20,6 +20,7 @@ const FAQ = () => {
         textAlign: 'center'
       }}>
         <div className="container" style={{ maxWidth: '900px', margin: '0 auto' }}>
+          <PageMark />
           <h1 className="heading-hero" style={{ marginBottom: '1rem' }}>Frequently Asked Questions</h1>
           <p className="body-large" style={{ color: '#353535' }}>
             Find answers to common questions about our home care services, caregivers, and how SafeNest can support your family.
@@ -114,9 +115,6 @@ const FAQ = () => {
       {/* Still Have Questions */}
       <section style={{ padding: '5rem 1.2rem', background: 'var(--bg-section)' }}>
         <div className="container" style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
-          <div style={{ maxWidth: '520px', margin: '0 auto 2rem', borderRadius: 'var(--sn-radius-lg)', overflow: 'hidden', boxShadow: 'var(--sn-shadow-md)' }}>
-            <StoryScene scene={SCENES.find((sc) => sc.id === 'window')} />
-          </div>
           <h2 className="heading-1" style={{ marginBottom: '1rem' }}>
             Still Have Questions?
           </h2>

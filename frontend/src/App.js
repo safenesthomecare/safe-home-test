@@ -1,4 +1,5 @@
 import "@/App.css";
+import "./story.css";
 import { BrowserRouter, HashRouter, Routes, Route } from "react-router-dom";
 import ScrollReveal from "./components/ScrollReveal";
 import { Toaster } from "./components/ui/sonner";
@@ -12,6 +13,7 @@ import FAQ from "./pages/FAQ";
 import Contact from "./pages/Contact";
 import PortalPrompt from "./components/PortalPrompt";
 import DemoBanner from "./components/DemoBanner";
+import RouteStory from "./components/story/RouteStory";
 import { DEMO } from "./lib/demo";
 
 // Static demo hosting (GitHub Pages) cannot rewrite unknown URLs to index.html, so the demo build uses #/routes.
@@ -21,8 +23,10 @@ function App() {
   return (
     <div className="App">
       <Router>
+        <RouteStory />
         <Header />
         <ScrollReveal />
+        <main className="sn-content">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<AboutUs />} />
@@ -31,6 +35,7 @@ function App() {
           <Route path="/faq" element={<FAQ />} />
           <Route path="/contact" element={<Contact />} />
         </Routes>
+        </main>
         <Footer />
         <PortalPrompt />
         <DemoBanner />

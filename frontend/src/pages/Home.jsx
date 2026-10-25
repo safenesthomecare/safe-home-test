@@ -1,22 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Phone, ArrowRight } from 'lucide-react';
-import BrandIcon from '../components/BrandIcon';
 import TwigDivider from '../components/TwigDivider';
-import StoryPinned from '../components/story/StoryPinned';
+import ArtifactIcon from '../components/story/ArtifactIcon';
 import { companyInfo, services, whyChooseUs, stats } from '../data/mock';
 import { asset } from '../lib/asset';
 
 const Home = () => {
-  const iconMap = {
-    'users': 'staff',
-    'award': 'star',
-    'clipboard-check': 'document',
-    'shield-check': 'shield',
-    'heart': 'nest',
-    'calendar-check': 'calendar'
-  };
-
+  const serviceIcon = { 1: 'personal-care', 2: 'companionship', 3: 'medication', 4: 'walks', 5: 'services' };
+  const whyIcon = { 1: 'services', 2: 'about', 3: 'personal-care', 4: 'home-safety', 5: 'window', 6: 'calendar-clock' };
   return (
     <div style={{ paddingTop: '80px' }}>
       {/* Hero Section */}
@@ -83,11 +75,6 @@ const Home = () => {
 
       <TwigDivider />
 
-      {/* A Day at Home: scroll-driven story (header is 80px tall) */}
-      <StoryPinned offset={80} />
-
-      <TwigDivider />
-
       {/* Services Preview */}
       <section style={{ padding: '5rem 1.2rem', background: 'var(--bg-page)' }}>
         <div className="container">
@@ -106,18 +93,7 @@ const Home = () => {
           }}>
             {services.slice(0, 3).map((service) => (
               <div key={service.id} className="voice-card hover-lift" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-                <div style={{ 
-                  width: '48px', 
-                  height: '48px', 
-                  borderRadius: '50%', 
-                  background: 'rgba(0, 102, 179, 0.1)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginBottom: '1rem'
-                }}>
-                  <div style={{ width: '24px', height: '24px', background: '#0066B3', borderRadius: '4px' }}></div>
-                </div>
+                <ArtifactIcon name={serviceIcon[service.id]} size={30} tile style={{ marginBottom: '1rem', alignSelf: 'flex-start' }} />
                 <h3 className="heading-3" style={{ marginBottom: '0.75rem' }}>{service.title}</h3>
                 <p className="body-small" style={{ color: '#353535', flex: 1 }}>{service.description}</p>
               </div>
@@ -148,7 +124,6 @@ const Home = () => {
             gap: '1.2rem'
           }}>
             {whyChooseUs.map((item) => {
-              const iconName = iconMap[item.icon];
               return (
                 <div key={item.id} style={{
                   background: 'white',
@@ -157,9 +132,7 @@ const Home = () => {
                   boxShadow: '0 2px 6px rgba(0, 0, 0, 0.03)',
                   transition: 'all 0.3s ease'
                 }} className="hover-lift">
-                  <div style={{ marginBottom: '0.75rem', color: 'var(--sn-hearth-blue)' }}>
-                    {iconName && <BrandIcon name={iconName} size={36} />}
-                  </div>
+                  <ArtifactIcon name={whyIcon[item.id]} size={30} tile style={{ marginBottom: '0.75rem' }} />
                   <h3 className="heading-3" style={{ marginBottom: '0.5rem' }}>{item.title}</h3>
                   <p className="body-small" style={{ color: '#353535' }}>{item.description}</p>
                 </div>

@@ -28,6 +28,7 @@ const load = (src) => {
 const SHADOW_CSS = `
 :host{display:block;position:relative;overflow:hidden;line-height:0}
 :host([data-paused]) *{animation-play-state:paused !important}
+:host([data-bleed]) svg{scale:1.12}
 svg{position:absolute;top:0;height:100%;width:auto;min-width:100%;aspect-ratio:12/7;left:calc(var(--fx,.5) * 100%);transform:translateX(calc(var(--fx,.5) * -100%))}
 [data-depth]{translate:0 calc((var(--p,.5) - .5) * var(--d,.5) * var(--shift,80) * -1px);will-change:translate}
 @media (prefers-reduced-motion:reduce){[data-depth]{translate:none;will-change:auto}}
@@ -37,7 +38,7 @@ svg{position:absolute;top:0;height:100%;width:auto;min-width:100%;aspect-ratio:1
  * progress: 0..1 scroll progress through this scene (0.5 = centred, no offset).
  * Parent (Phase 3 scroll engine) supplies it; defaults to centred.
  */
-export default function StoryScene({ scene, progress = 0.5, className = '', style }) {
+export default function StoryScene({ scene, progress = 0.5, inheritProgress = false, shift = SHIFT_PX, bleed = false, className = '', style }) {
   const host = useRef(null);
   const [failed, setFailed] = useState(false);
 
@@ -76,7 +77,8 @@ export default function StoryScene({ scene, progress = 0.5, className = '', styl
       aria-label={scene ? scene.alt : undefined}
       className={`sn-story-scene ${className}`}
       data-failed={failed || undefined}
-      style={{ '--p': p, '--shift': SHIFT_PX, '--fx': scene ? scene.focus : 0.5, aspectRatio: '12 / 7', background: 'var(--sn-sky-mist)', ...style }}
+      data-bleed={bleed || undefined}
+      style={{ ...(inheritProgress ? {} : { '--p': p }), '--shift': shift, '--fx': scene ? scene.focus : 0.5, aspectRatio: '12 / 7', background: 'var(--sn-sky-mist)', ...style }}
     />
   );
 }

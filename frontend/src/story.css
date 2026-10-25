@@ -1,0 +1,45 @@
+/* Site-wide story layers. Content sits above (z 3); decorative layers below. */
+:root {
+  --sc-home: #1F5BA8; --sc-services: #0F766E; --sc-about: #7A4A1E; --sc-testimonials: #B8325A;
+  --sc-faq: #0369A1; --sc-contact: #AD4A07; --sc-care: #0E7490; --sc-meds: #6B46C1;
+  --sc-meals: #92580A; --sc-walks: #2F7D1E; --sc-companion: #7A5B00; --sc-safety: #00263F;
+}
+.sn-story { position: fixed; inset: 0; pointer-events: none; z-index: 0; --p: .5; --veil: .62; --tint: transparent; overflow: hidden; }
+.sn-story > * { position: absolute; inset: 0; }
+.sn-story-back { animation: sn-story-in 700ms ease-out both; }
+.sn-story-veil { background: var(--sn-cream, #FFF9F2); opacity: var(--veil); }
+.sn-story-wash { background: var(--tint); }
+.sn-story-prop { position: absolute; top: 0; will-change: translate; }
+.sn-story-prop[data-side="l"] { left: -16px; }   /* props peek in from the edges, clear of the text column */
+.sn-story-prop[data-side="r"] { right: -16px; }
+.sn-story-props[data-narrow] { opacity: .75; }
+.sn-story-props[data-narrow] .sn-story-prop[data-side="l"] { left: -22px; }
+.sn-story-props[data-narrow] .sn-story-prop[data-side="r"] { right: -22px; }
+@keyframes sn-story-in { from { opacity: 0; } to { opacity: 1; } }
+
+/* The page content paints above the story; sections turn transparent so the scene shows through. */
+body.sn-story-on main.sn-content, body.sn-story-on footer { position: relative; z-index: 3; }
+body.sn-story-on main.sn-content section, body.sn-story-on main.sn-content .hero-section { background: transparent !important; }
+/* Text sits on a frosted cream panel so it keeps 4.5:1 over any scene; the scene shows in the gaps between panels. */
+body.sn-story-on main.sn-content section > .container,
+body.sn-story-on main.sn-content .hero-content {
+  background: rgba(255, 249, 242, .97); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  border-radius: 28px; padding: clamp(1rem, 3vw, 2.5rem); box-shadow: 0 8px 30px rgba(0, 38, 63, .08);
+}
+body.sn-story-on main.sn-content section { padding-top: clamp(1.5rem, 4vw, 3rem) !important; padding-bottom: clamp(1.5rem, 4vw, 3rem) !important; }
+body.sn-story-on main.sn-content .hero-section { padding-bottom: clamp(1.5rem, 4vw, 3rem); }
+
+/* Time badge */
+.sn-time-badge {
+  position: fixed; left: 12px; bottom: 12px; z-index: 800; margin: 0; display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 14px 6px 10px; border-radius: 999px; background: rgb(0, 38, 63); color: #fff; font-size: .8125rem; line-height: 1.6;
+  font-family: var(--sn-font-body); box-shadow: 0 4px 14px rgba(0, 38, 63, .25); border: 2px solid var(--accent, #1F5BA8); pointer-events: none; max-width: calc(100vw - 24px);
+}
+.sn-time-badge .sn-ai { background: #fff; border-radius: 50%; padding: 3px; }
+.sn-time-badge[data-compact] .sn-time-task { display: none; }
+.sn-time-badge strong { color: #FFC72C; font-weight: 800; }
+
+@media (prefers-reduced-motion: reduce) { .sn-story-back { animation: none; } }
+
+/* Sticky only when the figure has its own column (sticky inside a one-column grid overlaps the text below). */
+@media (min-width: 900px) { .sn-sticky-fig { position: sticky; top: 100px; } }

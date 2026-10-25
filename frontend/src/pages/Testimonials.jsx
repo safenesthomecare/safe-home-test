@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Star } from 'lucide-react';
 import { testimonials } from '../data/mock';
+import PageMark from '../components/story/PageMark';
 
 const Testimonials = () => {
   return (
@@ -13,6 +14,7 @@ const Testimonials = () => {
         textAlign: 'center'
       }}>
         <div className="container" style={{ maxWidth: '900px', margin: '0 auto' }}>
+          <PageMark />
           <h1 className="heading-hero" style={{ marginBottom: '1rem' }}>What Our Families Say</h1>
           <p className="body-large" style={{ color: '#353535' }}>
             Real stories from families who have experienced the SafeNest difference. Your trust means everything to us.
