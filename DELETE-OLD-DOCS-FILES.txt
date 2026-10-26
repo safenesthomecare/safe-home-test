@@ -1,4 +1,4 @@
-Optional cleanup: delete these old build files from docs/ (unused, harmless to keep):
+Optional cleanup: delete these old build files from docs/ (unused):
 docs/static/css/main.234839df.css.map
 docs/static/css/main.9c28cf4e.css.map
 docs/static/css/main.234839df.css

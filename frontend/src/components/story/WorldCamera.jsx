@@ -15,12 +15,6 @@ export default function WorldCamera({ world, reduced }) {
     // Cache the few moving elements once, and write to them directly. A custom property set on the stage would make the browser re-check every drawn element on each scroll step.
     const layers = Array.from(wr.querySelectorAll('.sw-layer')).map((el) => ({ el, d: parseFloat(el.style.getPropertyValue('--d')) }));
     const walkers = Array.from(wr.querySelectorAll('.sw-walk')).map((el) => ({ el, wx: parseFloat(el.style.getPropertyValue('--wx')) || 0, wy: parseFloat(el.style.getPropertyValue('--wy')) || 0 }));
-    // Limbs and waving hands only animate while they are on screen.
-    let io;
-    if (typeof IntersectionObserver !== 'undefined') {
-      io = new IntersectionObserver((es) => es.forEach((e) => { e.target.style.animationPlayState = e.isIntersecting ? 'running' : 'paused'; }), { rootMargin: '120px' });
-      wr.querySelectorAll('.sw-leg, .sw-wave').forEach((el) => { el.style.animationPlayState = 'paused'; io.observe(el); });
-    }
     const measure = () => {
       vw = window.innerWidth; vh = window.innerHeight; k = baseScale(vw, vh);
       const secs = Array.from(document.querySelectorAll('main.sn-content section')).map((el) => {
@@ -61,7 +55,7 @@ export default function WorldCamera({ world, reduced }) {
     const t = setTimeout(remeasure, 150);
     return () => {
       window.removeEventListener('scroll', queue); window.removeEventListener('resize', remeasure);
-      if (ro) ro.disconnect(); if (io) io.disconnect(); clearTimeout(t); if (raf) cancelAnimationFrame(raf);
+      if (ro) ro.disconnect(); clearTimeout(t); if (raf) cancelAnimationFrame(raf);
       document.documentElement.style.removeProperty('--hero-t'); delete document.body.dataset.snSide;
     };
   }, [world, reduced]);
