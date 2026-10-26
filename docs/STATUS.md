@@ -10,7 +10,7 @@
 - Phase 6: contrast and keyboard audit, offscreen animation pause, speed check, 360px pass on the real build, header breakpoint fix
 
 ## Verified
-- Production build compiles (`craco build`, main JS ~118 kB, CSS ~12 kB)
+- Production build compiles (`craco build`, main JS ~139 kB gzip, CSS ~13 kB gzip)
 - No sideways overflow at 360px on any page; no console errors
 - Story caption contrast 10:1 or better; keyboard order and skip link work
 - Smooth scrolling in a throttled-CPU test (see carry-forward 22)
@@ -33,3 +33,5 @@ Detailed per-task logs: `docs/carry-forward/` (Phase.X-Goal.X-Task.X-CF-N.md).
 - Story v6 Phase 0 (CF-36): old foreground and cursor logic removed.
 - Story v6 Phase 1 (CF-37): scroll camera engine (WorldCamera), debug world.
 - Story v6 (CF-38): scroll-camera worlds on all 6 pages, glass panels, kit v5.
+- Story art v7 (CF-2 to CF-14, kit Phases 0-3): figure builder, outdoor and indoor kit, all six worlds redrawn, element caps, speed fixes, contrast audit rerun.
+- Phase 4 (CF-15): docs/ rebuilt, `docs/kit.html` art kit page, README updated. See `PLAN.md`.

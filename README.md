@@ -47,6 +47,10 @@ Each page is one drawn world and one moment of a caregiver's working day. Scroll
 | `frontend/src/components/story/ArtifactIcon.jsx` | The icon set (from the SafeNest Story UI Kit artifact) |
 | `frontend/src/components/story/StoryScene.jsx` | Scene registry and renderer (Shadow DOM) |
 | `frontend/public/story/scene-N-*.svg` | The 8 layered illustrations |
+| `frontend/src/components/story/worlds/figure.jsx`, `outdoors.jsx`, `indoors.jsx` | Figure builder and the outdoor and indoor art kit (style guide: `worlds/FIGURE-STYLE.md`) |
+| `docs/kit.html` | Art kit page: test sheets and the six worlds |
+| `tools/` | `contrast-audit.py`, `measure-fps.py`, `count-worlds.jsx`, `diag-anim.py` |
+| `KIT-BUDGET.md` | Element and byte counts per kit piece |
 | `docs/PENDING-ASSETS.md` | Icons and props not drawn yet |
 
 Rules worth keeping: `body { overflow-x: clip }` (not hidden); to add a world, draw layers in `worlds/` and add camera keys `{ sec, x, y, z }` (`sec` = which page section is centred; `yN` for phones) and a `side` (`left` or `right`) for the panels; old scene contract is viewBox 0 0 1200 700 with `<g id="layer-*" data-depth="0.2-1">` layers and CSS animation inside the SVG. To add a page: add an entry to `PAGES` in `pageStory.js`.

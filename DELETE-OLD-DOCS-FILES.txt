@@ -1,0 +1,21 @@
+Optional cleanup: delete these old build files from docs/ (unused, harmless to keep):
+docs/static/css/main.234839df.css.map
+docs/static/css/main.9c28cf4e.css.map
+docs/static/css/main.234839df.css
+docs/static/css/main.39eec427.css
+docs/static/css/main.39eec427.css.map
+docs/static/css/main.8d076225.css
+docs/static/css/main.8d076225.css.map
+docs/static/css/main.9c28cf4e.css
+docs/static/js/main.ec8e09b7.js.map
+docs/static/js/main.a4824425.js.LICENSE.txt
+docs/static/js/main.9fb4b594.js.LICENSE.txt
+docs/static/js/main.9fb4b594.js.map
+docs/static/js/main.a4824425.js
+docs/static/js/main.9fb4b594.js
+docs/static/js/main.c8941bdf.js.map
+docs/static/js/main.ec8e09b7.js
+docs/static/js/main.a4824425.js.map
+docs/static/js/main.ec8e09b7.js.LICENSE.txt
+docs/static/js/main.c8941bdf.js.LICENSE.txt
+docs/static/js/main.c8941bdf.js
