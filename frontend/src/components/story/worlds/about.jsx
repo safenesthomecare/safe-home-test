@@ -1,13 +1,15 @@
-import { C, Sky, Cloud, Hills, House, Person, Tree, Grass, Flowers, SteppingStones, Fence, SKIN } from './art';
+import { C, Cloud, Hills, House, PSW, Patient, Tree, Grass, Flowers, SteppingStones, Fence } from './art';
+import { TONES, SilBush } from './light';
 
-// About: 8:20 AM. At the front door. The caregiver walks up the path as you scroll and is welcomed by the client's daughter.
+// About: 9:30 AM (SHOTS.md #2). Eye-level medium-wide with a slow push-in. PSW on the left third walks up to the doorway; the patient waits on the right third, facing her. Door interior is one flat warm shape; dark hedge fills the bottom-left corner.
 const W = 1800; const H = 1400; const G = 1000;
+const T = TONES.midmorning;
 
 export const ABOUT_WORLD = {
   w: W, h: H, side: 'right',
   layers: [
-    { id: 'sky', depth: 0.12, node: (<g><Sky w={W} h={H} top="#BFE0F5" bot="#FFEBD3" id="ab-sky" /><Cloud x={400} y={200} s={1.3} /><Cloud x={1350} y={140} s={1} o={0.85} /></g>) },
-    { id: 'far', depth: 0.4, node: (<g><Hills y={470} w={W} color="#B6DBA4" amp={50} phase={1} trees={8} /><Hills y={530} w={W} color="#97C985" amp={40} phase={3} trees={6} /></g>) },
+    { id: 'sky', depth: 0.12, node: (<g><rect x="-3000" y="-1500" width={W + 6000} height={H + 3000} fill="#E6F1FA" /><rect x="-3000" y="600" width={W + 6000} height="1500" fill="#F6E6D0" /><Cloud x={400} y={-120} s={1.3} /><Cloud x={1350} y={-190} s={1} o={0.85} /></g>) },
+    { id: 'far', depth: 0.4, node: (<g transform="translate(-1200 0)"><Hills y={440} w={W + 2400} color="#C4E2B4" amp={50} phase={1} trees={12} /><Hills y={500} w={W + 2400} color="#9CCB8C" amp={40} phase={3} trees={9} /></g>) },
     { id: 'plane', depth: 1, node: (
       <g>
         <rect x="-300" y={G} width={W + 600} height="600" fill="#6DB35F" />
@@ -22,17 +24,25 @@ export const ABOUT_WORLD = {
         <Flowers x={590} y={G + 20} w={200} n={9} seed={21} /><Flowers x={1210} y={G + 20} w={200} n={9} seed={22} />
         <Grass x={300} y={G + 80} w={500} seed={3} /><Grass x={1500} y={G + 84} w={500} seed={8} />
         <Flowers x={330} y={G + 120} w={420} n={10} seed={5} /><Flowers x={1480} y={G + 130} w={420} n={10} seed={15} />
-        <Person x={936} y={G} s={1.15} face={-1} skin={SKIN.a} hair="#3A2A22" top={C.orange} bottom="#3B4A63" pose="open" hairStyle="wavy" />
-        <g className="sw-walk" style={{ '--wx': 150, '--wy': -50 }}>
-          <Person x={560} y={G + 110} s={1.15} walk skin={SKIN.b} hair="#2B2220" top={C.teal} bottom="#2B3A55" pose="stand" />
-          <rect x="522" y={G - 20} width="36" height="44" rx="8" fill={C.navy} />
+        <rect x="878" y="706" width="104" height="276" rx="16" fill={T.accent} />
+        <Patient x={936} y={G} s={1.15} face={-1} pose="open" />
+        <g className="sw-walk" style={{ '--wx': 170, '--wy': -50 }}>
+          <PSW x={330} y={G + 110} s={1.15} pose="stand" walk />
+          <rect x="292" y={G - 20} width="36" height="44" rx="8" fill={C.navy} />
         </g>
+      </g>
+    ) },
+    // Foreground (depth 1.3): dark hedge in the bottom-left corner. Nothing important in it.
+    { id: 'fg', depth: 1.3, node: (
+      <g fill={T.dark}>
+        <rect x="260" y="1575" width="560" height="260" />
+        <SilBush x={400} y={1575} w={380} h={150} color={T.dark} /><SilBush x={700} y={1575} w={360} h={120} color={T.dark} /><SilBush x={940} y={1575} w={300} h={90} color={T.dark} />
       </g>
     ) },
   ],
   keys: [
-    { sec: 'top', xN: 880, x: 1180, y: 720, z: 1 },
-    { sec: 1, xN: 840, x: 1180, y: 770, z: 1 },
-    { sec: 'end', xN: 800, x: 1180, y: 820, z: 1 },
+    { sec: 'top', xN: 718, x: 698, y: 944, z: 0.8 },
+    { sec: 1, xN: 718, x: 712, y: 935, z: 0.85 },
+    { sec: 'end', xN: 718, x: 725, y: 927, z: 0.9 },
   ],
 };

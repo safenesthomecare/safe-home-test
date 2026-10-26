@@ -100,7 +100,7 @@ function Torso({ outfit, top, id }) {
 // Props: pose, outfit (tee|scrubs|cardigan), hairStyle (short|bun|curly|wavy|long|bald), glasses, cane, elder, item (node drawn in the near hand, hand-local coordinates). walk = fixed stride pose. Nothing animates.
 export function Figure({
   x = 0, y = 0, s = 1, scale = 1, face = 1, skin = '#F6D3B3', hair = '#4A3427', top = '#14A89B', bottom = '#2B3A55', shoe = '#3B2F2A',
-  pose = 'stand', walk = false, bald = false, outfit = 'tee', hairStyle, glasses = false, cane = false, elder = false, item = null, lean,
+  pose = 'stand', flat = false, walk = false, bald = false, outfit = 'tee', hairStyle, glasses = false, cane = false, elder = false, item = null, lean,
 }) {
   const uid = `fg${useId().replace(/[^a-zA-Z0-9]/g, '')}`;
   const P0 = POSES[pose] || POSES.stand;
@@ -146,7 +146,7 @@ export function Figure({
     <g transform={`translate(${x} ${y}) scale(${face * s * scale} ${s * scale})`}>
       <defs>
         <linearGradient id={uid} x1="0" y1="0" x2="1" y2="0.4">
-          <stop offset="0" stopColor="#fff" stopOpacity=".26" /><stop offset=".45" stopColor="#fff" stopOpacity="0" /><stop offset="1" stopColor="#000" stopOpacity=".22" />
+          <stop offset="0" stopColor="#fff" stopOpacity={flat ? 0 : 0.26} /><stop offset=".45" stopColor="#fff" stopOpacity="0" /><stop offset="1" stopColor="#000" stopOpacity={flat ? 0 : 0.22} />
         </linearGradient>
       </defs>
       <ellipse cx="4" cy="2" rx="34" ry="5.5" fill="#000" opacity=".14" />
@@ -167,4 +167,19 @@ export function Figure({
       )}
     </g>
   );
+}
+
+// Story cast (SHOTS.md). Flat solid fills, no shade gradient. dusk = darker tones for the Contact scene.
+// PSW: blue scrubs, navy shoes, hair bun. Patient: orange cardigan, cream trousers, elder posture.
+export const CAST = {
+  psw: { top: '#0066B3', bottom: '#003B66', shoe: '#003B66', dusk: '#7FC1F5' },
+  patient: { top: '#BC5509', bottom: '#FFF9F2', shoe: '#7B4A1E', dusk: '#FFA24D' },
+};
+export function PSW({ dusk = false, ...p }) {
+  const c = CAST.psw;
+  return <Figure outfit="scrubs" hairStyle="bun" hair="#2B2220" flat top={dusk ? c.dusk : c.top} bottom={c.bottom} shoe={c.shoe} {...p} />;
+}
+export function Patient({ dusk = false, ...p }) {
+  const c = CAST.patient;
+  return <Figure outfit="cardigan" hairStyle="wavy" hair="#DADDE3" elder flat top={dusk ? c.dusk : c.top} bottom={dusk ? '#C9BFB2' : c.bottom} shoe={c.shoe} {...p} />;
 }

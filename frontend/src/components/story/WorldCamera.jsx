@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { flattenGradients } from '../../lib/flatten';
 import { buildTrack, sample, worldTransform, baseScale, fitZoom } from '../../lib/camera';
 
 // Renders a page's world (layered SVG) and moves a camera through it as the page scrolls.
@@ -11,6 +12,7 @@ export default function WorldCamera({ world, reduced }) {
   useEffect(() => {
     const st = stage.current; const wr = wrap.current;
     if (!st || !wr) return undefined;
+    flattenGradients(wr);
     let raf = 0; let track = []; let vw = 0; let vh = 0; let k = 1;
     // Cache the few moving elements once, and write to them directly. A custom property set on the stage would make the browser re-check every drawn element on each scroll step.
     const layers = Array.from(wr.querySelectorAll('.sw-layer')).map((el) => ({ el, d: parseFloat(el.style.getPropertyValue('--d')) }));

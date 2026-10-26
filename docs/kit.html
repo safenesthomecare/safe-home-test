@@ -14,23 +14,23 @@ figure img{display:block;width:100%;height:auto}figcaption{padding:10px 14px;fon
 table{border-collapse:collapse;width:100%;font-size:.9rem}td,th{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left}
 </style></head><body><main>
 <h1>SafeNest Story Art Kit</h1>
-<p>The drawn pieces behind the six story pages. Blue figures are the carer, orange the person cared for, warm window light is the accent. <a href="./">Back to the preview</a></p>
+<p>The drawn pieces behind the six story pages. Flat solid colours only. The carer wears blue scrubs, the person cared for an orange cardigan; warm window light is the accent. <a href="./">Back to the preview</a></p>
 
 <h2>Kit test sheets</h2>
 <p>Every piece drawn once, to check style and readability.</p>
 <figure><img src="kit/kit-outdoors.jpg" alt="Outdoor pieces: tree, nest, house, grass, flowers, fence, hills" loading="lazy"><figcaption>Outdoors: tree, twig nest, house, grass, flowers, fence, hills.</figcaption></figure>
 <figure><img src="kit/kit-indoors.jpg" alt="Indoor pieces: wallpaper, furniture, kitchen, lamps" loading="lazy"><figcaption>Indoors: wallpaper, rugs, furniture, kitchen, lamps.</figcaption></figure>
-<figure><img src="kit/kit-props.jpg" alt="Props and figures" loading="lazy"><figcaption>Props and figures.</figcaption></figure>
+<figure><img src="kit/kit-props.jpg" alt="The PSW and Patient figures in every pose" loading="lazy"><figcaption>Cast: the PSW (blue scrubs) and the Patient (orange cardigan) in each pose.</figcaption></figure>
 
 <h2>The six worlds</h2>
-<p>Desktop captures, one per page.</p>
+<p>Desktop captures of each page's opening shot (static frames; the page scrolls through a camera path).</p>
 <div class="grid">
-<figure><img src="kit/world-home.jpg" alt="Home world" loading="lazy"><figcaption>Home, 8:00 AM</figcaption></figure>
-<figure><img src="kit/world-about.jpg" alt="About world" loading="lazy"><figcaption>About, 9:30 AM</figcaption></figure>
-<figure><img src="kit/world-services.jpg" alt="Services world" loading="lazy"><figcaption>Services, 11:30 AM</figcaption></figure>
-<figure><img src="kit/world-faq.jpg" alt="FAQ world" loading="lazy"><figcaption>FAQ, 2:00 PM</figcaption></figure>
-<figure><img src="kit/world-testimonials.jpg" alt="Testimonials world" loading="lazy"><figcaption>Testimonials, 4:30 PM</figcaption></figure>
-<figure><img src="kit/world-contact.jpg" alt="Contact world" loading="lazy"><figcaption>Contact, 7:30 PM</figcaption></figure>
+<figure><img src="kit/world-home.jpg" alt="Home world" loading="lazy"><figcaption>Home</figcaption></figure>
+<figure><img src="kit/world-about.jpg" alt="About world" loading="lazy"><figcaption>About</figcaption></figure>
+<figure><img src="kit/world-services.jpg" alt="Services world" loading="lazy"><figcaption>Services</figcaption></figure>
+<figure><img src="kit/world-faq.jpg" alt="FAQ world" loading="lazy"><figcaption>FAQ</figcaption></figure>
+<figure><img src="kit/world-testimonials.jpg" alt="Testimonials world" loading="lazy"><figcaption>Testimonials</figcaption></figure>
+<figure><img src="kit/world-contact.jpg" alt="Contact world" loading="lazy"><figcaption>Contact</figcaption></figure>
 </div>
 
 <h2>Where things live</h2>
@@ -39,8 +39,10 @@ table{border-collapse:collapse;width:100%;font-size:.9rem}td,th{border-bottom:1p
 <tr><td><code>worlds/figure.jsx</code></td><td>Figure builder (see <code>FIGURE-STYLE.md</code>)</td></tr>
 <tr><td><code>worlds/outdoors.jsx</code>, <code>indoors.jsx</code></td><td>Environment pieces</td></tr>
 <tr><td><code>worlds/art.jsx</code></td><td>Shared drawing helpers</td></tr>
+<tr><td><code>worlds/light.jsx</code></td><td>Lighting kit: palettes, light shafts, dark foreground shapes</td></tr>
+<tr><td><code>lib/flatten.js</code></td><td>Flattens any remaining gradients at load</td></tr>
 <tr><td><code>worlds/home, about, services, living, contact.jsx</code></td><td>One drawn world per page</td></tr>
-<tr><td><code>tools/</code></td><td>Contrast audit, fps measure, element count, animation diagnostics</td></tr>
+<tr><td><code>tools/</code></td><td>World preview, contrast audit, fps measure, element count</td></tr>
 </table>
 <p>Budget and element counts: <code>KIT-BUDGET.md</code>. Progress notes: <code>Phase.*-CF-*.md</code>.</p>
 </main></body></html>

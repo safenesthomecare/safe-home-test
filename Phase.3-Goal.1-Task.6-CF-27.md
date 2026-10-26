@@ -1,0 +1,7 @@
+# CF-27: Phase 3.6 Contact world rebuilt (dusk)
+**Done:** `worlds/contact.jsx` re-laid to SHOTS.md #6. Flat sky in three bands (no gradient, no sun halo); darker dusk hills and ground (solid colours, tint overlay and glow circles removed); house kept as the main shape (`lit`, dark blue wall) with a hard-edged door light spill; both figures now use `dusk`; PSW starts beside the patient at the door and walks off left (offset -560). Tree and nest moved right (+330) so the pull-out ends with the nest in frame. Dark foreground (depth 1.3): steps and hedge in the bottom-left corner only. Keys: zoom 1.05 to 0.85 to 0.64. Panel side `right`.
+**Fixed on the way:** old Contact hills sat at y 880/940 and were hidden behind the ground; now y 420/480 like Home.
+**Not checked:** no preview render. `outdoors.jsx` and `lib/camera.js` are not in the updates zip, so `tools/preview-world.js` could not run. File was syntax-checked only. Parallax positions of sky bands, stars and foreground were calculated from the camera code, not seen.
+**Pending to eyeball (4.1):** nest visible at the end key; pair on the left-centre third at the first key; hedge about 7% of height at the start and about 15% at the end; phone key `xN` values (1960 / 1700); stars show only at the very top of the first frame.
+**Files:** worlds/contact.jsx, PLAN-CARRY-ON.md (status), this file.
+**Next:** Task 4.1 camera check in the real app.

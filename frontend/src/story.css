@@ -33,22 +33,12 @@ body.sn-story-on main.sn-content section { padding-top: clamp(1.5rem, 4vw, 3rem)
 body.sn-story-on main.sn-content .hero-section { padding-bottom: clamp(1.5rem, 4vw, 3rem); }
 
 /* Time badge */
-.sn-time-badge {
-  position: fixed; left: 12px; bottom: 12px; z-index: 800; margin: 0; display: inline-flex; align-items: center; gap: 8px;
-  padding: 6px 14px 6px 10px; border-radius: 999px; background: rgb(0, 38, 63); color: #fff; font-size: .8125rem; line-height: 1.6;
-  font-family: var(--sn-font-body); box-shadow: 0 4px 14px rgba(0, 38, 63, .25); border: 2px solid var(--accent, #1F5BA8); pointer-events: none; max-width: calc(100vw - 24px);
-}
-.sn-time-badge .sn-ai { background: #fff; border-radius: 50%; padding: 3px; }
-.sn-time-badge[data-compact] .sn-time-task { display: none; }
-.sn-time-badge strong { color: #FFC72C; font-weight: 800; }
 
 @media (prefers-reduced-motion: reduce) { .sn-story-back { animation: none; } }
 
 /* Sticky only when the figure has its own column (sticky inside a one-column grid overlaps the text below). */
 @media (min-width: 900px) { .sn-sticky-fig { position: sticky; top: 100px; } }
 
-/* Beat caption inside the time badge */
-.sn-time-task { transition: opacity 300ms; }
 
 /* ---- World camera (scroll timeline) ---- */
 .sw-stage { position: absolute; inset: 0; overflow: hidden; }

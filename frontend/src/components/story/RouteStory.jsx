@@ -1,18 +1,16 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import StoryScene, { SCENES } from './StoryScene';
-import ArtifactIcon from './ArtifactIcon';
 import WorldCamera from './WorldCamera';
 import { DEBUG_WORLD } from './worlds/debug';
 import { WORLDS } from './worlds';
 import { pageFor, tintAt } from '../../lib/pageStory';
-import { TONES } from '../../lib/storyTokens';
 
 // One site-wide story layer, driven by the current page.
 //   back   : the page's scene, parallax by scroll; moves through 3 beats (data-beat) as you scroll
 //   veil   : light cream wash that softens the scene a little more as you scroll
 //   wash   : time-of-day tint for this page
-// Everything here is decorative (aria-hidden) except the time badge, which names the current beat.
+// Everything here is decorative (aria-hidden).
 
 const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
 
@@ -37,7 +35,6 @@ export default function RouteStory() {
   const world = (typeof window !== 'undefined' && window.__SN_DEBUG_WORLD) ? DEBUG_WORLD : WORLDS[page.id];
   const reduced = useMedia('(prefers-reduced-motion: reduce)');
   const root = useRef(null);
-  const badge = useRef(null);
   const [beat, setBeat] = useState(0);
 
   // new page: restart at the first beat
@@ -64,7 +61,6 @@ export default function RouteStory() {
       const p = clamp(sy / max);
       const pp = reduced ? 0.5 : p;
       el.style.setProperty('--p', pp.toFixed(4));
-      if (badge.current) { if (sy > 40) badge.current.setAttribute('data-compact', ''); else badge.current.removeAttribute('data-compact'); }
       el.style.setProperty('--veil', (world ? 0 : reduced ? 0.55 : base + (0.6 - base) * clamp(sy / (vh * 0.7))).toFixed(3));
       el.style.setProperty('--tint', tintAt(clamp(page.day + (pp - 0.5) * 0.06)));
       let b = 0;
@@ -88,8 +84,6 @@ export default function RouteStory() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page.id, reduced, world]);
 
-  const tone = TONES[page.tone];
-  const bt = page.beats[Math.min(beat, page.beats.length - 1)];
   return (
     <>
       <div ref={root} className="sn-story" aria-hidden="true" data-page={page.id}>
@@ -101,10 +95,6 @@ export default function RouteStory() {
         <div className="sn-story-veil" />
         <div className="sn-story-wash" />
       </div>
-      <p ref={badge} className="sn-time-badge" style={{ '--accent': tone.fill }}>
-        <ArtifactIcon name="sun-badge" size={16} />
-        <span><strong>{bt.time}</strong><span className="sn-time-task"> · {bt.text}</span></span>
-      </p>
     </>
   );
 }

@@ -31,7 +31,7 @@ export const Sun = ({ x, y, r = 60, color = '#FFD66B' }) => (
 export { Tree, Nest, House, Hills, Grass, Flowers, SteppingStones, Fence } from './outdoors';
 
 // People now come from the figure builder (joint-angle poses, hair, outfits). Same props as before, plus outfit / hairStyle / glasses / cane / elder / item.
-export { Figure as Person } from './figure';
+export { Figure as Person, PSW, Patient } from './figure';
 
 // Interior pieces (wallpaper room shell, windows with curtains, wood furniture, kitchen, food, pill organiser, frames, lamps) live in indoors.jsx. Same props and footprints as the old flat ones.
 export { Wall, Win, Frame, Rug, Table, Chair, Sofa, Armchair, Bed, Counter, Cushion, Mug, Kettle, FruitBowl, Plate, Pillbox, Lamp, Plant, Clock, Books } from './indoors';

@@ -59,3 +59,19 @@ Same test, new version only (fps desktop / phone): About 3.7 -> 4.0 / 9.3 -> 12.
 ## Contrast audit (Task 3.3)
 Method: for each route, desktop and phone, 9 scroll points; text hidden, pixels behind each visible text box sampled (10th-percentile contrast vs text colour). Targets: 4.5 normal text, 3 large. Script: `tools/contrast-audit.py`; raw results `contrast-audit-results.json`.
 Result: new 86 flagged of 1790 checked; old flat version 88 of 1874. Nothing is flagged in the new version that is not also flagged in the old one, so the new art did not lower readability. Many flags are method noise (dark footer, mobile menu, filled buttons). Spots that look real but are unchanged from the old version: text crossing the soft fade at the edge of the cream panels (About, Testimonials, Contact, about 2.1:1 in the fade only), a few small labels. Panels are otherwise near-opaque and dark text reads clearly (checked by eye).
+
+## Cinematic rebuild (Task 5.3)
+Measured with `tools/count-worlds.jsx` (drawn elements and markup before the runtime flatten step), full CRA build, Chromium 1440x900.
+| World | Elements | KB | Gradients in source | Filters | vs Task 3.1 caps (500 / 125 KB; Services 900; 60 gradients) |
+|---|---|---|---|---|---|
+| Home | 289 | 100.0 | 18 | 0 | pass (was 384 / 112.0) |
+| About | 290 | 94.0 | 18 | 0 | pass (was 374 / 105.3) |
+| Services | 577 | 71.4 | 58 | 0 | pass (was 882 / 105.8); gradients 58 of 60 |
+| Testimonials | 219 | 27.4 | 24 | 0 | pass (was 493 / 59.8) |
+| FAQ | 202 | 24.9 | 21 | 0 | pass (was 408 / 49.0) |
+| Contact | 283 | 93.2 | 18 | 0 | pass (was 469 / 117.3) |
+Gradients in source are turned into flat colours when the page loads (`lib/flatten.js`), so none are drawn.
+Page JS: main bundle 138.8 kB gzip (was 138.4), CSS 13.3 kB gzip. DOM nodes on the page (whole page / inside the scene): Home 723 / 437, About 660 / 437, Services 1216 / 953, Testimonials 648 / 372, FAQ 612 / 342, Contact 666 / 427 (earlier rebuild: 777-1585 per page). Scroll fps not re-measured here (Task 5.4).
+
+## Scroll speed (Task 5.4)
+Same test as 3.2b (`tools/measure-fps.py`, 6 s scripted scroll, software rendering, no GPU), rebuilt version. fps desktop / phone: Home 17.7 / 42.0; About 18.0 / 33.7; Services 13.0 / 28.3; Testimonials 12.2 / 22.5; FAQ 13.7 / 25.5; Contact 20.2 / 35.8. Versus 3.2b (About 4.0 / 12.2, Services 3.3 / 10.8, Contact 3.7 / 11.8): about 4x faster on desktop, 2.5-3x on phone, and above the old flat version (desktop 8-11, phone 20-33) on most pages. Slowest: Testimonials and Services on desktop (DOM 1229 for Services). Only console error: an external font request blocked by the sandbox network. Real-GPU numbers will be higher.

@@ -1,10 +1,11 @@
-import { C, Sky, Wall, Win, Sofa, Armchair, Table, Mug, Frame, Lamp, Plant, Chair, Plate, Person, Rug, Cushion, Kettle, Books, Clock, FruitBowl, SKIN } from './art';
+import { C, Sky, Wall, Win, Sofa, Armchair, Table, Mug, Frame, Lamp, Plant, Chair, PSW, Patient, Rug, Cushion, Books, Clock, FruitBowl } from './art';
+import { TONES, LightShaft, SilLamp, SilPlant } from './light';
 
 // Testimonials 2:00 PM (tea in the living room) and FAQ 4:00 PM (care plan at the kitchen table). Both pull back from the group to the room.
 const W = 2200; const H = 1400; const F = 1060;
 
 export const TESTIMONIALS_WORLD = {
-  w: W, h: H, side: 'right',
+  w: W, h: H, side: 'left',
   layers: [
     { id: 'back', depth: 0.3, node: <Sky w={W} h={H} top="#FFF0D6" bot="#FFD9A8" id="ts-sky" /> },
     { id: 'room', depth: 1, node: (
@@ -15,22 +16,27 @@ export const TESTIMONIALS_WORLD = {
         <Clock x={760} y={420} r={40} />
         <Rug x={760} y={F + 78} w={820} h={50} color={C.teal} />
         <Lamp x={140} y={F} lit /><Plant x={1680} y={F} s={1.5} />
+        <LightShaft x={1060} y={690} w={240} h={420} skew={-420} color="#FFE9A8" o={0.55} />
         <Sofa x={560} y={F + 10} w={520} color={C.plum} />
-        <Cushion x={390} y={F - 56} color={C.orange} /><Cushion x={720} y={F - 56} color={C.rose} />
-        <Person x={460} y={F - 14} s={1.15} face={1} pose="sit" skin={SKIN.a} hair="#2B2220" top={C.teal} outfit="scrubs" hairStyle="bun" />
-        <Person x={610} y={F - 14} s={1.1} face={1} pose="sit" skin={SKIN.c} hair="#2B2220" top={C.orange} bottom="#3B4A63" hairStyle="curly" />
-        <Table x={900} y={F + 30} w={190} h={70} color={C.brownL} /><Mug x={860} y={F - 40} c={C.blue} /><Mug x={940} y={F - 40} c={C.orange} />
-        <Armchair x={1100} y={F + 10} face={-1} color={C.rose} />
-        <Person x={1090} y={F - 6} s={1.1} face={-1} pose="sit" skin={SKIN.b} hair="#DADDE3" top="#7A4A9E" bottom="#4A4A6A" outfit="cardigan" hairStyle="wavy" elder glasses />
-        <Person x={780} y={F + 70} s={0.62} face={1} skin={SKIN.a} hair="#4A3427" top={C.blue} bottom="#3B4A63" pose="wave" />
+        <Cushion x={400} y={F - 56} color={C.orange} />
+        <Patient x={650} y={F - 14} s={1.1} face={1} pose="sit" />
+        <Table x={850} y={F + 30} w={190} h={70} color={C.brownL} /><Mug x={810} y={F - 40} c={C.blue} /><Mug x={890} y={F - 40} c={C.orange} />
+        <Armchair x={1060} y={F + 10} face={-1} color={C.rose} />
+        <PSW x={1060} y={F - 14} s={1.15} face={-1} pose="sit" />
         <Books x={1600} y={F - 4} s={0.9} />
+      </g>
+    ) },
+    // Foreground (depth 1.3): dark lamp and plant in the bottom-right corner. Nothing important in it.
+    { id: 'fg', depth: 1.3, node: (
+      <g>
+        <SilPlant x={2090} y={1620} h={300} color={TONES.tea.dark} /><SilLamp x={1975} y={1620} h={380} color={TONES.tea.dark} />
       </g>
     ) },
   ],
   keys: [
-    { sec: 'top', x: 1180, xN: 1100, y: 850, z: 1 },
-    { sec: 2, x: 1210, xN: 1100, y: 830, z: 0.9 },
-    { sec: 'end', x: 1230, xN: 1100, y: 820, z: 0.85 },
+    { sec: 'top', x: 1150, xN: 1150, y: 905, z: 0.92 },
+    { sec: 2, x: 1150, xN: 1150, y: 905, z: 0.88 },
+    { sec: 'end', x: 1150, xN: 1150, y: 905, z: 0.85 },
   ],
 };
 
@@ -61,17 +67,21 @@ export const FAQ_WORLD = {
         <Mug x={1030} y={F - 100} c={C.rose} />
         <FruitBowl x={1100} y={F - 100} s={0.8} />
         <Books x={720} y={F - 100} s={0.8} />
-        <Chair x={640} y={F + 40} /><Chair x={1160} y={F + 40} face={-1} />
-        <Person x={640} y={F + 40} s={1.2} face={1} pose="sit" skin={SKIN.a} hair="#3A2A22" top={C.orange} bottom="#3B4A63" hairStyle="wavy" />
-        <Person x={1160} y={F + 40} s={1.2} face={-1} pose="sit" skin={SKIN.b} hair="#2B2220" top={C.teal} outfit="scrubs" hairStyle="bun" />
-        <Person x={900} y={F - 20} s={1.1} face={1} pose="stand" skin={SKIN.b} hair="#DADDE3" top="#7A4A9E" bottom="#4A4A6A" outfit="cardigan" hairStyle="wavy" elder glasses />
+        <LightShaft x={120} y={670} w={280} h={430} skew={380} color="#FFE2A8" o={0.5} />
+        <Chair x={1160} y={F + 40} face={-1} />
+        <Patient x={1160} y={F + 40} s={1.2} face={-1} pose="sit" />
+        <PSW x={400} y={F + 130} s={1.7} face={1} pose="point" />
         <Lamp x={1470} y={F} lit /><Plant x={130} y={F} s={1.4} />
       </g>
     ) },
+    // Foreground (depth 1.3): the near table edge as a dark band across the bottom of the frame. Nothing important in it.
+    { id: 'fg', depth: 1.3, node: (
+      <g><rect x="700" y="1560" width="1900" height="260" fill={TONES.afternoon.dark} /></g>
+    ) },
   ],
   keys: [
-    { sec: 'top', x: 1120, xN: 1200, y: 850, z: 1 },
-    { sec: 2, x: 1100, xN: 1200, y: 830, z: 0.9 },
-    { sec: 'end', x: 1090, xN: 1200, y: 820, z: 0.85 },
+    { sec: 'top', x: 1263, xN: 1330, y: 1000, z: 0.95 },
+    { sec: 2, x: 1263, xN: 1330, y: 1000, z: 0.92 },
+    { sec: 'end', x: 1263, xN: 1330, y: 1000, z: 0.9 },
   ],
 };

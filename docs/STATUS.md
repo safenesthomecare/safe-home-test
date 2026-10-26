@@ -35,3 +35,6 @@ Detailed per-task logs: `docs/carry-forward/` (Phase.X-Goal.X-Task.X-CF-N.md).
 - Story v6 (CF-38): scroll-camera worlds on all 6 pages, glass panels, kit v5.
 - Story art v7 (CF-2 to CF-14, kit Phases 0-3): figure builder, outdoor and indoor kit, all six worlds redrawn, element caps, speed fixes, contrast audit rerun.
 - Phase 4 (CF-15): docs/ rebuilt, `docs/kit.html` art kit page, README updated. See `PLAN.md`.
+
+- Cinematic rebuild (CF-17 to CF-35, rebuild Phases 0-6): shot bible (`SHOTS.md`), two-person cast (`PSW`, `Patient`, flat), lighting kit (`worlds/light.jsx`), all six worlds re-keyed, runtime gradient flattening (`lib/flatten.js`). Verified in a real build: contrast audit clean for scene text, every world under its element cap, main JS 138.5 kB gzip, scroll about 3-4x faster than before (desktop 12-20 fps, phone 22-42, software rendering, see `KIT-BUDGET.md`). Time pill and all visible time labels removed. `docs/` rebuilt, kit page and `FIGURE-STYLE.md` updated.
+- Open for visual review: phone footer covers the last frame of each page; Contact opening frame has a large dark bottom-left shape; phone Contact frames not judged. Cleanup (optional): `lib/pageStory.js` still holds unused time data; `StoryPinned`/`DayClock` are unused; `Tree`/`House`/`Hills` still contain gradient code.
