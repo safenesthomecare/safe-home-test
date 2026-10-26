@@ -1,4 +1,4 @@
-import { C, Cloud, Hills, House, PSW, Patient, Tree, Grass, Flowers, SteppingStones, Fence } from './art';
+import { C, Cloud, Skyline, LakeHaze, SuburbRow, HydroPole, House, PSW, Patient, Tree, Grass, Flowers, SteppingStones, Fence } from './art';
 import { TONES, SilBush } from './light';
 
 // About: 9:30 AM (SHOTS.md #2). Eye-level medium-wide with a slow push-in. PSW on the left third walks up to the doorway; the patient waits on the right third, facing her. Door interior is one flat warm shape; dark hedge fills the bottom-left corner.
@@ -9,7 +9,8 @@ export const ABOUT_WORLD = {
   w: W, h: H, side: 'right',
   layers: [
     { id: 'sky', depth: 0.12, node: (<g><rect x="-3000" y="-1500" width={W + 6000} height={H + 3000} fill="#E6F1FA" /><rect x="-3000" y="600" width={W + 6000} height="1500" fill="#F6E6D0" /><Cloud x={400} y={-120} s={1.3} /><Cloud x={1350} y={-190} s={1} o={0.85} /></g>) },
-    { id: 'far', depth: 0.4, node: (<g transform="translate(-1200 0)"><Hills y={440} w={W + 2400} color="#C4E2B4" amp={50} phase={1} trees={12} /><Hills y={500} w={W + 2400} color="#9CCB8C" amp={40} phase={3} trees={9} /></g>) },
+    { id: 'far', depth: 0.3, node: (<g transform="translate(-1200 0)"><LakeHaze y={470} /><Skyline y={560} w={4200} tint="#A3B8CB" lit="#C9D8E5" tx={0.6} seed={5} /><rect x="0" y="562" width="4200" height="600" fill="#BFD3C2" /></g>) },
+    { id: 'mid', depth: 0.6, node: (<g transform="translate(-1200 0)"><SuburbRow x0={0} x1={4200} y={760} s={0.55} seed={7} haze={0.35} /><SuburbRow x0={100} x1={4200} y={880} s={0.8} seed={12} haze={0.12} /><HydroPole x={1000} y={940} h={260} span={900} /><HydroPole x={1900} y={940} h={260} span={900} /><HydroPole x={2800} y={940} h={260} span={900} /></g>) },
     { id: 'plane', depth: 1, node: (
       <g>
         <rect x="-300" y={G} width={W + 600} height="600" fill="#6DB35F" />

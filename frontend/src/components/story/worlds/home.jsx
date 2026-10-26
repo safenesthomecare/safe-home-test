@@ -1,5 +1,5 @@
 import { asset } from '../../../lib/asset';
-import { C, Cloud, Hills, Tree, House, PSW, Patient, Grass, Flowers, SteppingStones, Fence } from './art';
+import { C, Cloud, Skyline, LakeHaze, SuburbRow, HydroPole, Maple, Tree, House, PSW, Patient, Grass, Flowers, SteppingStones, Fence } from './art';
 import { TONES, SilBush } from './light';
 
 // Home: 8:00 AM (SHOTS.md #1). Opens low, looking up at the nest on the tree branch (nest at the golden point, tree on the left third, empty sky top-right, dark leaf mass as the left foreground).
@@ -11,7 +11,8 @@ export const HOME_WORLD = {
   w: W, h: H, heroFade: true, side: 'right',
   layers: [
     { id: 'sky', depth: 0.12, node: (<g><rect x="-3000" y="-1500" width={W + 6000} height={H + 3000} fill={T.key} /><rect x="-3000" y="700" width={W + 6000} height="1500" fill="#F6E6D0" /><Cloud x={-40} y={-95} s={1.2} /><Cloud x={100} y={-195} s={1} o={0.8} /></g>) },
-    { id: 'far', depth: 0.45, node: (<g transform="translate(-1200 0)"><Hills y={420} w={W + 2400} color="#C4E2B4" amp={70} phase={0.6} trees={14} /><Hills y={480} w={W + 2400} color="#9CCB8C" amp={50} phase={2} trees={10} /></g>) },
+    { id: 'far', depth: 0.3, node: (<g transform="translate(-1200 0)"><LakeHaze y={470} /><Skyline y={560} w={5200} tint="#9DB4C8" lit="#C3D4E2" tx={0.66} /><rect x="0" y="562" width="5200" height="600" fill="#B9D0C0" /></g>) },
+    { id: 'mid', depth: 0.6, node: (<g transform="translate(-1200 0)"><SuburbRow x0={0} x1={5200} y={760} s={0.55} seed={4} haze={0.35} /><SuburbRow x0={100} x1={5200} y={880} s={0.8} seed={9} haze={0.12} /><HydroPole x={900} y={940} h={260} span={900} /><HydroPole x={1800} y={940} h={260} span={900} /><HydroPole x={2700} y={940} h={260} span={900} /><HydroPole x={3600} y={940} h={260} span={900} /></g>) },
     { id: 'plane', depth: 1, node: (
       <g>
         <rect x="-400" y={G} width={W + 800} height={H - G + 400} fill="#6DB35F" />

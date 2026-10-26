@@ -35,3 +35,6 @@ export { Figure as Person, PSW, Patient } from './figure';
 
 // Interior pieces (wallpaper room shell, windows with curtains, wood furniture, kitchen, food, pill organiser, frames, lamps) live in indoors.jsx. Same props and footprints as the old flat ones.
 export { Wall, Win, Frame, Rug, Table, Chair, Sofa, Armchair, Bed, Counter, Cushion, Mug, Kettle, FruitBowl, Plate, Pillbox, Lamp, Plant, Clock, Books } from './indoors';
+
+// GTA backdrop kit: Toronto skyline (CN Tower etc.), lake haze, brick semis, bungalows, maples, hydro poles.
+export { Skyline, LakeHaze, Maple, Semi, Bungalow, HydroPole, SuburbRow } from './gta';

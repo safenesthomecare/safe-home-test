@@ -1,5 +1,5 @@
 import { asset } from '../../../lib/asset';
-import { C, Hills, Tree, House, PSW, Patient, Grass, Flowers, SteppingStones, Fence } from './art';
+import { C, Skyline, LakeHaze, SuburbRow, HydroPole, Tree, House, PSW, Patient, Grass, Flowers, SteppingStones, Fence } from './art';
 import { TONES, SilBush, LightShaft } from './light';
 
 // Contact: 7:30 PM (SHOTS.md #6). Low-angle wide on the house at dusk, then the camera pulls out to the nest.
@@ -18,7 +18,8 @@ export const CONTACT_WORLD = {
       <rect x="-3000" y="60" width={W + 6000} height="2200" fill="#F7A55B" />
       {[[-800, -620], [-450, -520], [-100, -640], [300, -560], [700, -610], [-600, -380], [1000, -450], [1250, -340], [150, -420]].map(([sx, sy]) => <circle key={`${sx}${sy}`} cx={sx} cy={sy} r="3" fill="#fff" />)}
     </g>) },
-    { id: 'far', depth: 0.45, node: (<g transform="translate(-1200 0)"><Hills y={420} w={W + 2400} color="#4A5F8C" amp={70} phase={0.3} trees={12} /><Hills y={480} w={W + 2400} color="#2F4F5F" amp={50} phase={2.2} trees={9} /></g>) },
+    { id: 'far', depth: 0.3, node: (<g transform="translate(-1200 0)"><LakeHaze y={470} color="#E58F6A" /><Skyline y={560} w={5700} tint="#2A3F66" lit="#5A6F9A" tx={0.64} seed={3} glow="#FFC83D" /><rect x="0" y="562" width="5700" height="600" fill="#2F4F5F" /></g>) },
+    { id: 'mid', depth: 0.6, node: (<g transform="translate(-1200 0)"><SuburbRow x0={0} x1={5700} y={760} s={0.55} seed={4} haze={0.3} hazeColor="#B4527F" lawn="#2F5A47" dim={0.45} lit="#FFC83D" /><SuburbRow x0={100} x1={5700} y={880} s={0.8} seed={9} haze={0.1} hazeColor="#B4527F" lawn="#2E5A45" dim={0.35} lit="#FFC83D" /><HydroPole x={900} y={940} h={260} span={900} color="#1E2B3A" wire="#0B2038" /><HydroPole x={1800} y={940} h={260} span={900} color="#1E2B3A" wire="#0B2038" /><HydroPole x={2700} y={940} h={260} span={900} color="#1E2B3A" wire="#0B2038" /><HydroPole x={3600} y={940} h={260} span={900} color="#1E2B3A" wire="#0B2038" /></g>) },
     { id: 'plane', depth: 1, node: (
       <g>
         <rect x="-400" y={G} width={W + 800} height="800" fill="#2E5A45" />
