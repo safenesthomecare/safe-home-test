@@ -29,8 +29,8 @@ export const SERVICES_WORLD = {
         <Table x={500} y={F + 4} w={130} h={96} color={C.brownL} /><Lamp x={500} y={F - 92} lit />
         <Books x={455} y={F - 92} />
         <LightShaft x={540} y={680} w={200} h={400} skew={300} color={T.key} o={0.4} />
-        <PSW x={593} y={F + 40} s={1.35} face={1} pose="hold" />
-        <Patient x={967} y={F + 40} s={1.25} face={-1} pose="stand" />
+        <PSW view="f34" x={593} y={F + 40} s={1.35} face={1} pose="hold" />
+        <Patient view="f34" x={967} y={F + 40} s={1.25} face={-1} pose="stand" />
         {/* 10:30 kitchen: medication reminder */}
         <Rug x={1900} y={F + 70} w={500} h={46} color={C.teal} />
         <Win x={1700} y={400} w={240} h={260} sky="#D6ECFA" sun />
@@ -39,8 +39,8 @@ export const SERVICES_WORLD = {
         <FruitBowl x={1990} y={F - 176} s={0.9} />
         <Table x={1330} y={F + 4} w={130} h={96} color={C.brownL} /><Lamp x={1330} y={F - 92} lit={false} />
         <LightShaft x={1580} y={660} w={240} h={420} skew={300} color={T.key} o={0.4} />
-        <PSW x={1753} y={F + 40} s={1.35} face={1} pose="hold" />
-        <Patient x={2127} y={F + 40} s={1.25} face={-1} pose="stand" />
+        <PSW view="f34" x={1753} y={F + 40} s={1.35} face={1} pose="hold" />
+        <Patient view="f34" x={2127} y={F + 40} s={1.25} face={-1} pose="stand" />
         <Frame x={2050} y={430} c={C.orange} />
         {/* 12:15 dining: lunch */}
         <Rug x={3000} y={F + 80} w={640} h={46} color={C.blue} />
@@ -49,8 +49,8 @@ export const SERVICES_WORLD = {
         <Plate x={2900} y={F - 108} /><Plate x={3100} y={F - 108} /><Mug x={3000} y={F - 108} c={C.blue} />
         <LightShaft x={2410} y={660} w={220} h={420} skew={300} color={T.key} o={0.4} />
         <Chair x={2800} y={F + 20} /><Chair x={3200} y={F + 20} face={-1} />
-        <Patient x={2800} y={F + 20} s={1.2} face={1} pose="sit" />
-        <PSW x={3200} y={F + 20} s={1.2} face={-1} pose="sit" />
+        <Patient view="f34" x={2800} y={F + 20} s={1.2} face={1} pose="sit" />
+        <PSW view="f34" x={3200} y={F + 20} s={1.2} face={-1} pose="sit" />
         <Plant x={3440} y={F} s={1.4} /><Frame x={3300} y={420} c={C.teal} />
         <Win x={3900} y={400} w={240} h={280} sky="#CFE8F7" sun /><LightShaft x={3780} y={680} w={240} h={400} skew={300} color={T.key} o={0.4} /><Frame x={4200} y={430} c={C.orange} />
       </g>

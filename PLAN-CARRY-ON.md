@@ -19,7 +19,7 @@ Flat solid colours only (no gradients, blur, soft shadows). Pair on the two vert
 | | 3.5 FAQ | done (CF-26) |
 | | 3.6 Contact (dusk) | done (CF-27); not yet previewed |
 | 4 Camera | 4.1 re-check each world's scroll path in the real app | static check done (CF-28); live check folds into 5.1 |
-| 5 Verify | 5.1 screenshots in the running app: done (CF-29); 5.2 contrast audit: done (CF-30); 5.3 element and byte budget: done (CF-31); 5.4 scroll speed: done (CF-32); 6.1 done (CF-33, time pill + time labels removed); 6.2 done (CF-34); 6.3 done (CF-35); plan complete |
+| 5 Verify | 5.1 screenshots in the running app: done (CF-29); 5.2 contrast audit: done (CF-30); 5.3 element and byte budget: done (CF-31); 5.4 scroll speed: done (CF-32); 6.1 done (CF-33, time pill + time labels removed); 6.2 done (CF-34); 6.3 done (CF-35); plan complete; figure rework A+B done (CF-36), Phase C done (CF-37), next Phase D |
 | 6 Ship | 6.1 rebuild docs/; 6.2 kit page and FIGURE-STYLE.md; 6.3 progress note and updates zip | pending |
 
 ## Remaining tasks

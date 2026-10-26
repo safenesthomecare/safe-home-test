@@ -1,11 +1,14 @@
 # Figure style (flat silhouette)
 - Source: `figure.jsx`; `Person` in `art.jsx` points to it, so every world uses it.
 - Cast: use the presets `PSW` (blue scrubs `#0066B3`, navy trousers/shoes `#003B66`, hair bun) and `Patient` (orange cardigan `#BC5509`, cream trousers, grey wavy hair, elder posture). Both set `flat`. Pass `dusk` for the Contact palette (PSW top `#7FC1F5`, Patient top `#FFA24D`). Colours live in `CAST`.
+- Build (v2): a small 3D skeleton (X lateral, Y up, Z forward) projected to flat shapes. Body width, limb foreshortening, hip height and draw order come from the view, not from fixed layers. The camera sits slightly above the figure, so nearer parts drop a little.
+- Views: `view` = `front`, `f34`, `side` (default), `b34`, `back`. `face` (1 / -1) still mirrors left/right. `look` turns the head relative to the body (degrees). Back views: hair covers the whole back of the head (bun on top, long hair falling over the back); front views: fringe and side locks; no hair on the face side.
+- Poses are 3D: each arm has upper arm and forearm angles [forward, outward]; each leg has thigh and shin. Pelvis height is solved so the lower foot stands on the floor; the trailing foot in `walk` is lifted and pitched. `walk` also counter-rotates shoulders against hips. Elder: forward lean, head ahead of the shoulders, soft knees.
 - Look: faceless. One smooth head shape plus hair, flat solid fills, no outlines, no blur, no gradients. `flat` switches off the one soft shade a plain `Figure` still draws; presets always use it. Back limbs are a shade darker for depth. Mitten hands, single-shape shoes.
 - Scene rules (see `SHOTS.md`): pair on the two vertical thirds, eyes near the upper third line, three tones per scene. Only the PSW and Patient appear; other cast was removed.
 - No animation: poses and the `walk` stride are fixed shapes. Nothing loops.
 - Props: x, y, s, face, skin, hair, top, bottom, shoe, pose, walk, outfit, hairStyle, cane, elder, item, lean, flat. `glasses` is accepted but draws nothing.
-- Poses: stand, walk, wave, open, hold, give, point, sit. Add a pose by adding one line (arm and leg angles) to POSES. All eight are shown on the kit page.
+- Poses: stand, walk, wave, open, hold, give, point, sit. Add a pose by adding one entry to POSES (a/b arms, la/lb legs, lean, tw, hipZ). All eight are shown from all five views on the kit page.
 - Outfits: tee, scrubs, cardigan. Hair: short, bun, curly, wavy, long, bald.
 - Origin is the feet; sitting figures keep feet on the floor.
 - Gradients elsewhere (`Tree`, `House`, `Hills`) are flattened at runtime by `lib/flatten.js`.

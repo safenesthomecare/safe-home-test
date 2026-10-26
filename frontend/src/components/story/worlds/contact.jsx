@@ -34,9 +34,9 @@ export const CONTACT_WORLD = {
         {/* hard-edged spill of door light on the path */}
         <LightShaft x={1950} y={G + 8} w={90} h={90} skew={-70} color={T.key} o={0.7} />
         <Flowers x={1960} y={G + 22} w={360} n={9} seed={35} />
-        <Patient x={1990} y={G + 6} s={0.9} face={-1} pose="wave" dusk />
+        <Patient view="f34" x={1990} y={G + 6} s={0.9} face={-1} pose="wave" dusk />
         <g className="sw-walk" style={{ '--wx': -560, '--wy': 8 }}>
-          <PSW x={1840} y={G + 66} s={0.82} face={-1} pose="stand" walk dusk />
+          <PSW view="b34" x={1840} y={G + 66} s={0.82} face={-1} pose="stand" walk dusk />
           <rect x="1810" y={G - 6} width="32" height="38" rx="8" fill={C.navy} />
         </g>
       </g>

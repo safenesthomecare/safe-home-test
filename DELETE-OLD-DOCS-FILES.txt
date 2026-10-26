@@ -19,3 +19,4 @@ docs/static/js/main.a4824425.js.map
 docs/static/js/main.ec8e09b7.js.LICENSE.txt
 docs/static/js/main.c8941bdf.js.LICENSE.txt
 docs/static/js/main.c8941bdf.js
+docs/kit/kit-props.jpg (replaced by kit-cast-psw.jpg and kit-cast-patient.jpg)

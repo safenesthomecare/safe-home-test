@@ -26,10 +26,10 @@ export const HOME_WORLD = {
         <House x={1960} y={G + 6} s={1.25} lit />
         <Flowers x={1960} y={G + 22} w={360} n={10} seed={12} />
         <g className="sw-walk" style={{ '--wx': 440, '--wy': 0 }}>
-          <PSW x={1230} y={G + 62} s={0.82} pose="stand" walk />
+          <PSW view="b34" x={1230} y={G + 62} s={0.82} pose="stand" walk />
           <rect x="1198" y={G - 64} width="34" height="40" rx="8" fill={C.navy} transform="translate(-8 4)" />
         </g>
-        <Patient x={2150} y={G + 8} s={0.8} face={-1} pose="wave" />
+        <Patient view="f34" x={2150} y={G + 8} s={0.8} face={-1} pose="wave" />
       </g>
     ) },
     // Foreground (depth 1.3, nothing important in it): leaf mass on the left third at the opening shot, hedge band across the bottom at the closing shot.

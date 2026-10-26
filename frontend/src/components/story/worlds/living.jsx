@@ -19,10 +19,10 @@ export const TESTIMONIALS_WORLD = {
         <LightShaft x={1060} y={690} w={240} h={420} skew={-420} color="#FFE9A8" o={0.55} />
         <Sofa x={560} y={F + 10} w={520} color={C.plum} />
         <Cushion x={400} y={F - 56} color={C.orange} />
-        <Patient x={650} y={F - 14} s={1.1} face={1} pose="sit" />
+        <Patient view="f34" x={650} y={F - 14} s={1.1} face={1} pose="sit" />
         <Table x={850} y={F + 30} w={190} h={70} color={C.brownL} /><Mug x={810} y={F - 40} c={C.blue} /><Mug x={890} y={F - 40} c={C.orange} />
         <Armchair x={1060} y={F + 10} face={-1} color={C.rose} />
-        <PSW x={1060} y={F - 14} s={1.15} face={-1} pose="sit" />
+        <PSW view="f34" x={1060} y={F - 14} s={1.15} face={-1} pose="sit" />
         <Books x={1600} y={F - 4} s={0.9} />
       </g>
     ) },
@@ -69,8 +69,8 @@ export const FAQ_WORLD = {
         <Books x={720} y={F - 100} s={0.8} />
         <LightShaft x={120} y={670} w={280} h={430} skew={380} color="#FFE2A8" o={0.5} />
         <Chair x={1160} y={F + 40} face={-1} />
-        <Patient x={1160} y={F + 40} s={1.2} face={-1} pose="sit" />
-        <PSW x={400} y={F + 130} s={1.7} face={1} pose="point" />
+        <Patient view="f34" x={1160} y={F + 40} s={1.2} face={-1} pose="sit" />
+        <PSW view="b34" x={400} y={F + 130} s={1.7} face={1} pose="point" />
         <Lamp x={1470} y={F} lit /><Plant x={130} y={F} s={1.4} />
       </g>
     ) },

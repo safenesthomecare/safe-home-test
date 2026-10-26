@@ -25,9 +25,9 @@ export const ABOUT_WORLD = {
         <Grass x={300} y={G + 80} w={500} seed={3} /><Grass x={1500} y={G + 84} w={500} seed={8} />
         <Flowers x={330} y={G + 120} w={420} n={10} seed={5} /><Flowers x={1480} y={G + 130} w={420} n={10} seed={15} />
         <rect x="878" y="706" width="104" height="276" rx="16" fill={T.accent} />
-        <Patient x={936} y={G} s={1.15} face={-1} pose="open" />
+        <Patient view="f34" x={936} y={G} s={1.15} face={-1} pose="open" />
         <g className="sw-walk" style={{ '--wx': 170, '--wy': -50 }}>
-          <PSW x={330} y={G + 110} s={1.15} pose="stand" walk />
+          <PSW view="b34" x={330} y={G + 110} s={1.15} pose="stand" walk />
           <rect x="292" y={G - 20} width="36" height="44" rx="8" fill={C.navy} />
         </g>
       </g>
