@@ -1,0 +1,6 @@
+# CF-14: Phase 3, Task 3.3 (contrast, sky, Contact camera) done
+Done: (1) Contrast audit on all 6 routes, desktop and phone, old vs new (tables in `KIT-BUDGET.md`): no new failures vs the flat version. (2) Contact end camera fixed: world widened to 3300 and made taller (1600), keys re-aimed (top x2262 z.9, sec 1 x2300, end x2385 y1040, phone end yN 800), so the house and waving pair stay visible above the footer at the end of the page. The tree and grass on the right moved, no new pieces; 469 elements, 117.3 KB. (3) Sky: `Sky` in `art.jsx` takes an optional `mid` colour; Contact dusk now navy to plum-rose to amber instead of muddy grey. Other worlds unchanged.
+Checked in the real app build (compiles): screenshots `contact-app-desktop.png`, `contact-app-phone.png`.
+Pending: the soft panel-edge fade could be made more opaque if you want those few lines at 4.5:1 (existing behaviour, not caused by the art); sky review of the other five worlds by eye (no change made); real-phone speed check; Phase 4 package (kit page, README, rebuilt `docs/`, updates-only zip).
+Files: worlds/art.jsx, worlds/contact.jsx, KIT-BUDGET.md, tools/contrast-audit.py, contrast-audit-results.json, contact-app-desktop.png, contact-app-phone.png.
+Next: Phase 4. Attach the latest cumulative zip, Story UI Kit and Brand Guide HTML.

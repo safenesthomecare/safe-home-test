@@ -12,6 +12,15 @@ export default function WorldCamera({ world, reduced }) {
     const st = stage.current; const wr = wrap.current;
     if (!st || !wr) return undefined;
     let raf = 0; let track = []; let vw = 0; let vh = 0; let k = 1;
+    // Cache the few moving elements once, and write to them directly. A custom property set on the stage would make the browser re-check every drawn element on each scroll step.
+    const layers = Array.from(wr.querySelectorAll('.sw-layer')).map((el) => ({ el, d: parseFloat(el.style.getPropertyValue('--d')) }));
+    const walkers = Array.from(wr.querySelectorAll('.sw-walk')).map((el) => ({ el, wx: parseFloat(el.style.getPropertyValue('--wx')) || 0, wy: parseFloat(el.style.getPropertyValue('--wy')) || 0 }));
+    // Limbs and waving hands only animate while they are on screen.
+    let io;
+    if (typeof IntersectionObserver !== 'undefined') {
+      io = new IntersectionObserver((es) => es.forEach((e) => { e.target.style.animationPlayState = e.isIntersecting ? 'running' : 'paused'; }), { rootMargin: '120px' });
+      wr.querySelectorAll('.sw-leg, .sw-wave').forEach((el) => { el.style.animationPlayState = 'paused'; io.observe(el); });
+    }
     const measure = () => {
       vw = window.innerWidth; vh = window.innerHeight; k = baseScale(vw, vh);
       const secs = Array.from(document.querySelectorAll('main.sn-content section')).map((el) => {
@@ -34,10 +43,10 @@ export default function WorldCamera({ world, reduced }) {
       const t = worldTransform(cam, k, vw, vh);
       wr.style.width = `${world.w * k}px`; wr.style.height = `${world.h * k}px`;
       wr.style.transform = `translate3d(${t.tx.toFixed(1)}px, ${t.ty.toFixed(1)}px, 0) scale(${t.scale.toFixed(4)})`;
-      st.style.setProperty('--cx', cam.x.toFixed(1)); st.style.setProperty('--cy', cam.y.toFixed(1));
+      layers.forEach(({ el, d }) => { el.style.translate = `${(cam.x * (1 - d)).toFixed(1)}px ${(cam.y * (1 - d)).toFixed(1)}px`; });
       const maxS = Math.max(1, document.documentElement.scrollHeight - vh);
       const p = reduced ? 0 : Math.min(1, sy / maxS);
-      st.style.setProperty('--p', p.toFixed(4));
+      walkers.forEach(({ el, wx, wy }) => { el.style.transform = `translate(${(p * wx).toFixed(1)}px, ${(p * wy).toFixed(1)}px)`; });
       if (world.heroFade) document.documentElement.style.setProperty('--hero-t', (reduced ? 0 : Math.min(1, sy / (vh * 0.55))).toFixed(3));
       st.setAttribute('data-cam', `${cam.x.toFixed(0)},${cam.y.toFixed(0)},${cam.z.toFixed(2)}`);
     };
@@ -52,7 +61,7 @@ export default function WorldCamera({ world, reduced }) {
     const t = setTimeout(remeasure, 150);
     return () => {
       window.removeEventListener('scroll', queue); window.removeEventListener('resize', remeasure);
-      if (ro) ro.disconnect(); clearTimeout(t); if (raf) cancelAnimationFrame(raf);
+      if (ro) ro.disconnect(); if (io) io.disconnect(); clearTimeout(t); if (raf) cancelAnimationFrame(raf);
       document.documentElement.style.removeProperty('--hero-t'); delete document.body.dataset.snSide;
     };
   }, [world, reduced]);

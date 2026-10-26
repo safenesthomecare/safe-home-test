@@ -66,7 +66,12 @@ body.sn-story-on main.sn-content section.hero-nest { align-items: flex-start; pa
 .sw-leg { transform-box: fill-box; transform-origin: 50% 0; animation: sw-step .8s ease-in-out infinite alternate; }
 .sw-leg-b { animation-direction: alternate-reverse; }
 @keyframes sw-step { from { transform: rotate(-20deg); } to { transform: rotate(20deg); } }
-@media (prefers-reduced-motion: reduce) { .sw-leg { animation: none; } .hero-logo-text { transform: none; opacity: 1; } }
+.sw-arm { animation-name: sw-arm; }
+@keyframes sw-arm { from { transform: rotate(-14deg); } to { transform: rotate(14deg); } }
+/* Raised hand waves: the whole near arm swings gently about the shoulder (origin set inline in figure.jsx). */
+.sw-wave { animation: sw-wave 1.1s ease-in-out infinite alternate; }
+@keyframes sw-wave { from { transform: rotate(-9deg); } to { transform: rotate(11deg); } }
+@media (prefers-reduced-motion: reduce) { .sw-wave { animation: none; } .sw-leg { animation: none; } .hero-logo-text { transform: none; opacity: 1; } }
 
 /* Panels take one side of the screen; the world shows (and its characters stand) on the other. Phones: full width. */
 @media (min-width: 1000px) {
