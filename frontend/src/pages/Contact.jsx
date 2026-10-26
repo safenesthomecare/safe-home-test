@@ -8,7 +8,6 @@ import { asset } from '../lib/asset';
 import { toast } from 'sonner';
 import axios from 'axios';
 import { DEMO } from '../lib/demo';
-import { StoryProp } from '../components/story/props';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -66,7 +65,6 @@ const Contact = () => {
         textAlign: 'center'
       }}>
         <div className="container" style={{ maxWidth: '900px', margin: '0 auto' }}>
-          <StoryProp name="knocker" side="r" inset />
           <PageMark />
           <h1 className="heading-hero" style={{ marginBottom: '1rem' }}>Get in Touch</h1>
           <p className="body-large" style={{ color: '#353535' }}>
@@ -78,7 +76,6 @@ const Contact = () => {
       {/* Contact Form & Info */}
       <section style={{ padding: '5rem 1.2rem', background: 'var(--bg-page)' }}>
         <div className="container" style={{ maxWidth: '1200px', margin: '0 auto' }}>
-          <StoryProp name="lamp" side="l" />
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))',

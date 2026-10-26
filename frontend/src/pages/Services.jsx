@@ -3,14 +3,11 @@ import { Link } from 'react-router-dom';
 import { Check } from 'lucide-react';
 import ArtifactIcon from '../components/story/ArtifactIcon';
 import PageMark from '../components/story/PageMark';
-import StoryScene, { SCENES } from '../components/story/StoryScene';
 import { services, additionalServices } from '../data/mock';
-import { StoryProp } from '../components/story/props';
 
 const Services = () => {
   const serviceIcon = { 1: 'personal-care', 2: 'companionship', 3: 'medication', 4: 'walks', 5: 'services' };
   // Each core service is illustrated by its moment from "A Day at Home".
-  const sceneFor = { 1: 'care', 2: 'breakfast', 3: 'medication', 4: 'walk', 5: 'tea' };
 
   return (
     <div style={{ paddingTop: '80px' }}>
@@ -21,7 +18,6 @@ const Services = () => {
         textAlign: 'center'
       }}>
         <div className="container" style={{ maxWidth: '900px', margin: '0 auto' }}>
-          <StoryProp name="bowl" side="r" inset />
           <PageMark />
           <h1 className="heading-hero" style={{ marginBottom: '1rem' }}>Our Care Services</h1>
           <p className="body-large" style={{ color: '#353535' }}>
@@ -33,14 +29,12 @@ const Services = () => {
       {/* Main Services */}
       <section style={{ padding: '5rem 1.2rem', background: 'var(--bg-page)' }}>
         <div className="container">
-          <StoryProp name="pillbox" side="r" />
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))',
             gap: '2rem'
           }}>
             {services.map((service) => {
-              const scene = SCENES.find((sc) => sc.id === sceneFor[service.id]);
               return (
                 <div key={service.id} style={{
                   background: 'white',
@@ -53,11 +47,6 @@ const Services = () => {
                   flexDirection: 'column',
                   overflow: 'hidden'
                 }} className="hover-lift">
-                  {scene && (
-                    <div style={{ position: 'relative', margin: '-2rem -2rem 1.4rem' }}>
-                      <StoryScene scene={scene} />
-                    </div>
-                  )}
                   <ArtifactIcon name={serviceIcon[service.id]} size={30} tile style={{ marginBottom: '1.2rem', alignSelf: 'flex-start' }} />
                   
                   <h3 className="heading-2" style={{ marginBottom: '1rem', color: '#232323' }}>
@@ -128,7 +117,6 @@ const Services = () => {
       {/* How It Works */}
       <section style={{ padding: '5rem 1.2rem', background: 'white' }}>
         <div className="container" style={{ maxWidth: '1000px', margin: '0 auto' }}>
-          <StoryProp name="plant" side="l" />
           <h2 className="heading-1" style={{ textAlign: 'center', marginBottom: '3rem' }}>
             How It Works
           </h2>

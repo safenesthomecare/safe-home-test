@@ -5,7 +5,6 @@ import TwigDivider from '../components/TwigDivider';
 import ArtifactIcon from '../components/story/ArtifactIcon';
 import { companyInfo, services, whyChooseUs, stats } from '../data/mock';
 import { asset } from '../lib/asset';
-import { StoryProp } from '../components/story/props';
 
 const Home = () => {
   const serviceIcon = { 1: 'personal-care', 2: 'companionship', 3: 'medication', 4: 'walks', 5: 'services' };
@@ -13,16 +12,9 @@ const Home = () => {
   return (
     <div style={{ paddingTop: '80px' }}>
       {/* Hero Section */}
-      <section className="hero-section">
+      <section className="hero-section hero-nest">
         <div className="hero-content">
-          <StoryProp name="shoes" side="l" inset />
-          <img
-            src={asset('/brand/symbol-animated.svg')}
-            alt="SafeNest Home Care: two people sheltering a home in a nest"
-            className="hero-symbol"
-            width="320"
-            height="256"
-          />
+          <div className="hero-logo-text">
           <div className="hero-announcement">
             <span>{companyInfo.experience}</span>
           </div>
@@ -34,6 +26,7 @@ const Home = () => {
           <p className="hero-tagline" style={{ marginBottom: '1.2rem' }}>
             {companyInfo.tagline}
           </p>
+          </div>
           
           <p className="body-large" style={{ maxWidth: '700px', margin: '0 auto 2rem', color: '#353535' }}>
             Providing compassionate, reliable, and personalized home care that supports independence, dignity, and peace of mind across Ontario.
@@ -113,7 +106,6 @@ const Home = () => {
       {/* Why Choose Us */}
       <section style={{ padding: '5rem 1.2rem', background: 'var(--bg-section)' }}>
         <div className="container">
-          <StoryProp name="plant" side="r" />
           <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
             <h2 className="heading-1" style={{ marginBottom: '0.5rem' }}>Why Choose SafeNest?</h2>
             <p className="body-medium" style={{ color: '#353535', maxWidth: '600px', margin: '0 auto' }}>
@@ -152,7 +144,6 @@ const Home = () => {
         textAlign: 'center'
       }}>
         <div className="container" style={{ maxWidth: '800px' }}>
-          <StoryProp name="lamp" side="l" />
           <h2 className="heading-1" style={{ marginBottom: '1rem' }}>
             Ready to Experience Care That Feels Like Family?
           </h2>

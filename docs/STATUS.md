@@ -30,3 +30,6 @@ Detailed per-task logs: `docs/carry-forward/` (Phase.X-Goal.X-Task.X-CF-N.md).
 
 - Story v4 (CF-34): beats, illustrated props, feathered panels.
 - Story v5 (CF-35): page-to-page time-lapse, walking caregiver in header, pointer tilt (desktop), tap-a-prop captions, reduced-motion pass.
+- Story v6 Phase 0 (CF-36): old foreground and cursor logic removed.
+- Story v6 Phase 1 (CF-37): scroll camera engine (WorldCamera), debug world.
+- Story v6 (CF-38): scroll-camera worlds on all 6 pages, glass panels, kit v5.

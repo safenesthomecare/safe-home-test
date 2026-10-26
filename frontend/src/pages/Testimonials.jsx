@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { Star } from 'lucide-react';
 import { testimonials } from '../data/mock';
 import PageMark from '../components/story/PageMark';
-import { StoryProp } from '../components/story/props';
 
 const Testimonials = () => {
   return (
@@ -15,7 +14,6 @@ const Testimonials = () => {
         textAlign: 'center'
       }}>
         <div className="container" style={{ maxWidth: '900px', margin: '0 auto' }}>
-          <StoryProp name="photoframe" side="r" inset />
           <PageMark />
           <h1 className="heading-hero" style={{ marginBottom: '1rem' }}>What Our Families Say</h1>
           <p className="body-large" style={{ color: '#353535' }}>
@@ -27,7 +25,6 @@ const Testimonials = () => {
       {/* Testimonials Grid */}
       <section style={{ padding: '5rem 1.2rem', background: 'var(--bg-page)' }}>
         <div className="container">
-          <StoryProp name="note" side="l" />
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))',
@@ -100,7 +97,6 @@ const Testimonials = () => {
       {/* Trust Indicators */}
       <section style={{ padding: '5rem 1.2rem', background: 'var(--bg-section)' }}>
         <div className="container" style={{ maxWidth: '1000px', margin: '0 auto' }}>
-          <StoryProp name="teacup" side="r" />
           <h2 className="heading-1" style={{ textAlign: 'center', marginBottom: '3rem' }}>
             Why Families Trust SafeNest
           </h2>

@@ -2,6 +2,8 @@
 
 > **v2 (site-wide story).** The scenes below are no longer one pinned "day" on Home. Each page now owns one moment: Home 8:00 AM (knock), About 9:30 (morning), Services 11:30 (care), FAQ 2:00 PM (walk), Testimonials 4:30 (tea), Contact 7:30 PM (window). The breakfast and medication scenes appear as Services card headers. The lighting arc (section 1.3) is used per page: a page's `day` value sets its tint and scrolling only drifts it slightly. Pinned scrolling, the day clock and "Skip the story" were removed. See README "The story, on every page" and `frontend/src/lib/pageStory.js`.
 
+> **v3 (scroll-camera worlds).** Supersedes v2 timings: Home 8:00 AM (nest, field, house), About 8:20 (welcomed at the door), Services 9:00 / 10:30 / 12:15 (bedroom, kitchen, dining), Testimonials 2:00 PM (tea), FAQ 4:00 PM (kitchen table), Contact 5:30 PM (dusk handover, back to the nest). No foreground props; each page is one drawn world a camera moves through. See `docs/carry-forward/Phase.5-Goal.1-Task.1-CF-38.md`.
+
 
 Defaults: illustrated people, 8 scenes, public site only.
 

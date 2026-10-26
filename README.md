@@ -26,7 +26,7 @@ Pages use `#/` addresses (for example `.../#/services`); that is normal for this
 - Not used here (kept so promoting to live is easy): `backend/`, `api/`, `vercel.json`, `.env.example`.
 
 ## The story, on every page
-Each page is one moment of a caregiver's day. A site-wide layer (`frontend/src/components/story/RouteStory.jsx`) shows the page's illustrated scene behind the content, moves its layers at different speeds as you scroll, tints the light for that time, and drifts small icons past the edges. Each page scrolls through 3 beats (the badge and the scene change together). Text sits on soft, feathered cream panels so it stays readable (4.5:1) over any scene. Moving between pages plays a short time-lapse (colour sweep, clock ticks to the new time); a small caregiver walks along the header's day rail; on desktop the scene leans slightly with the mouse; tap a perched prop to read its caption. All motion stops with reduced-motion settings.
+Each page is one drawn world and one moment of a caregiver's working day. Scrolling moves a camera through that world (up, down, sideways, in and out), and the text panels sit on one side of the screen as see-through glass so the characters stay visible on the other side. Home opens on the logo's nest in a tree (the logo text shrinks and fades as the camera pulls back); the caregiver then walks to the house, is welcomed at the door (About), goes room by room (Services), has tea with the family (Testimonials), sits at the kitchen table (FAQ), and hands over at dusk (Contact), ending back at the nest. A small badge shows the time and task. Motion stops with reduced-motion settings; nothing reacts to the cursor.
 
 | Page | Time | Task | Scene |
 |---|---|---|---|
@@ -41,15 +41,15 @@ Each page is one moment of a caregiver's day. A site-wide layer (`frontend/src/c
 |---|---|
 | `frontend/src/lib/pageStory.js` | Page map (time, task, scene, icons, colour code), light tint, pending-asset lists |
 | `frontend/src/lib/storyTokens.js` + `src/story.css` | Logo colour codes and layer styles |
-| `frontend/src/components/story/RouteStory.jsx` | The scroll engine, backdrop, props and time badge |
+| `frontend/src/components/story/RouteStory.jsx` | Backdrop switch, time badge, light tint |
+| `frontend/src/components/story/WorldCamera.jsx` + `src/lib/camera.js` | Scroll camera: keys tied to page sections, eased between stops |
+| `frontend/src/components/story/worlds/` | One drawn world per page (`home.jsx`, `about.jsx`, `services.jsx`, `living.jsx`, `contact.jsx`) and the drawing kit (`art.jsx`) |
 | `frontend/src/components/story/ArtifactIcon.jsx` | The icon set (from the SafeNest Story UI Kit artifact) |
-| `frontend/src/components/story/DayPath.jsx` | Header day rail with the walking caregiver |
-| `frontend/src/components/story/props.jsx` | 12 illustrated props + `StoryProp` (perch on a panel edge, animates when scrolled into view) |
 | `frontend/src/components/story/StoryScene.jsx` | Scene registry and renderer (Shadow DOM) |
 | `frontend/public/story/scene-N-*.svg` | The 8 layered illustrations |
 | `docs/PENDING-ASSETS.md` | Icons and props not drawn yet |
 
-Rules worth keeping: `body { overflow-x: clip }` (not hidden); a sticky figure only when it has its own column (`.sn-sticky-fig`, 900px up); scene contract is viewBox 0 0 1200 700 with `<g id="layer-*" data-depth="0.2-1">` layers and CSS animation inside the SVG. To add a page: add an entry to `PAGES` in `pageStory.js`.
+Rules worth keeping: `body { overflow-x: clip }` (not hidden); to add a world, draw layers in `worlds/` and add camera keys `{ sec, x, y, z }` (`sec` = which page section is centred; `yN` for phones) and a `side` (`left` or `right`) for the panels; old scene contract is viewBox 0 0 1200 700 with `<g id="layer-*" data-depth="0.2-1">` layers and CSS animation inside the SVG. To add a page: add an entry to `PAGES` in `pageStory.js`.
 
 ## Local dev
 - Preview mode (no server needed): `cd frontend && yarn && REACT_APP_DEMO=true yarn start` (Windows PowerShell: `$env:REACT_APP_DEMO="true"; yarn start`).

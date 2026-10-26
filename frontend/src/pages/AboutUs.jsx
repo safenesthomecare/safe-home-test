@@ -1,8 +1,6 @@
 import React from 'react';
 import { companyInfo } from '../data/mock';
 import PageMark from '../components/story/PageMark';
-import StoryScene, { SCENES } from '../components/story/StoryScene';
-import { StoryProp } from '../components/story/props';
 
 const AboutUs = () => {
   return (
@@ -14,7 +12,6 @@ const AboutUs = () => {
         textAlign: 'center'
       }}>
         <div className="container" style={{ maxWidth: '900px', margin: '0 auto' }}>
-          <StoryProp name="teacup" side="r" inset />
           <PageMark />
           <h1 className="heading-hero" style={{ marginBottom: '1rem' }}>About SafeNest Home Care</h1>
           <p className="body-large" style={{ color: '#353535' }}>
@@ -53,7 +50,7 @@ const AboutUs = () => {
               borderRadius: '0.75rem',
               borderLeft: '4px solid #FF8C42'
             }}>
-              <h2 className="heading-2" style={{ color: 'var(--sn-ember)', marginBottom: '1rem' }}>
+              <h2 className="heading-2" style={{ color: '#AD4A07', marginBottom: '1rem' }}>
                 Our Vision
               </h2>
               <p className="body-medium" style={{ lineHeight: '1.8', color: '#353535' }}>
@@ -67,20 +64,11 @@ const AboutUs = () => {
       {/* Our Story */}
       <section style={{ padding: '5rem 1.2rem', background: 'var(--bg-section)' }}>
         <div className="container" style={{ maxWidth: '1100px', margin: '0 auto' }}>
-          <StoryProp name="kettle" side="r" />
           <h2 className="heading-1" style={{ textAlign: 'center', marginBottom: '2rem' }}>
             Our Story
           </h2>
           
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 340px), 1fr))', gap: '2.5rem', alignItems: 'start' }}>
-          <figure className="sn-sticky-fig" style={{ margin: 0 }}>
-            <div style={{ borderRadius: 'var(--sn-radius-lg)', overflow: 'hidden', boxShadow: 'var(--sn-shadow-md)' }}>
-              <StoryScene scene={SCENES.find((sc) => sc.id === 'breakfast')} />
-            </div>
-            <figcaption style={{ fontFamily: 'var(--sn-font-script)', fontSize: '1.5rem', color: 'var(--sn-ember)', textAlign: 'center', marginTop: '0.75rem' }}>
-              Tea, stories, and someone who listens.
-            </figcaption>
-          </figure>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
             <p className="body-medium" style={{ lineHeight: '1.8', color: '#353535' }}>
               SafeNest Home Care was founded with a simple yet profound belief: that every person deserves to age gracefully and live independently in the comfort of their own home, surrounded by care that feels like family.
@@ -105,7 +93,6 @@ const AboutUs = () => {
       {/* Our Values */}
       <section style={{ padding: '5rem 1.2rem', background: 'white' }}>
         <div className="container">
-          <StoryProp name="plant" side="l" />
           <h2 className="heading-1" style={{ textAlign: 'center', marginBottom: '3rem' }}>
             Our Core Values
           </h2>
