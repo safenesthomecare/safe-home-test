@@ -31,16 +31,18 @@ export default function WorldCamera({ world, reduced }) {
       const sy = window.scrollY || 0;
       const cam = { ...(reduced ? { x: (vw < 700 && world.keys[0].xN != null) ? world.keys[0].xN : world.keys[0].x, y: vw < 700 ? (world.keys[0].yN != null ? world.keys[0].yN : world.keys[0].y - 190) : world.keys[0].y, z: world.keys[0].z == null ? 1 : world.keys[0].z } : sample(track, sy)) };
       cam.z *= fitZoom(vw);
-      // keep the camera window inside the world (no empty edges when zoomed out)
-      const hw = vw / (2 * k * cam.z); const hh = vh / (2 * k * cam.z);
-      const cx = world.w > 2 * hw ? Math.min(world.w - hw, Math.max(hw, cam.x)) : world.w / 2;
-      const cy = world.h > 2 * hh ? Math.min(world.h - hh, Math.max(hh, cam.y)) : world.h / 2;
-      cam.x = cx; cam.y = cy;
-      const t = worldTransform(cam, k, vw, vh);
-      // while the footer slides up over the bottom of the frame, lift the scene by half of that so it stays centred in what is still visible
+      // the frame is exactly the space between the header and the footer: when the footer scrolls in, the frame gets shorter and the scene scales down with it, so nothing is cut off
       const ft = document.querySelector('footer');
       const clip = ft ? Math.max(0, window.innerHeight - ft.getBoundingClientRect().top) : 0;
-      t.ty -= Math.min(clip, vh) / 2;
+      const fh = Math.max(120, vh - clip);
+      cam.z *= fh / vh;
+      // keep the camera window inside the world (no empty edges when zoomed out)
+      const hw = vw / (2 * k * cam.z); const hh = fh / (2 * k * cam.z);
+      const wr2 = world.w + (world.padR || 0);
+      const cx = wr2 > 2 * hw ? Math.min(wr2 - hw, Math.max(hw, cam.x)) : wr2 / 2;
+      const cy = world.h > 2 * hh ? Math.min(world.h - hh, Math.max(hh, cam.y)) : world.h / 2;
+      cam.x = cx; cam.y = cy;
+      const t = worldTransform(cam, k, vw, fh);
       wr.style.width = `${world.w * k}px`; wr.style.height = `${world.h * k}px`;
       wr.style.transform = `translate3d(${t.tx.toFixed(1)}px, ${t.ty.toFixed(1)}px, 0) scale(${t.scale.toFixed(4)})`;
       layers.forEach(({ el, d }) => { el.style.translate = `${(cam.x * (1 - d)).toFixed(1)}px ${(cam.y * (1 - d)).toFixed(1)}px`; });

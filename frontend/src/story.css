@@ -4,8 +4,8 @@
   --sc-faq: #0369A1; --sc-contact: #AD4A07; --sc-care: #0E7490; --sc-meds: #6B46C1;
   --sc-meals: #92580A; --sc-walks: #2F7D1E; --sc-companion: #7A5B00; --sc-safety: #00263F;
 }
-/* Sits between the fixed header and the footer: top = header height; the footer edge clips it only once it scrolls into view. */
-.sn-story { position: fixed; inset: var(--sn-hdr, 80px) 0 0 0; clip-path: inset(0 0 var(--sn-clip, 0px) 0); pointer-events: none; z-index: 0; --p: .5; --veil: .62; --tint: transparent; overflow: hidden; }
+/* Sits between the fixed header and the footer: top = header height; the footer edge shrinks it (the scene is scaled to fit, never cropped) once it scrolls into view. */
+.sn-story { position: fixed; inset: var(--sn-hdr, 80px) 0 var(--sn-clip, 0px) 0; pointer-events: none; z-index: 0; --p: .5; --veil: .62; --tint: transparent; overflow: hidden; }
 .sn-story > * { position: absolute; inset: 0; }
 .sn-story-back { animation: sn-story-in 700ms ease-out both; }
 .sn-story-veil { background: var(--sn-cream, #FFF9F2); opacity: var(--veil); }
