@@ -1,22 +1,36 @@
-Optional cleanup: delete these old build files from docs/ (unused):
-docs/static/css/main.234839df.css.map
-docs/static/css/main.9c28cf4e.css.map
+Delete these old build files from your repo (replaced by main.60e44328.js / main.8577527d.css):
+docs/static/css/main.17a1a305.css
 docs/static/css/main.234839df.css
+docs/static/css/main.234839df.css.map
 docs/static/css/main.39eec427.css
 docs/static/css/main.39eec427.css.map
+docs/static/css/main.3a27a684.css
+docs/static/css/main.3a27a684.css.map
+docs/static/css/main.7390f434.css
+docs/static/css/main.7390f434.css.map
 docs/static/css/main.8d076225.css
 docs/static/css/main.8d076225.css.map
 docs/static/css/main.9c28cf4e.css
-docs/static/js/main.ec8e09b7.js.map
-docs/static/js/main.a4824425.js.LICENSE.txt
+docs/static/css/main.9c28cf4e.css.map
+docs/static/js/main.2fb40c00.js
+docs/static/js/main.2fb40c00.js.LICENSE.txt
+docs/static/js/main.2fb40c00.js.map
+docs/static/js/main.9fb4b594.js
 docs/static/js/main.9fb4b594.js.LICENSE.txt
 docs/static/js/main.9fb4b594.js.map
 docs/static/js/main.a4824425.js
-docs/static/js/main.9fb4b594.js
-docs/static/js/main.c8941bdf.js.map
-docs/static/js/main.ec8e09b7.js
+docs/static/js/main.a4824425.js.LICENSE.txt
 docs/static/js/main.a4824425.js.map
-docs/static/js/main.ec8e09b7.js.LICENSE.txt
-docs/static/js/main.c8941bdf.js.LICENSE.txt
 docs/static/js/main.c8941bdf.js
-docs/kit/kit-props.jpg (replaced by kit-cast-psw.jpg and kit-cast-patient.jpg)
+docs/static/js/main.c8941bdf.js.LICENSE.txt
+docs/static/js/main.c8941bdf.js.map
+docs/static/js/main.c9c934c9.js
+docs/static/js/main.c9c934c9.js.LICENSE.txt
+docs/static/js/main.ec8e09b7.js
+docs/static/js/main.ec8e09b7.js.LICENSE.txt
+docs/static/js/main.ec8e09b7.js.map
+docs/static/js/main.f3024328.js
+docs/static/js/main.f3024328.js.LICENSE.txt
+docs/static/js/main.f3024328.js.map
+docs/static/js/main.f3ea6130.js
+docs/static/js/main.f3ea6130.js.LICENSE.txt
