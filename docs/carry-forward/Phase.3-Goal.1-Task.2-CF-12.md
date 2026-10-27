@@ -1,6 +1,0 @@
-# Carry-forward 12
-Done: frontend/src/components/story/StoryPinned.jsx — pinned scroll section (80vh scroll per scene, sticky 100svh stage). rAF-throttled passive scroll -> continuous `pos` (0..7). Mounts only the 2 neighbouring scenes, crossfades (full opacity within 0.5 of centre), per-scene parallax progress = 0.5 + d/2. `--day` set on the section; tint overlay lerps the bible's 5-stop lighting arc (exports tintAt, dayAt). Caption (clock, headline, text, service) + aria-live announcer. prefers-reduced-motion => static stacked captioned cards (no pin/tint/parallax).
-Pending: wire into Home.jsx (Phase 4); day-clock + scene index UI + scene-to-scene dots (Goal 3.3); Chrome scroll-timeline CSS path vs this JS path decision (JS is the universal path now); QA on real phones (Phase 6).
-Decisions: JS scroll listener (not GSAP) — light, works in every browser; CSS scroll-timeline can replace later if wanted.
-Next: Phase 3 Task 3 — DayClock.jsx (clock face + scene index dots, driven by pos/--day).
-Known issue (tested at 390x780): portrait phones crop scenes heavily (slice) — e.g. scene 1 caregiver half off-screen. Fix next: per-scene focal x (SCENES[].focus) + cap stage height ~70svh on portrait.

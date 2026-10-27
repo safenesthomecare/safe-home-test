@@ -1,3 +1,0 @@
-# DEMO/TEST SITE: do not index. Replace with the live robots.txt when promoting to live.
-User-agent: *
-Disallow: /

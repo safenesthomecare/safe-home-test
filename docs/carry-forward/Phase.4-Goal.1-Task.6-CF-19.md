@@ -1,7 +1,0 @@
-# Carry-forward 19 (Phase 4 complete)
-Done: FAQ.jsx. Accordion rebuilt for accessibility + warmth: each question is a real <button> inside an <h2> with aria-expanded/aria-controls; answers are role=region with aria-labelledby and visibility:hidden when closed (no tab-stops or screen-reader reading of hidden answers). Warm look: cream background + orange left bar when open, script question numbers (ember), brand tokens. "Still Have Questions?" section now headed by the lit-window scene. Uses existing .faq-item class (ScrollReveal still applies).
-Tested (harness bundling real FAQ.jsx): keyboard Enter toggles, only the open answer is visible, one-open-at-a-time kept, no console errors.
-FLAG for owner: FAQ states caregivers are "certified" and "undergo thorough background checks" and mentions 24/7 care — keep only if accurate.
-Phase 4 summary: Home (story), Services (scene cards), Testimonials (notes), Contact (knock flow), About (story + contrast fixes), FAQ (accessible accordion). Header/Footer untouched.
-Pending: Phase 6 QA — (a) pause offscreen scene loops with IntersectionObserver in StoryScene, (b) asset budget check (all 8 SVGs well under 1.5MB; confirm sizes), (c) real-device/speed pass, (d) caption contrast over bright scenes, (e) keyboard/focus order incl. DayClock, (f) full `yarn start`/build check; Phase 5 optional sound toggle + haptics.
-Next: Phase 6 Task 1 — StoryScene IntersectionObserver (pause loops off-screen) + asset size check. Single file + a command.

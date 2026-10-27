@@ -1,4 +1,0 @@
-# Carry-forward 26 (demo repo, Phases 2 + 3 of 3)
-Done: README.md rewritten for the demo: banner ("test copy, never attach live domains"), demo deploy steps (Vercel *.vercel.app only, no live domains/DNS, test DB, blank CONTACT_TO_EMAIL), test checklist (story, reduced motion, 360/768px, all pages, contact form, Lighthouse, content to confirm), and a "Promote to live" checklist (remove the 3 no-index items, set live env, content/claims, license decision, domains/DNS, post-launch checks). Story-system and local-dev sections kept; the old live-domain Deploy section and the Domain-naming table were removed from this demo README (still in git history of the live repo).
-Packaged: full repository zip delivered.
-Pending (owner): create/push `safe-home-test`, deploy to Vercel test URL, run the test checklist, then follow "Promote to live".
