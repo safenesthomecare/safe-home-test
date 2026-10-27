@@ -38,3 +38,6 @@ export { Wall, Win, Frame, Rug, Table, Chair, Sofa, Armchair, Bed, Counter, Cush
 
 // GTA backdrop kit: Toronto skyline (CN Tower etc.), lake haze, brick semis, bungalows, maples, hydro poles.
 export { Skyline, LakeHaze, Maple, Semi, Bungalow, HydroPole, SuburbRow } from './gta';
+export { Hydrant, Mailbox, BusStop, Townhouses, Street, NearStreet } from './gta-street';
+export { BrickColonial } from './brick-house';
+export { FrontWalk, Driveway, GardenBed, SideFence, Neighbour, Woodlot, NearStreetProps } from './gta-street';

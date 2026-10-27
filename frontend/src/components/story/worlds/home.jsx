@@ -1,5 +1,5 @@
 import { asset } from '../../../lib/asset';
-import { C, Cloud, Skyline, LakeHaze, SuburbRow, HydroPole, Maple, Tree, House, PSW, Patient, Grass, Flowers, SteppingStones, Fence } from './art';
+import { C, Cloud, Skyline, LakeHaze, SuburbRow, NearStreet, Woodlot, Neighbour, SideFence, FrontWalk, Driveway, GardenBed, BrickColonial, Tree, PSW, Patient } from './art';
 import { TONES, SilBush } from './light';
 
 // Home: 8:00 AM (SHOTS.md #1). Opens low, looking up at the nest on the tree branch (nest at the golden point, tree on the left third, empty sky top-right, dark leaf mass as the left foreground).
@@ -11,26 +11,29 @@ export const HOME_WORLD = {
   w: W, h: H, heroFade: true, side: 'right',
   layers: [
     { id: 'sky', depth: 0.12, node: (<g><rect x="-3000" y="-1500" width={W + 6000} height={H + 3000} fill={T.key} /><rect x="-3000" y="700" width={W + 6000} height="1500" fill="#F6E6D0" /><Cloud x={-40} y={-95} s={1.2} /><Cloud x={100} y={-195} s={1} o={0.8} /></g>) },
-    { id: 'far', depth: 0.3, node: (<g transform="translate(-1200 0)"><LakeHaze y={470} /><Skyline y={560} w={5200} tint="#9DB4C8" lit="#C3D4E2" tx={0.66} /><rect x="0" y="562" width="5200" height="600" fill="#B9D0C0" /></g>) },
-    { id: 'mid', depth: 0.6, node: (<g transform="translate(-1200 0)"><SuburbRow x0={0} x1={5200} y={760} s={0.55} seed={4} haze={0.35} /><SuburbRow x0={100} x1={5200} y={880} s={0.8} seed={9} haze={0.12} /><HydroPole x={900} y={940} h={260} span={900} /><HydroPole x={1800} y={940} h={260} span={900} /><HydroPole x={2700} y={940} h={260} span={900} /><HydroPole x={3600} y={940} h={260} span={900} /></g>) },
+    { id: 'far', depth: 0.3, node: (<g transform="translate(-1200 0)"><LakeHaze y={470} /><Skyline y={560} w={5200} tint="#9DB4C8" lit="#C3D4E2" tx={0.417} /><rect x="0" y="562" width="5200" height="600" fill="#B9D0C0" /></g>) },
+    { id: 'mid', depth: 0.6, node: (<g transform="translate(-1200 0)"><SuburbRow x0={0} x1={5200} y={720} s={0.5} seed={4} haze={0.35} /><SuburbRow x0={100} x1={5200} y={850} s={0.75} seed={9} haze={0.12} /></g>) },
     { id: 'plane', depth: 1, node: (
       <g>
         <rect x="-400" y={G} width={W + 800} height={H - G + 400} fill="#6DB35F" />
-        <path d={`M980 ${G + 4} C1200 ${G + 30} 1500 ${G + 2} 1840 ${G + 6} L1880 ${G + 6} L1900 ${G + 70} C1500 ${G + 90} 1150 ${G + 120} 900 ${G + 90}Z`} fill="#E9D3A8" />
-        <SteppingStones x={1390} y={G + 52} w={900} n={9} seed={4} />
-        <Grass x={300} y={G + 8} w={600} seed={2} /><Grass x={1100} y={G + 118} w={500} seed={5} h={26} /><Grass x={2260} y={G + 10} w={300} seed={7} />
-        <Flowers x={420} y={G + 74} w={520} n={14} seed={3} /><Flowers x={1560} y={G + 128} w={560} n={12} seed={9} />
+        <NearStreet x0={-400} x1={W + 400} G={G} off={170} />
+        <Woodlot x={1380} y={G - 120} w={520} seed={8} h={470} dark="#2A5E36" light="#4F9D4A" /><Woodlot x={2660} y={G - 110} w={700} seed={4} h={330} />
         <Tree x={760} y={G + 20} s={1.5} />
         <image href={asset('/brand/symbol.svg')} x="950" y="236" width="360" height="288" />
-        <Tree x={2310} y={G + 14} s={0.8} />
-        <Fence x={1560} y={G + 12} w={320} h={70} />
-        <House x={1960} y={G + 6} s={1.25} lit />
-        <Flowers x={1960} y={G + 22} w={360} n={10} seed={12} />
-        <g className="sw-walk" style={{ '--wx': 440, '--wy': 0 }}>
-          <PSW view="b34" x={1230} y={G + 62} s={0.82} pose="stand" walk />
-          <rect x="1198" y={G - 64} width="34" height="40" rx="8" fill={C.navy} transform="translate(-8 4)" />
+        <Neighbour x={1610} y={G + 6} w={420} side={-1} kind="siding" />
+        <SideFence x={1664} y={G + 6} w={90} h={120} lattice />
+        <Neighbour x={2560} y={G + 6} w={420} side={1} kind="brick" />
+        <SideFence x={2510} y={G + 6} w={90} h={120} lattice />
+        <FrontWalk x={1960} y={G + 18} y2={G + 170} w1={110} w2={190} />
+        <Driveway x={2316} y={G + 6} y2={G + 232} w1={140} w2={260} />
+        <BrickColonial x={1960} y={G + 6} s={1.25} />
+        <GardenBed x={1790} y={G + 28} w={190} seed={1} cedar={false} />
+        <GardenBed x={2134} y={G + 28} w={170} seed={2} />
+        <g className="sw-walk" style={{ '--wx': 480, '--wy': -80 }}>
+          <PSW view="b34" x={1480} y={G + 190} s={0.82} pose="stand" walk />
+          <rect x="1448" y={G + 64} width="34" height="40" rx="8" fill={C.navy} transform="translate(-8 4)" />
         </g>
-        <Patient view="f34" x={2150} y={G + 8} s={0.8} face={-1} pose="wave" />
+        <Patient view="f34" x={2050} y={G + 24} s={0.8} face={-1} pose="wave" />
       </g>
     ) },
     // Foreground (depth 1.3, nothing important in it): leaf mass on the left third at the opening shot, hedge band across the bottom at the closing shot.
@@ -48,6 +51,6 @@ export const HOME_WORLD = {
     { sec: 1, x: 900, y: 790, z: 0.64 },
     { sec: 2, x: 1263, y: 800, z: 0.64 },
     { sec: 3, x: 1610, xN: 1800, y: 800, z: 0.8 },
-    { sec: 'end', x: 1920, y: 1049, yN: 1020, z: 0.8 },
+    { sec: 'end', x: 1920, y: 865, yN: 840, z: 1 },
   ],
 };

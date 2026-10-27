@@ -1,3 +1,4 @@
+import { Townhouses, Street } from './gta-street';
 // Greater Toronto Area backdrop kit: skyline silhouette (CN Tower, Rogers Centre, bank towers), lake haze, and urban-residential pieces (brick semis, bungalows, hydro poles, maples).
 // Same conventions as art.jsx: world units, (x, y) is the bottom centre. Decorative only.
 const rnd = (seed) => { let s = seed * 9301 + 49297; return () => { s = (s * 9301 + 49297) % 233280; return s / 233280; }; };
@@ -72,6 +73,8 @@ export const Semi = ({ x, y, s = 1, brick = '#B4573E', roof = '#4A4F5A', trim = 
       </g>
     ))}
     <rect x="-2" y="-118" width="4" height="118" fill="#7A3626" opacity=".6" />
+    <rect x="-52" y="0" width="22" height="24" fill="#C9C5BB" /><rect x="30" y="0" width="22" height="24" fill="#C9C5BB" />
+    <rect x="-52" y="-12" width="0" height="0" />
   </g>
 );
 
@@ -84,6 +87,8 @@ export const Bungalow = ({ x, y, s = 1, brick = '#C9A27A', roof = '#59606B', doo
     {[0, 1, 2, 3].map((i) => <rect key={i} x={40} y={-52 + i * 13} width="70" height="2" fill="#C2BCB0" />)}
     <rect x="-96" y="-60" width="50" height="34" fill="#F4EBDD" /><rect x="-91" y="-55" width="40" height="24" fill="#7FA6C4" />
     <rect x="-24" y="-52" width="22" height="52" fill={door} />
+    <path d="M30 0 H120 L128 24 H22Z" fill="#B8B4AA" /><rect x="-24" y="0" width="22" height="24" fill="#C9C5BB" />
+    <rect x="-120" y="-30" width="34" height="30" rx="14" fill="#5B8A4A" opacity=".9" />
   </g>
 );
 
@@ -96,23 +101,27 @@ export const HydroPole = ({ x, y, h = 300, span = 520, color = '#5A4632', wire =
   </g>
 );
 
-// A street of GTA houses between x0 and x1, base y, scale s. Mix of semis, bungalows and maples. tone shades the whole row for atmospheric depth (0 near, 1 far).
-export function SuburbRow({ x0 = 0, x1 = 3000, y, s = 1, seed = 1, haze = 0, hazeColor = '#DCE8F2', lawn = '#8CBF7C', dim = 0, lit = null }) {
-  const r = rnd(seed); const items = []; const gap = 300 * s; let i = 0;
-  const bricks = ['#B4573E', '#A24A35', '#C06A4A', '#9A5B3C']; const sidings = ['#C9A27A', '#D8C9AA', '#B9B3A2'];
-  for (let px = x0; px < x1; px += gap + r() * 60 * s) {
-    const k = r();
-    items.push(k < 0.55 ? <Semi key={`h${i}`} x={px} y={y} s={s} brick={bricks[Math.floor(r() * 4)]} door={r() < 0.5 ? '#1F5BA8' : '#2E6E4F'} /> : <Bungalow key={`h${i}`} x={px} y={y} s={s} brick={sidings[Math.floor(r() * 3)]} />);
-    if (r() < 0.7) items.push(<Maple key={`m${i}`} x={px + (r() < 0.5 ? 170 : -170) * s} y={y + 6 * s} s={s * (0.9 + r() * 0.5)} seed={i + seed} crown={r() < 0.2 ? '#D9772B' : '#4F9D3A'} />);
-    i++;
+// A street of GTA houses between x0 and x1 (base y, scale s): semis, bungalows, infill townhouses, each with front walks/driveways, then the street frontage.
+export function SuburbRow({ x0 = 0, x1 = 3000, y, s = 1, seed = 1, haze = 0, hazeColor = '#DCE8F2', lawn = '#8CBF7C', dim = 0, lit = null, street = true }) {
+  const r = rnd(seed); const items = []; const bricks = ['#B4573E', '#A24A35', '#C06A4A', '#9A5B3C']; const sidings = ['#C9A27A', '#D8C9AA', '#B9B3A2'];
+  let i = 0; let px = x0;
+  while (px < x1) {
+    const k = r(); const w = k < 0.4 ? 290 : k < 0.7 ? 300 : 360; const cx = px + (w / 2) * s;
+    if (k < 0.4) items.push(<Semi key={`h${i}`} x={cx} y={y} s={s} brick={bricks[Math.floor(r() * 4)]} door={r() < 0.5 ? '#1F5BA8' : '#2E6E4F'} />);
+    else if (k < 0.7) items.push(<Bungalow key={`h${i}`} x={cx} y={y} s={s} brick={sidings[Math.floor(r() * 3)]} />);
+    else items.push(<Townhouses key={`h${i}`} x={cx} y={y} s={s} n={5} seed={i + seed} />);
+    if (r() < 0.45) items.push(<Maple key={`m${i}`} x={px + w * s + 18 * s} y={y + 8 * s} s={s * (0.7 + r() * 0.4)} seed={i + seed} crown={r() < 0.2 ? '#D9772B' : '#4F9D3A'} />);
+    px += (w + 36 + r() * 40) * s; i++;
   }
+  const top = y - 260 * s; const bot = y + (street ? 116 : 0) * s;
   return (
     <g>
       <rect x={x0 - 400} y={y - 2} width={x1 - x0 + 800} height={400} fill={lawn} />
       <g>{items}</g>
+      {street && <Street x0={x0} x1={x1} y={y} s={s} seed={seed} />}
       {lit && <g fill={lit}>{items.map((_, n) => (n % 2 ? null : <rect key={`w${n}`} x={x0 + n * 180 * s + 20} y={y - 70 * s} width={14 * s} height={16 * s} />))}</g>}
-      {dim > 0 && <rect x={x0 - 400} y={y - 260 * s} width={x1 - x0 + 800} height={262 * s} fill="#0B2038" opacity={dim} />}
-      {haze > 0 && <rect x={x0 - 400} y={y - 260 * s} width={x1 - x0 + 800} height={300 * s} fill={hazeColor} opacity={haze} />}
+      {dim > 0 && <rect x={x0 - 400} y={top} width={x1 - x0 + 800} height={bot - top} fill="#0B2038" opacity={dim} />}
+      {haze > 0 && <rect x={x0 - 400} y={top} width={x1 - x0 + 800} height={bot - top} fill={hazeColor} opacity={haze} />}
     </g>
   );
 }
