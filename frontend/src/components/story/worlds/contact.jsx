@@ -45,7 +45,7 @@ export const CONTACT_WORLD = {
         <GardenBed x={1790} y={G + 28} w={190} seed={1} cedar={false} />
         <GardenBed x={2134} y={G + 28} w={170} seed={2} />
         <Patient top="#3E6AA5" view="f34" x={1962} y={G + 8} s={0.85} face={-1} pose="wave" dusk />
-        <g className="sw-walk" style={{ '--wx': -200, '--wy': 50 }}>
+        <g transform="translate(-130 32)">
           <PSW top="#16305A" bottom="#16305A" view="f34" x={1935} y={G + 110} s={0.85} face={-1} pose="stand" walk dusk item={<rect x="-12" y="-4" width="24" height="30" rx="6" fill={C.navy} />} />
           <rect x="1888" y={G + 56} width="24" height="30" rx="6" fill={C.navy} />
         </g>
@@ -60,9 +60,7 @@ export const CONTACT_WORLD = {
       </g>
     ) },
   ],
-  keys: [
-    { sec: 'top', xN: 1960, x: 2153, y: 865, z: 1 },
-    { sec: 1, xN: 1960, x: 2170, y: 865, z: 1 },
-    { sec: 'end', xN: 1700, x: 2080, y: 865, yN: 800, z: 0.9 },
-  ],
+  // One still frame: heading home at dusk, handover at the door.
+  shot: { x: 2120, y: 865, z: 0.95, xN: 1900, yN: 820 },
+
 };

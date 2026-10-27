@@ -8,7 +8,7 @@ const W = 2800; const H = 1560; const G = 1040;
 const T = TONES.morning;
 
 export const HOME_WORLD = {
-  w: W, h: H, heroFade: true, side: 'right', padR: 800,
+  w: W, h: H, side: 'right', padR: 800,
   layers: [
     { id: 'sky', depth: 0.12, node: (<g><rect x="-3000" y="-1500" width={W + 6000} height={H + 3000} fill={T.key} /><rect x="-3000" y="700" width={W + 6000} height="1500" fill="#F6E6D0" /><Cloud x={-40} y={-95} s={1.2} /><Cloud x={100} y={-195} s={1} o={0.8} /></g>) },
     { id: 'far', depth: 0.3, node: (<g transform="translate(-1200 0)"><LakeHaze y={330} /><Skyline y={420} w={3300} tint="#9DB4C8" lit="#C3D4E2" tx={0.657} /><rect x="-200" y="422" width="3800" height="800" fill="#B9D0C0" /></g>) },
@@ -29,7 +29,7 @@ export const HOME_WORLD = {
         <BrickColonial x={1960} y={G + 6} s={1.25} />
         <GardenBed x={1790} y={G + 28} w={190} seed={1} cedar={false} />
         <GardenBed x={2134} y={G + 28} w={170} seed={2} />
-        <g className="sw-walk" style={{ '--wx': 480, '--wy': -80 }}>
+        <g transform="translate(480 -80)">
           <PSW view="b34" x={1480} y={G + 190} s={0.82} pose="stand" walk />
           <rect x="1448" y={G + 64} width="34" height="40" rx="8" fill={C.navy} transform="translate(-8 4)" />
         </g>
@@ -46,13 +46,8 @@ export const HOME_WORLD = {
       </g>
     ) },
   ],
-  keys: [
-    // One steady move: right and down only (nest -> field -> house). The house and both characters end on the left of the frame; the text sits on the right.
-    { sec: 'top', x: 1020, y: 449, yN: 630, xN: 1110, z: 1.2 },
-    { sec: 1, x: 1250, y: 560, xN: 1300, yN: 650, z: 1.1 },
-    { sec: 2, x: 1600, y: 700, xN: 1650, yN: 700, z: 1.05 },
-    { sec: 3, x: 1950, y: 820, xN: 1900, yN: 750, z: 1 },
-    { sec: 'end', x: 2200, y: 900, xN: 2120, yN: 850, z: 1 },
-  ],
+  // One still frame: arriving at the house, morning. House and both figures on the left; text on the right.
+  shot: { x: 2200, y: 900, z: 1, xN: 2120, yN: 850 },
+
 
 };

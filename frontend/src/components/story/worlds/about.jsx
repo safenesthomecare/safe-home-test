@@ -26,7 +26,7 @@ export const ABOUT_WORLD = {
         <g transform={`translate(1230 ${G + 48}) scale(2)`}><GardenBed x={0} y={0} w={170} seed={4} /></g>
         <rect x="878" y="706" width="104" height="276" rx="16" fill={T.accent} />
         <Patient view="f34" x={936} y={G} s={1.15} face={-1} pose="open" />
-        <g className="sw-walk" style={{ '--wx': 570, '--wy': -60 }}>
+        <g transform="translate(570 -60)">
           <PSW view="b34" x={330} y={G + 168} s={1.15} pose="stand" walk />
           <rect x="292" y={G + 38} width="36" height="44" rx="8" fill={C.navy} />
         </g>
@@ -40,9 +40,7 @@ export const ABOUT_WORLD = {
       </g>
     ) },
   ],
-  keys: [
-    { sec: 'top', xN: 718, x: 698, y: 745, z: 0.68 },
-    { sec: 1, xN: 718, x: 712, y: 745, z: 0.68 },
-    { sec: 'end', xN: 718, x: 725, y: 745, z: 0.68 },
-  ],
+  // One still frame: welcomed at the door.
+  shot: { x: 1090, y: 760, z: 0.8, xN: 718 },
+
 };

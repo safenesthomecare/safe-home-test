@@ -4,10 +4,10 @@
   --sc-faq: #0369A1; --sc-contact: #AD4A07; --sc-care: #0E7490; --sc-meds: #6B46C1;
   --sc-meals: #92580A; --sc-walks: #2F7D1E; --sc-companion: #7A5B00; --sc-safety: #00263F;
 }
-/* Sits between the fixed header and the footer: top = header height; the footer edge shrinks it (the scene is scaled to fit, never cropped) once it scrolls into view. */
+/* Sits between the fixed header and the footer: top = header height; the footer edge shrinks it (scene scales to fit, never cropped) once it scrolls into view. Backgrounds are still frames: no motion. */
 .sn-story { position: fixed; inset: var(--sn-hdr, 80px) 0 var(--sn-clip, 0px) 0; pointer-events: none; z-index: 0; --p: .5; --veil: .62; --tint: transparent; overflow: hidden; }
 .sn-story > * { position: absolute; inset: 0; }
-.sn-story-back { animation: sn-story-in 700ms ease-out both; }
+.sn-story-back { animation: none; }
 .sn-story-veil { background: var(--sn-cream, #FFF9F2); opacity: var(--veil); }
 .sn-story-wash { background: var(--tint); }
 @keyframes sn-story-in { from { opacity: 0; } to { opacity: 1; } }
@@ -49,8 +49,8 @@ body.sn-story-on main.sn-content .hero-section { padding-bottom: clamp(1.5rem, 4
 .sw-layer { translate: calc(var(--cx, 0) * (1 - var(--d, 1)) * 1px) calc(var(--cy, 0) * (1 - var(--d, 1)) * 1px); }
 
 /* Home hero: the nest lives in the world above the panel; the logo text shrinks and fades as the camera pulls back. */
-body.sn-story-on main.sn-content section.hero-nest { align-items: flex-start; padding-top: clamp(300px, 36vw, 360px) !important; }
-.hero-logo-text { transform-origin: 50% 0; transform: scale(calc(1 - .55 * var(--hero-t, 0))); opacity: calc(1 - var(--hero-t, 0)); will-change: transform, opacity; }
+/* (home hero no longer reserves room for a nest shot: the home frame is the arrival at the house) */
+.hero-logo-text { transform: none; opacity: 1; }
 
 /* World figures */
 .sw-walk { transform: translate(calc(var(--p, 0) * var(--wx, 0) * 1px), calc(var(--p, 0) * var(--wy, 0) * 1px)); }
@@ -65,4 +65,10 @@ body.sn-story-on main.sn-content section.hero-nest { align-items: flex-start; pa
 /* Phones and tablets: panels are full width, so leave a window of scene between sections. */
 @media (max-width: 999px) {
   body.sn-story-on main.sn-content section + section { padding-top: clamp(64px, 16vw, 110px) !important; }
+}
+
+/* Home hero panel takes the same side as the other panels, so the house and both figures stay clear. */
+@media (min-width: 1000px) {
+  body.sn-story-on main.sn-content .hero-content { width: min(46vw, 700px) !important; max-width: none !important; margin-left: clamp(1rem, 4vw, 3.5rem) !important; margin-right: auto !important; }
+  body.sn-story-on[data-sn-side="right"] main.sn-content .hero-content { margin-left: auto !important; margin-right: clamp(1rem, 4vw, 3.5rem) !important; }
 }

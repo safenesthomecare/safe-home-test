@@ -65,11 +65,7 @@ export const SERVICES_WORLD = {
       </g>
     ) },
   ],
-  keys: [
-    { sec: 'top', xN: 780, x: 780, y: 990, z: 1 },
-    { sec: 1, xN: 780, x: 780, y: 985, z: 1.1 },
-    { sec: 2, xN: 1940, x: 1940, y: 990, z: 1.05 },
-    { sec: 3, xN: 3000, x: 3000, y: 990, z: 1 },
-    { sec: 'end', xN: 3780, x: 3780, y: 990, z: 1 },
-  ],
+  // One still frame: the kitchen, medication reminder and lunch preparation. Figures on the right, text on the left.
+  shot: { x: 1680, y: 990, z: 1.05, xN: 1900 },
+
 };

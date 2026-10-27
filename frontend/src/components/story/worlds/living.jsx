@@ -5,7 +5,7 @@ import { TONES, LightShaft, SilLamp, SilPlant } from './light';
 const W = 2200; const H = 1400; const F = 1060;
 
 export const TESTIMONIALS_WORLD = {
-  w: W, h: H, side: 'left',
+  w: W, h: H, side: 'right',
   layers: [
     { id: 'back', depth: 0.3, node: <Sky w={W} h={H} top="#FFF0D6" bot="#FFD9A8" id="ts-sky" /> },
     { id: 'room', depth: 1, node: (
@@ -33,11 +33,9 @@ export const TESTIMONIALS_WORLD = {
       </g>
     ) },
   ],
-  keys: [
-    { sec: 'top', x: 1150, xN: 1150, y: 905, z: 0.92 },
-    { sec: 2, x: 1150, xN: 1150, y: 905, z: 0.88 },
-    { sec: 'end', x: 1150, xN: 1150, y: 905, z: 0.85 },
-  ],
+  // One still frame: tea and conversation.
+  shot: { x: 1420, y: 905, z: 0.88, xN: 1150 },
+
 };
 
 export const FAQ_WORLD = {
@@ -79,9 +77,7 @@ export const FAQ_WORLD = {
       <g><rect x="700" y="1560" width="1900" height="260" fill={TONES.afternoon.dark} /></g>
     ) },
   ],
-  keys: [
-    { sec: 'top', x: 1263, xN: 1330, y: 1000, z: 0.95 },
-    { sec: 2, x: 1263, xN: 1330, y: 1000, z: 0.92 },
-    { sec: 'end', x: 1263, xN: 1330, y: 1000, z: 0.9 },
-  ],
+  // One still frame: the care plan at the kitchen table.
+  shot: { x: 1000, y: 1000, z: 0.92, xN: 1330 },
+
 };

@@ -1,0 +1,4 @@
+# CF-50 — Still-frame backgrounds, one per page
+Done: WorldCamera is now static (world.shot = one fixed frame; no scroll camera, parallax, walking or hero fade; frame fits between header and footer and scales when the footer scrolls in). Frames: home = arriving (morning, outside); about = welcomed at the door; services = kitchen, medication reminder + meal prep; testimonials = tea and conversation; faq = care plan at the table; contact = heading home (dusk, outside). Hero panel now sits on the side opposite the figures. pageStory captions updated. Checked at 1440x900.
+Pending: phone sizes not visually checked; content animations (ScrollReveal, hover) not changed; services shows one task frame only (per "one frame per page").
+Files: story.css, lib/pageStory.js, components/story/WorldCamera.jsx, worlds/{home,about,contact,services,living}.jsx
