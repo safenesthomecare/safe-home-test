@@ -72,3 +72,8 @@ body.sn-story-on main.sn-content .hero-section { padding-bottom: clamp(1.5rem, 4
   body.sn-story-on main.sn-content .hero-content { width: min(46vw, 700px) !important; max-width: none !important; margin-left: clamp(1rem, 4vw, 3.5rem) !important; margin-right: auto !important; }
   body.sn-story-on[data-sn-side="right"] main.sn-content .hero-content { margin-left: auto !important; margin-right: clamp(1rem, 4vw, 3.5rem) !important; }
 }
+
+/* Phones: the four indoor pages open with a tall window of scene under the first panel, so the two figures show in full. */
+@media (max-width: 699px) {
+  body.sn-story-on:is([data-sn-page="about"], [data-sn-page="services"], [data-sn-page="testimonials"], [data-sn-page="faq"]) main.sn-content section:first-of-type + section { padding-top: clamp(250px, 66vw, 290px) !important; }
+}

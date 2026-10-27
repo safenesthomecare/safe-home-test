@@ -27,7 +27,7 @@ export default function WorldCamera({ world }) {
       const fh = Math.max(120, vh - clip);
       const k = baseScale(vw, vh);
       const narrow = vw < 700;
-      const cam = { x: narrow && shot.xN != null ? shot.xN : shot.x, y: narrow ? (shot.yN != null ? shot.yN : shot.y - 190) : shot.y, z: (shot.z == null ? 1 : shot.z) * fitZoom(vw) * (fh / vh) };
+      const cam = { x: narrow && shot.xN != null ? shot.xN : shot.x, y: narrow ? (shot.yN != null ? shot.yN : shot.y - 190) : shot.y, z: ((narrow && shot.zN != null ? shot.zN : shot.z) == null ? 1 : (narrow && shot.zN != null ? shot.zN : shot.z)) * fitZoom(vw) * (fh / vh) };
       // keep the frame inside the world (no empty edges)
       const hw = vw / (2 * k * cam.z); const hh = fh / (2 * k * cam.z);
       const wr2 = world.w + (world.padR || 0);

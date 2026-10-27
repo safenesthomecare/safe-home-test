@@ -8,7 +8,7 @@
 - Scene rules (see `SHOTS.md`): pair on the two vertical thirds, eyes near the upper third line, three tones per scene. Only the PSW and Patient appear; other cast was removed.
 - No animation: poses and the `walk` stride are fixed shapes. Nothing loops.
 - Props: x, y, s, face, skin, hair, top, bottom, shoe, pose, walk, outfit, hairStyle, cane, elder, item, lean, flat. `glasses` is accepted but draws nothing.
-- Poses: stand, walk, wave, open, hold, give, point, sit. Add a pose by adding one entry to POSES (a/b arms, la/lb legs, lean, tw, hipZ). All eight are shown from all five views on the kit page.
+- Poses: stand, walk, wave, open, hold, give, point, sit, rise (mid-stand from a seat, arms reaching forward), steady (arm reaching out to support someone), check (one hand raised to someone's forehead, other hand reaching to their shoulder). Add a pose by adding one entry to POSES (a/b arms, la/lb legs, lean, tw, hipZ). All eight are shown from all five views on the kit page.
 - Outfits: tee, scrubs, cardigan. Hair: short, bun, curly, wavy, long, bald.
 - Origin is the feet; sitting figures keep feet on the floor.
 - Gradients elsewhere (`Tree`, `House`, `Hills`) are flattened at runtime by `lib/flatten.js`.

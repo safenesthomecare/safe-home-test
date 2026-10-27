@@ -1,46 +1,32 @@
-import { C, Cloud, Skyline, LakeHaze, SuburbRow, NearStreet, Woodlot, Neighbour, SideFence, FrontWalk, Driveway, GardenBed, BrickColonial, PSW, Patient, Tree } from './art';
-import { TONES, SilBush } from './light';
+import { C, Sky, Wall, Win, Frame, Rug, Sofa, Cushion, Lamp, Plant, Walker, PSW, Patient } from './art';
+import { TONES, LightShaft, SilPlant } from './light';
 
-// About: 9:30 AM (SHOTS.md #2). Eye-level medium-wide with a slow push-in. PSW on the left third walks up to the doorway; the patient waits on the right third, facing her. Door interior is one flat warm shape; dark hedge fills the bottom-left corner.
-const W = 1800; const H = 1400; const G = 1000;
+// About: 9:30 AM, "Helping you up safely" (indoors). Text panel on the right, so the pair sits on the left half: the client rises from the couch toward the walker, the PSW beside them steadies their arm. Both face the text (look room).
+const W = 1800; const H = 1400; const F = 1060;
 const T = TONES.midmorning;
 
 export const ABOUT_WORLD = {
   w: W, h: H, side: 'right',
   layers: [
-    { id: 'sky', depth: 0.12, node: (<g><rect x="-3000" y="-1500" width={W + 6000} height={H + 3000} fill="#E6F1FA" /><rect x="-3000" y="600" width={W + 6000} height="1500" fill="#F6E6D0" /><Cloud x={400} y={-120} s={1.3} /><Cloud x={1350} y={-190} s={1} o={0.85} /></g>) },
-    { id: 'far', depth: 0.3, node: (<g transform="translate(-1200 0)"><LakeHaze y={330} /><Skyline y={420} w={3000} tint="#A3B8CB" lit="#C9D8E5" tx={0.672} seed={5} /><rect x="-200" y="422" width="3600" height="800" fill="#BFD3C2" /></g>) },
-    { id: 'mid', depth: 0.6, node: (<g transform="translate(-1200 0)"><SuburbRow x0={100} x1={3200} y={720} s={0.5} seed={7} haze={0.35} simple /><SuburbRow x0={100} x1={3200} y={850} s={0.75} seed={12} haze={0.12} /></g>) },
-    { id: 'plane', depth: 1, node: (
+    { id: 'back', depth: 0.3, node: <Sky w={W} h={H} top="#FFF1DA" bot="#FFE0B8" id="ab-sky" /> },
+    { id: 'room', depth: 1, node: (
       <g>
-        <rect x="-300" y={G} width={W + 600} height="600" fill="#6DB35F" />
-        <NearStreet x0={-300} x1={W + 300} G={G} off={150} />
-        <Woodlot x={-100} y={G - 150} w={500} seed={6} h={230} />
-        <Neighbour x={340} y={G + 6} w={340} side={-1} kind="siding" />
-        <SideFence x={372} y={G + 6} w={60} h={120} lattice />
-        <Tree x={170} y={G + 16} s={1.1} />
-        <FrontWalk x={900} y={G + 43} y2={G + 150} w1={220} w2={320} />
-        <Driveway x={1579} y={G + 6} y2={G + 210} w1={274} w2={400} />
-        <BrickColonial x={900} y={G} s={2.4} open door={C.orange} />
-        <g transform={`translate(590 ${G + 48}) scale(2)`}><GardenBed x={0} y={0} w={190} seed={3} cedar={false} /></g>
-        <g transform={`translate(1230 ${G + 48}) scale(2)`}><GardenBed x={0} y={0} w={170} seed={4} /></g>
-        <rect x="878" y="706" width="104" height="276" rx="16" fill={T.accent} />
-        <Patient view="f34" x={936} y={G} s={1.15} face={-1} pose="open" />
-        <g transform="translate(570 -60)">
-          <PSW view="b34" x={330} y={G + 168} s={1.15} pose="stand" walk />
-          <rect x="292" y={G + 38} width="36" height="44" rx="8" fill={C.navy} />
-        </g>
+        <Wall x={-600} y={0} w={W + 1200} h={H} color="#FFF0DC" floorH={H - F} floor="#C9A27A" />
+        <Win x={470} y={330} w={320} h={360} sky="#FFE9B8" sun curtain="#9CCBEA" />
+        <Frame x={880} y={360} w={90} h={110} c={C.rose} /><Frame x={990} y={400} w={70} h={90} c={C.teal} />
+        <Rug x={760} y={F + 90} w={860} h={50} color={C.teal} />
+        <LightShaft x={560} y={690} w={240} h={400} skew={300} color={T.key} o={0.4} />
+        <Sofa x={560} y={F + 10} w={520} color={C.plum} />
+        <Cushion x={380} y={F - 56} color={C.orange} />
+        <Lamp x={1140} y={F} lit /><Plant x={170} y={F} s={1.5} />
+        <PSW view="f34" x={652} y={F + 56} s={1.5} face={1} pose="steady" />
+        <Patient view="f34" x={730} y={F + 30} s={1.5} face={1} pose="rise" />
+        <Walker x={880} y={F + 38} s={1.5} />
       </g>
     ) },
-    // Foreground (depth 1.3): dark hedge in the bottom-left corner. Nothing important in it.
-    { id: 'fg', depth: 1.3, node: (
-      <g fill={T.dark}>
-        <rect x="260" y="1575" width="560" height="260" />
-        <SilBush x={400} y={1575} w={380} h={150} color={T.dark} /><SilBush x={700} y={1575} w={360} h={120} color={T.dark} /><SilBush x={940} y={1575} w={300} h={90} color={T.dark} />
-      </g>
-    ) },
+    // Foreground (depth 1.3): dark plant in the bottom-left corner. Nothing important in it.
+    { id: 'fg', depth: 1.3, node: <g><SilPlant x={560} y={1700} h={330} color={T.dark} /></g> },
   ],
-  // One still frame: welcomed at the door.
-  shot: { x: 1090, y: 760, z: 0.8, xN: 718 },
-
+  // One still frame: helping up safely. Figures on the left, text on the right.
+  shot: { x: 1000, y: 880, z: 0.85, xN: 700 },
 };

@@ -1,7 +1,7 @@
-import { C, Sky, Wall, Win, Bed, Counter, Mug, Pillbox, Table, Chair, Plate, PSW, Patient, Plant, Frame, Lamp, Rug, Cushion, Kettle, FruitBowl, Clock, Books } from './art';
+import { C, Sky, Wall, Win, Bed, Counter, Mug, Pillbox, Table, Chair, Plate, PSW, Patient, Plant, Frame, Lamp, Rug, Cushion, Kettle, FruitBowl, Clock, Books, WaterGlass } from './art';
 import { TONES, LightShaft, SilPlant, SilChair, SilLamp } from './light';
 
-// Services (SHOTS.md #3): three rooms side by side, camera pans across. Pair on the two thirds in every room, window light as hard-edged shafts, one dark silhouette in the bottom-right corner of each room (panel stays left). The last beat pans past the table to an empty corner.
+// Services (SHOTS.md #3): three rooms side by side. The still frame is the dining table: "Medication with a glass of water" (client seated, PSW standing with the glass, pillbox on the table, no lunch plate). Pair on the two thirds in every room, window light as hard-edged shafts, one dark silhouette in the bottom-right corner of each room (panel stays left). The last beat pans past the table to an empty corner.
 const W = 4400; const H = 1400; const F = 1080; // floor line
 const T = TONES.room;
 
@@ -46,11 +46,11 @@ export const SERVICES_WORLD = {
         <Rug x={3000} y={F + 80} w={640} h={46} color={C.blue} />
         <Win x={2520} y={400} w={220} h={260} sky="#CFE8F7" sun />
         <Table x={3000} y={F + 20} w={420} h={130} color={C.brownL} />
-        <Plate x={2900} y={F - 108} /><Plate x={3100} y={F - 108} /><Mug x={3000} y={F - 108} c={C.blue} />
+        <Pillbox x={2990} y={F - 108} />
         <LightShaft x={2410} y={660} w={220} h={420} skew={300} color={T.key} o={0.4} />
-        <Chair x={2800} y={F + 20} /><Chair x={3200} y={F + 20} face={-1} />
+        <Chair x={2800} y={F + 20} />
         <Patient view="f34" x={2800} y={F + 20} s={1.2} face={1} pose="sit" />
-        <PSW view="f34" x={3200} y={F + 20} s={1.2} face={-1} pose="sit" />
+        <PSW view="f34" x={3180} y={F + 20} s={1.3} face={-1} pose="give" item={<WaterGlass x={2} y={14} s={0.6} />} />
         <Plant x={3440} y={F} s={1.4} /><Frame x={3300} y={420} c={C.teal} />
         <Win x={3900} y={400} w={240} h={280} sky="#CFE8F7" sun /><LightShaft x={3780} y={680} w={240} h={400} skew={300} color={T.key} o={0.4} /><Frame x={4200} y={430} c={C.orange} />
       </g>
@@ -59,13 +59,13 @@ export const SERVICES_WORLD = {
     { id: 'fg', depth: 1.3, node: (
       <g>
         <SilPlant x={1480} y={1700} h={330} color={T.dark} />
-        <SilChair x={3050} y={1650} w={190} h={290} color={T.dark} face={-1} />
+        <SilChair x={4040} y={1650} w={190} h={290} color={T.dark} face={-1} />
         <SilPlant x={4380} y={1700} h={300} color={T.dark} />
         <SilLamp x={5184} y={1700} h={400} color={T.dark} />
       </g>
     ) },
   ],
-  // One still frame: the kitchen, medication reminder and lunch preparation. Figures on the right, text on the left.
-  shot: { x: 1680, y: 990, z: 1.05, xN: 1900 },
+  // One still frame: medication with a glass of water at the dining table. Figures on the right, text on the left.
+  shot: { x: 2745, y: 960, z: 1.25, xN: 2990, zN: 0.95 },
 
 };

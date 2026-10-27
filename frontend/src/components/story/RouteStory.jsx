@@ -45,6 +45,11 @@ export default function RouteStory() {
     document.body.classList.add('sn-story-on');
     return () => document.body.classList.remove('sn-story-on');
   }, []);
+  // lets story.css give each page its own phone layout
+  useEffect(() => {
+    document.body.dataset.snPage = page.id;
+    return () => { delete document.body.dataset.snPage; };
+  }, [page.id]);
 
   useEffect(() => {
     const el = root.current;

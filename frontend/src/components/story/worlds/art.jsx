@@ -41,3 +41,6 @@ export { Skyline, LakeHaze, Maple, Semi, Bungalow, HydroPole, SuburbRow } from '
 export { Hydrant, Mailbox, BusStop, Townhouses, Street, NearStreet } from './gta-street';
 export { BrickColonial } from './brick-house';
 export { FrontWalk, Driveway, GardenBed, SideFence, Neighbour, Woodlot, NearStreetProps } from './gta-street';
+
+// Care props: walker, water glass, thermometer, wheelchair, CPAP, bedside table with lamp.
+export { Walker, WaterGlass, Thermometer, Wheelchair, CPAP, BedsideTable, BEDSIDE_TOP } from './props-care';
