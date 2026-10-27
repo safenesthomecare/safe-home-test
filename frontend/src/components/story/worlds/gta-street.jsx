@@ -52,14 +52,14 @@ export function Street({ x0, x1, y, s = 1, seed = 1, sidewalk = '#CFCBC2', boul 
   }
   const pl = [];
   if (poles) for (let px = x0 + 220 * s; px < x1; px += 900 * s) pl.push(<g key={`p${px}`} transform={`translate(${px} ${y + 56 * s}) scale(${s})`}><HydroPole x={0} y={0} h={300} span={900} color={pole} wire={wire} /></g>);
-  const joints = []; for (let px = x0 - 300; px < x1 + 300; px += 46 * s) joints.push(<rect key={px} x={px} y={y + 22 * s} width="2" height={18 * s} fill="#A9A59B" />);
+  let jd = ''; for (let px = x0 - 300; px < x1 + 300; px += 46 * s) jd += `M${px} ${y + 22 * s}v${18 * s}`;
   return (
     <g>
-      <rect x={x0 - 400} y={y + 22 * s} width={len} height={18 * s} fill={sidewalk} />{joints}
+      <rect x={x0 - 400} y={y + 22 * s} width={len} height={18 * s} fill={sidewalk} /><path d={jd} stroke="#A9A59B" strokeWidth="2" />
       <rect x={x0 - 400} y={y + 40 * s} width={len} height={18 * s} fill={boul} />
       <rect x={x0 - 400} y={y + 58 * s} width={len} height={6 * s} fill="#A9A59B" />
       <rect x={x0 - 400} y={y + 64 * s} width={len} height={52 * s} fill={road} />
-      {Array.from({ length: Math.ceil(len / (120 * s)) }, (_, k) => <rect key={k} x={x0 - 400 + k * 120 * s} y={y + 92 * s} width={60 * s} height={3 * s} fill="#E8C547" opacity=".85" />)}
+      <path d={`M${x0 - 400} ${y + 93.5 * s}H${x0 - 400 + len}`} stroke="#E8C547" strokeOpacity=".85" strokeWidth={3 * s} strokeDasharray={`${60 * s} ${60 * s}`} />
       {pl}{furn}
     </g>
   );
@@ -149,14 +149,14 @@ export const Woodlot = ({ x, y, w = 600, seed = 1, h = 300, dark = '#2F6B3A', li
 // ---- Street in FRONT of the lawn (nearest the viewer): sidewalk, boulevard, curb, road. Draw the strips first, the props last. ----
 // off = distance from the ground line G down to the sidewalk's top edge.
 export function NearStreet({ x0 = -400, x1, G, off = 170, dim = 0, boul = '#5FA350', road = '#4B515C', sidewalk = '#CFCBC2' }) {
-  const y = G + off; const len = x1 - x0; const joints = []; for (let px = x0; px < x1; px += 60) joints.push(<rect key={px} x={px} y={y} width="2" height="26" fill="#A9A59B" />);
+  const y = G + off; const len = x1 - x0; let jd = ''; for (let px = x0; px < x1; px += 60) jd += `M${px} ${y}v26`;
   return (
     <g>
-      <rect x={x0} y={y} width={len} height="26" fill={sidewalk} />{joints}
+      <rect x={x0} y={y} width={len} height="26" fill={sidewalk} /><path d={jd} stroke="#A9A59B" strokeWidth="2" />
       <rect x={x0} y={y + 26} width={len} height="26" fill={boul} />
       <rect x={x0} y={y + 52} width={len} height="8" fill="#A9A59B" />
       <rect x={x0} y={y + 60} width={len} height="700" fill={road} />
-      {Array.from({ length: Math.ceil(len / 150) }, (_, k) => <rect key={k} x={x0 + k * 150} y={y + 112} width="80" height="5" fill="#E8C547" opacity=".85" />)}
+      <path d={`M${x0} ${y + 114.5}H${x1}`} stroke="#E8C547" strokeOpacity=".85" strokeWidth="5" strokeDasharray="80 70" />
       {dim > 0 && <rect x={x0} y={y} width={len} height="760" fill="#0B2038" opacity={dim} />}
     </g>
   );

@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/safe-home-test/static/css/main.8577527d.css",
-    "main.js": "/safe-home-test/static/js/main.60e44328.js",
+    "main.js": "/safe-home-test/static/js/main.e233bffa.js",
     "index.html": "/safe-home-test/index.html",
     "main.8577527d.css.map": "/safe-home-test/static/css/main.8577527d.css.map",
-    "main.60e44328.js.map": "/safe-home-test/static/js/main.60e44328.js.map"
+    "main.e233bffa.js.map": "/safe-home-test/static/js/main.e233bffa.js.map"
   },
   "entrypoints": [
     "static/css/main.8577527d.css",
-    "static/js/main.60e44328.js"
+    "static/js/main.e233bffa.js"
   ]
 }

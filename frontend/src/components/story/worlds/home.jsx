@@ -11,8 +11,8 @@ export const HOME_WORLD = {
   w: W, h: H, heroFade: true, side: 'right',
   layers: [
     { id: 'sky', depth: 0.12, node: (<g><rect x="-3000" y="-1500" width={W + 6000} height={H + 3000} fill={T.key} /><rect x="-3000" y="700" width={W + 6000} height="1500" fill="#F6E6D0" /><Cloud x={-40} y={-95} s={1.2} /><Cloud x={100} y={-195} s={1} o={0.8} /></g>) },
-    { id: 'far', depth: 0.3, node: (<g transform="translate(-1200 0)"><LakeHaze y={470} /><Skyline y={560} w={5200} tint="#9DB4C8" lit="#C3D4E2" tx={0.417} /><rect x="0" y="562" width="5200" height="600" fill="#B9D0C0" /></g>) },
-    { id: 'mid', depth: 0.6, node: (<g transform="translate(-1200 0)"><SuburbRow x0={0} x1={5200} y={720} s={0.5} seed={4} haze={0.35} /><SuburbRow x0={100} x1={5200} y={850} s={0.75} seed={9} haze={0.12} /></g>) },
+    { id: 'far', depth: 0.3, node: (<g transform="translate(-1200 0)"><LakeHaze y={330} /><Skyline y={420} w={3300} tint="#9DB4C8" lit="#C3D4E2" tx={0.657} /><rect x="-200" y="422" width="3800" height="800" fill="#B9D0C0" /></g>) },
+    { id: 'mid', depth: 0.6, node: (<g transform="translate(-1200 0)"><SuburbRow x0={240} x1={3900} y={720} s={0.5} seed={4} haze={0.35} simple /><SuburbRow x0={240} x1={3900} y={850} s={0.75} seed={9} haze={0.12} /></g>) },
     { id: 'plane', depth: 1, node: (
       <g>
         <rect x="-400" y={G} width={W + 800} height={H - G + 400} fill="#6DB35F" />

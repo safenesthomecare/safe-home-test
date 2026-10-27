@@ -27,7 +27,7 @@ export function Skyline({ x = 0, y, w = 3000, tint = '#8FA9C0', lit = '#B5C9DB',
       {/* Rogers Centre dome, right of the tower */}
       <path d={`M${cx + 280} 4V-12C${cx + 290} -70 ${cx + 440} -70 ${cx + 450} -12V4Z`} fill={tint} /><rect x={cx + 276} y={-14} width="178" height="18" fill={tint} />
       {/* CN Tower: tapering shaft, main pod, sky pod, antenna */}
-      <g transform={`translate(${cx} 4) scale(1.5 1.15)`}>
+      <g transform={`translate(${cx} 4) scale(1.2 0.85)`}>
         <path d="M-11 0 L-3.2 -380 L3.2 -380 L11 0Z" fill={tint} />
         <path d="M-3.2 -380 L-1.4 -520 L1.4 -520 L3.2 -380Z" fill={tint} />
         <ellipse cx="0" cy="-352" rx="23" ry="9" fill={tint} /><rect x="-18" y="-364" width="36" height="12" rx="3" fill={tint} /><path d="M-18 -364 L-10 -376 L10 -376 L18 -364Z" fill={tint} />
@@ -43,7 +43,7 @@ export function Skyline({ x = 0, y, w = 3000, tint = '#8FA9C0', lit = '#B5C9DB',
 
 // Lake Ontario haze: soft band between sky and skyline.
 export const LakeHaze = ({ x = -1200, y, w = 5200, h = 90, color = '#CFE0EE' }) => (
-  <g><rect x={x} y={y} width={w} height={h} fill={color} opacity=".75" /><rect x={x} y={y + h - 14} width={w} height="14" fill="#9DB9D0" opacity=".6" /></g>
+  <g>{[0.18, 0.36, 0.54, 0.72].map((o, i) => <rect key={i} x={x} y={y + (i * h) / 4} width={w} height={h - (i * h) / 4} fill={color} opacity={o} />)}<rect x={x} y={y + h - 12} width={w} height="12" fill="#9DB9D0" opacity=".5" /></g>
 );
 
 export const Maple = ({ x, y, s = 1, crown = '#4F9D3A', dark = '#2E7D32', seed = 1 }) => {
@@ -102,15 +102,20 @@ export const HydroPole = ({ x, y, h = 300, span = 520, color = '#5A4632', wire =
 );
 
 // A street of GTA houses between x0 and x1 (base y, scale s): semis, bungalows, infill townhouses, each with front walks/driveways, then the street frontage.
-export function SuburbRow({ x0 = 0, x1 = 3000, y, s = 1, seed = 1, haze = 0, hazeColor = '#DCE8F2', lawn = '#8CBF7C', dim = 0, lit = null, street = true }) {
+const SimpleHouse = ({ x, y, s, w, brick, roof = '#4A4F5A' }) => (
+  <g transform={`translate(${x} ${y}) scale(${s})`}><rect x={-w / 2} y="-110" width={w} height="110" fill={brick} /><path d={`M${-w / 2 - 10} -110 L${-w / 4} -170 H${w / 4} L${w / 2 + 10} -110Z`} fill={roof} /><rect x={-w / 2 + 20} y="-84" width={w - 40} height="22" fill="#F4EBDD" opacity=".85" /></g>
+);
+
+export function SuburbRow({ x0 = 0, x1 = 3000, y, s = 1, seed = 1, haze = 0, hazeColor = '#DCE8F2', lawn = '#8CBF7C', dim = 0, lit = null, street = true, simple = false }) {
   const r = rnd(seed); const items = []; const bricks = ['#B4573E', '#A24A35', '#C06A4A', '#9A5B3C']; const sidings = ['#C9A27A', '#D8C9AA', '#B9B3A2'];
   let i = 0; let px = x0;
   while (px < x1) {
     const k = r(); const w = k < 0.4 ? 290 : k < 0.7 ? 300 : 360; const cx = px + (w / 2) * s;
-    if (k < 0.4) items.push(<Semi key={`h${i}`} x={cx} y={y} s={s} brick={bricks[Math.floor(r() * 4)]} door={r() < 0.5 ? '#1F5BA8' : '#2E6E4F'} />);
+    if (simple) items.push(<SimpleHouse key={`h${i}`} x={cx} y={y} s={s} w={w - 40} brick={bricks[Math.floor(r() * 4)]} />);
+    else if (k < 0.4) items.push(<Semi key={`h${i}`} x={cx} y={y} s={s} brick={bricks[Math.floor(r() * 4)]} door={r() < 0.5 ? '#1F5BA8' : '#2E6E4F'} />);
     else if (k < 0.7) items.push(<Bungalow key={`h${i}`} x={cx} y={y} s={s} brick={sidings[Math.floor(r() * 3)]} />);
     else items.push(<Townhouses key={`h${i}`} x={cx} y={y} s={s} n={5} seed={i + seed} />);
-    if (r() < 0.45) items.push(<Maple key={`m${i}`} x={px + w * s + 18 * s} y={y + 8 * s} s={s * (0.7 + r() * 0.4)} seed={i + seed} crown={r() < 0.2 ? '#D9772B' : '#4F9D3A'} />);
+    if (r() < 0.45 && !simple) items.push(<Maple key={`m${i}`} x={px + w * s + 18 * s} y={y + 8 * s} s={s * (0.7 + r() * 0.4)} seed={i + seed} crown={r() < 0.2 ? '#D9772B' : '#4F9D3A'} />);
     px += (w + 36 + r() * 40) * s; i++;
   }
   const top = y - 260 * s; const bot = y + (street ? 116 : 0) * s;

@@ -21,8 +21,8 @@ export const CONTACT_WORLD = {
       <rect x="-3000" y="210" width={W + 6000} height="2050" fill="#F5A664" />
       {[[-800, -620], [-450, -520], [-100, -640], [300, -560], [700, -610], [-600, -380], [1000, -450], [1250, -340], [150, -420]].map(([sx, sy]) => <circle key={`${sx}${sy}`} cx={sx} cy={sy} r="3" fill="#fff" />)}
     </g>) },
-    { id: 'far', depth: 0.3, node: (<g transform="translate(-1200 0)"><LakeHaze y={470} color="#E58F6A" /><Skyline y={560} w={5700} tint="#4F688C" lit="#9DB1CC" tx={0.386} seed={3} glow="#FFC070" /><rect x="0" y="562" width="5700" height="600" fill="#2F4F5F" /></g>) },
-    { id: 'mid', depth: 0.6, node: (<g transform="translate(-1200 0)"><SuburbRow x0={0} x1={5700} y={720} s={0.5} seed={4} haze={0.3} hazeColor="#B4527F" lawn="#2F5A47" dim={0.45} lit="#FFC83D" /><SuburbRow x0={100} x1={5700} y={850} s={0.75} seed={9} haze={0.1} hazeColor="#B4527F" lawn="#2E5A45" dim={0.35} lit="#FFC83D" /></g>) },
+    { id: 'far', depth: 0.3, node: (<g transform="translate(-1200 0)"><LakeHaze y={330} color="#E58F6A" /><Skyline x={300} y={420} w={3100} tint="#4F688C" lit="#9DB1CC" tx={0.613} seed={3} glow="#FFC070" /><rect x="0" y="422" width="3800" height="800" fill="#2F4F5F" /></g>) },
+    { id: 'mid', depth: 0.6, node: (<g transform="translate(-1200 0)"><SuburbRow x0={900} x1={4050} y={720} s={0.5} seed={4} simple haze={0.3} hazeColor="#B4527F" lawn="#2F5A47" dim={0.45} lit="#FFC83D" /><SuburbRow x0={900} x1={4050} y={850} s={0.75} seed={9} haze={0.1} hazeColor="#B4527F" lawn="#2E5A45" dim={0.35} lit="#FFC83D" /></g>) },
     { id: 'plane', depth: 1, node: (
       <g>
         <rect x="-400" y={G} width={W + 800} height="800" fill="#3D7A34" />
