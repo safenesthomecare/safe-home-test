@@ -47,10 +47,12 @@ export const HOME_WORLD = {
     ) },
   ],
   keys: [
+    // One steady move: right and down only (nest -> field -> house). The house and both characters end on the left of the frame; the text sits on the right.
     { sec: 'top', x: 1020, y: 449, yN: 630, xN: 1110, z: 1.2 },
-    { sec: 1, x: 900, y: 790, z: 0.64 },
-    { sec: 2, x: 1263, y: 800, z: 0.64 },
-    { sec: 3, x: 1610, xN: 1800, y: 800, z: 0.8 },
-    { sec: 'end', x: 1920, y: 865, yN: 840, z: 1 },
+    { sec: 1, x: 1250, y: 560, xN: 1300, yN: 650, z: 1.1 },
+    { sec: 2, x: 1600, y: 700, xN: 1650, yN: 700, z: 1.05 },
+    { sec: 3, x: 1950, y: 820, xN: 1900, yN: 750, z: 1 },
+    { sec: 'end', x: 2200, y: 900, xN: 2120, yN: 850, z: 1 },
   ],
+
 };

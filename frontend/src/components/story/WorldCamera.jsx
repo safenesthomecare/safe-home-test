@@ -13,18 +13,18 @@ export default function WorldCamera({ world, reduced }) {
     const st = stage.current; const wr = wrap.current;
     if (!st || !wr) return undefined;
     flattenGradients(wr);
-    let raf = 0; let track = []; let vw = 0; let vh = 0; let k = 1;
+    let raf = 0; let track = []; let vw = 0; let vh = 0; let k = 1; let hdrH = 80;
     // Cache the few moving elements once, and write to them directly. A custom property set on the stage would make the browser re-check every drawn element on each scroll step.
     const layers = Array.from(wr.querySelectorAll('.sw-layer')).map((el) => ({ el, d: parseFloat(el.style.getPropertyValue('--d')) }));
     const walkers = Array.from(wr.querySelectorAll('.sw-walk')).map((el) => ({ el, wx: parseFloat(el.style.getPropertyValue('--wx')) || 0, wy: parseFloat(el.style.getPropertyValue('--wy')) || 0 }));
     const measure = () => {
-      vw = window.innerWidth; vh = window.innerHeight; k = baseScale(vw, vh);
+      vw = window.innerWidth; hdrH = Math.max(0, Math.round((document.querySelector('header.header-nav') || { getBoundingClientRect: () => ({ bottom: 80 }) }).getBoundingClientRect().bottom)); vh = window.innerHeight - hdrH; k = baseScale(vw, vh);
       const secs = Array.from(document.querySelectorAll('main.sn-content section')).map((el) => {
         const r = el.getBoundingClientRect();
         return { top: r.top + window.scrollY, h: r.height };
       });
-      const max = Math.max(1, document.documentElement.scrollHeight - vh);
-      track = buildTrack(world.keys, secs, vh, max, vw < 700);
+      const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      track = buildTrack(world.keys, secs, window.innerHeight, max, vw < 700);
     };
     const apply = () => {
       raf = 0;
@@ -37,13 +37,17 @@ export default function WorldCamera({ world, reduced }) {
       const cy = world.h > 2 * hh ? Math.min(world.h - hh, Math.max(hh, cam.y)) : world.h / 2;
       cam.x = cx; cam.y = cy;
       const t = worldTransform(cam, k, vw, vh);
+      // while the footer slides up over the bottom of the frame, lift the scene by half of that so it stays centred in what is still visible
+      const ft = document.querySelector('footer');
+      const clip = ft ? Math.max(0, window.innerHeight - ft.getBoundingClientRect().top) : 0;
+      t.ty -= Math.min(clip, vh) / 2;
       wr.style.width = `${world.w * k}px`; wr.style.height = `${world.h * k}px`;
       wr.style.transform = `translate3d(${t.tx.toFixed(1)}px, ${t.ty.toFixed(1)}px, 0) scale(${t.scale.toFixed(4)})`;
       layers.forEach(({ el, d }) => { el.style.translate = `${(cam.x * (1 - d)).toFixed(1)}px ${(cam.y * (1 - d)).toFixed(1)}px`; });
-      const maxS = Math.max(1, document.documentElement.scrollHeight - vh);
+      const maxS = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
       const p = reduced ? 0 : Math.min(1, sy / maxS);
       walkers.forEach(({ el, wx, wy }) => { el.style.transform = `translate(${(p * wx).toFixed(1)}px, ${(p * wy).toFixed(1)}px)`; });
-      if (world.heroFade) document.documentElement.style.setProperty('--hero-t', (reduced ? 0 : Math.min(1, sy / (vh * 0.55))).toFixed(3));
+      if (world.heroFade) document.documentElement.style.setProperty('--hero-t', (reduced ? 0 : Math.min(1, sy / (window.innerHeight * 0.55))).toFixed(3));
       st.setAttribute('data-cam', `${cam.x.toFixed(0)},${cam.y.toFixed(0)},${cam.z.toFixed(2)}`);
     };
     const queue = () => { if (!raf) raf = requestAnimationFrame(apply); };

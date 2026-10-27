@@ -57,6 +57,11 @@ export default function RouteStory() {
       raf = 0;
       const vh = window.innerHeight;
       const sy = window.scrollY || 0;
+      const hd = document.querySelector('header.header-nav'); const ft = document.querySelector('footer');
+      const hdr = hd ? Math.round(hd.getBoundingClientRect().bottom) : 80;
+      const clip = ft ? Math.max(0, vh - ft.getBoundingClientRect().top) : 0;
+      document.documentElement.style.setProperty('--sn-hdr', `${Math.max(0, hdr)}px`);
+      el.style.setProperty('--sn-clip', `${clip.toFixed(1)}px`);
       const max = Math.max(1, document.documentElement.scrollHeight - vh);
       const p = clamp(sy / max);
       const pp = reduced ? 0.5 : p;
