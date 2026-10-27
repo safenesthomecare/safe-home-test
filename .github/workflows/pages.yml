@@ -1,0 +1,54 @@
+# Builds the preview from frontend/ on every push to main and publishes it with GitHub Pages (nothing is built by hand).
+# One-time setup in the repo: Settings > Pages > Build and deployment > Source = "GitHub Actions".
+# Result: https://<your-username>.github.io/<repo-name>/
+name: Deploy UI preview
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: yarn
+          cache-dependency-path: frontend/yarn.lock
+      - name: Install
+        working-directory: frontend
+        run: yarn install --frozen-lockfile
+      - name: Build (demo mode, served from /<repo-name>/)
+        working-directory: frontend
+        run: yarn build
+        env:
+          CI: "false"
+          REACT_APP_DEMO: "true"
+          PUBLIC_URL: /${{ github.event.repository.name }}
+      - name: Friendly 404 (any unknown address opens the app)
+        run: cp frontend/build/index.html frontend/build/404.html
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: frontend/build
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
