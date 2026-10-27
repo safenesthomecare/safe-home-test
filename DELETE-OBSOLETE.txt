@@ -1,0 +1,6 @@
+Delete these (cleanup.sh does it; or delete by hand in the GitHub web UI):
+docs/                      (whole folder: built site, replaced by the automatic build; notes moved to notes/, kit page to frontend/public/)
+APPLY.txt, DELETE-OLD-DOCS-FILES.txt, UPDATE-NOTES.txt, START-HERE.txt   (old manual-update instructions)
+readable-copies-of-hidden-files/github-workflows/demo-pages.yml.txt        (replaced by pages.yml.txt)
+.github/workflows/demo-pages.yml                                           (only if it exists; replaced by pages.yml)
+Then: Settings > Pages > Source = "GitHub Actions".

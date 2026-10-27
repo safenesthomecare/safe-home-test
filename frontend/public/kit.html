@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><title>SafeNest Story Art Kit</title>
+<style>
+:root{--bg:#fbf6ee;--ink:#2b2a33;--mut:#6b6872;--blue:#3b6fb6;--org:#e8883a;--card:#fff;--line:#eadfce}
+@media (prefers-color-scheme:dark){:root{--bg:#1d1b22;--ink:#f3eee6;--mut:#b4afb9;--card:#27242e;--line:#3a3642}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,sans-serif}
+main{max-width:1000px;margin:0 auto;padding:32px 16px 64px}
+h1{margin:0 0 4px;font-size:2rem}h2{margin:40px 0 8px;font-size:1.3rem;border-bottom:2px solid var(--org);display:inline-block}
+p{color:var(--mut);margin:.3em 0 1em}a{color:var(--blue)}
+figure{margin:0 0 20px;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+figure img{display:block;width:100%;height:auto}figcaption{padding:10px 14px;font-size:.9rem;color:var(--mut)}
+.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+table{border-collapse:collapse;width:100%;font-size:.9rem}td,th{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left}
+</style></head><body><main>
+<h1>SafeNest Story Art Kit</h1>
+<p>The drawn pieces behind the six story pages. Flat solid colours only. The carer wears blue scrubs, the person cared for an orange cardigan; warm window light is the accent. <a href="./">Back to the preview</a></p>
+
+<h2>Kit test sheets</h2>
+<p>Every piece drawn once, to check style and readability.</p>
+<figure><img src="kit/kit-outdoors.jpg" alt="Outdoor pieces: tree, nest, house, grass, flowers, fence, hills" loading="lazy"><figcaption>Outdoors: tree, twig nest, house, grass, flowers, fence, hills.</figcaption></figure>
+<figure><img src="kit/kit-indoors.jpg" alt="Indoor pieces: wallpaper, furniture, kitchen, lamps" loading="lazy"><figcaption>Indoors: wallpaper, rugs, furniture, kitchen, lamps.</figcaption></figure>
+<figure><img src="kit/kit-cast-psw.jpg" alt="The PSW in every pose from five viewing angles" loading="lazy"><figcaption>PSW (blue scrubs): 8 poses from front, front three-quarter, side, back three-quarter and back. From behind the hair covers the back of the head and the bun sits on top.</figcaption></figure>
+<figure><img src="kit/kit-cast-patient.jpg" alt="The Patient in every pose from five viewing angles" loading="lazy"><figcaption>Patient (orange cardigan): same poses and views, stooped posture, long hair falling over the back and shoulders.</figcaption></figure>
+
+<h2>The six worlds</h2>
+<p>Desktop captures of each page's opening shot (static frames; the page scrolls through a camera path).</p>
+<div class="grid">
+<figure><img src="kit/world-home.jpg" alt="Home world" loading="lazy"><figcaption>Home</figcaption></figure>
+<figure><img src="kit/world-about.jpg" alt="About world" loading="lazy"><figcaption>About</figcaption></figure>
+<figure><img src="kit/world-services.jpg" alt="Services world" loading="lazy"><figcaption>Services</figcaption></figure>
+<figure><img src="kit/world-faq.jpg" alt="FAQ world" loading="lazy"><figcaption>FAQ</figcaption></figure>
+<figure><img src="kit/world-testimonials.jpg" alt="Testimonials world" loading="lazy"><figcaption>Testimonials</figcaption></figure>
+<figure><img src="kit/world-contact.jpg" alt="Contact world" loading="lazy"><figcaption>Contact</figcaption></figure>
+</div>
+
+<h2>Where things live</h2>
+<table>
+<tr><th>File</th><th>Job</th></tr>
+<tr><td><code>worlds/figure.jsx</code></td><td>Figure builder (see <code>FIGURE-STYLE.md</code>)</td></tr>
+<tr><td><code>worlds/outdoors.jsx</code>, <code>indoors.jsx</code></td><td>Environment pieces</td></tr>
+<tr><td><code>worlds/art.jsx</code></td><td>Shared drawing helpers</td></tr>
+<tr><td><code>worlds/light.jsx</code></td><td>Lighting kit: palettes, light shafts, dark foreground shapes</td></tr>
+<tr><td><code>lib/flatten.js</code></td><td>Flattens any remaining gradients at load</td></tr>
+<tr><td><code>worlds/home, about, services, living, contact.jsx</code></td><td>One drawn world per page</td></tr>
+<tr><td><code>tools/</code></td><td>World preview, contrast audit, fps measure, element count</td></tr>
+</table>
+<p>Budget and element counts: <code>KIT-BUDGET.md</code>. Progress notes: <code>Phase.*-CF-*.md</code>.</p>
+</main></body></html>

@@ -4,12 +4,12 @@ A **UI-only test copy** of the redesigned site, published with GitHub Pages so y
 It is **not** the live site (https://www.safenesthomecare.com). It is kept out of search engines (meta tag + `robots.txt`) and shows a small "DEMO · UI PREVIEW" tag. The contact form only pretends to send ("Demo only: nothing was sent.").
 
 ## See it (one-time setup)
-The built preview is committed in `docs/` (no hidden files or Actions needed).
+The site builds and publishes itself on every push to `main` (`.github/workflows/pages.yml`). Nothing built is committed.
 1. Push this repo to GitHub as a **public** repository named `safe-home-test`.
-2. **Settings > Pages > Source = "Deploy from a branch"**, Branch `main`, Folder **/docs** (not root).
-3. Open `https://<your-username>.github.io/safe-home-test/` after about a minute.
+2. Make sure `.github/workflows/pages.yml` exists (the web uploader skips dot-folders: use **Add file > Create new file**, type `.github/workflows/pages.yml`, paste the contents of `readable-copies-of-hidden-files/github-workflows/pages.yml.txt`).
+3. **Settings > Pages > Source = "GitHub Actions"**.
+4. Open `https://<your-username>.github.io/safe-home-test/` after about 2 minutes. Later changes: just push; the **Actions** tab shows the build.
 
-After changing the code, rebuild `docs/`: `cd frontend && REACT_APP_DEMO=true PUBLIC_URL=/safe-home-test yarn build`, then copy `frontend/build/*` into `docs/` (keep the `.md` notes there) and add `404.html` as a copy of `index.html`.
 Pages use `#/` addresses (for example `.../#/services`); that is normal for this preview.
 
 ## UI test checklist
@@ -48,10 +48,10 @@ Each page is one drawn world and one moment of a caregiver's working day. Scroll
 | `frontend/src/components/story/StoryScene.jsx` | Scene registry and renderer (Shadow DOM) |
 | `frontend/public/story/scene-N-*.svg` | The 8 layered illustrations |
 | `frontend/src/components/story/worlds/figure.jsx`, `outdoors.jsx`, `indoors.jsx` | Figure builder and the outdoor and indoor art kit (style guide: `worlds/FIGURE-STYLE.md`) |
-| `docs/kit.html` | Art kit page: test sheets and the six worlds |
+| `frontend/public/kit.html` | Art kit page: test sheets and the six worlds |
 | `tools/` | `contrast-audit.py`, `measure-fps.py`, `count-worlds.jsx`, `diag-anim.py` |
 | `KIT-BUDGET.md` | Element and byte counts per kit piece |
-| `docs/PENDING-ASSETS.md` | Icons and props not drawn yet |
+| `notes/PENDING-ASSETS.md` | Icons and props not drawn yet |
 
 Rules worth keeping: `body { overflow-x: clip }` (not hidden); to add a world, draw layers in `worlds/` and add camera keys `{ sec, x, y, z }` (`sec` = which page section is centred; `yN` for phones) and a `side` (`left` or `right`) for the panels; old scene contract is viewBox 0 0 1200 700 with `<g id="layer-*" data-depth="0.2-1">` layers and CSS animation inside the SVG. To add a page: add an entry to `PAGES` in `pageStory.js`.
 
@@ -68,4 +68,4 @@ The live site is the Vercel project (www.safenesthomecare.com). The demo-only pi
 5. Decide on the license: `LICENSE` is AGPL-3.0, which requires publishing the source of a modified network service. Keep it, or switch to a proprietary notice.
 6. Deploy; confirm `www.safenesthomecare.com` and `safenesthomecare.com` stay attached in Vercel (DNS is unchanged). Then send one real contact-form message and confirm it arrives, and run Lighthouse on the live home page.
 
-Project history and decisions: `docs/STATUS.md` and `docs/carry-forward/`.
+Project history and decisions: `notes/STATUS.md` and `notes/carry-forward/`.
