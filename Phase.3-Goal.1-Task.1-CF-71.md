@@ -1,0 +1,7 @@
+# CF-71: Home page background, recreated by tracing (replaces the rejected approach)
+**Done:** `worlds/home.jsx` now shows a point-by-point vector trace of reference image 5. Method: faceless edit of the reference (flat skin over the relative's face, hair redrawn in JSX), mean-shift smoothing, colour-stepped trace (vtracer, ~1,600 stacked shapes) -> `public/scenes/home-trace.svg` (1.1 MB); second finer trace of the open sky only (clouds), clipped to the sky -> `public/scenes/home-sky.svg` (~180 KB).
+**Rework (face mask):** the first mask was an oval that overpainted hair and neck. Now a 17-point polygon traced on the reference face outline (hairline, cheek, chin, jaw; hair, ear and neck excluded), anti-aliased, filled with flat skin sampled from the lit cheek. The JSX hair overlay was removed because the original hair now survives. Proof: compare-Face.png.
+**Verified:** rendered and compared with the reference (compare-Home.png), PSNR ~21.9 dB. Characters faceless (child already faces away).
+**Known gaps:** fine texture (brick grain, leaf detail, window reflections) is simplified; slight pale haze behind the CN Tower spire; scene is now a still image-style trace, so it ignores the old 500-element / 125 KB budget in KIT-BUDGET.md. Not yet checked: full CRA build, phone framing, contrast of the text panel over the right side (tower/trees).
+**Pending:** Services, Testimonials, FAQ, Contact (same trace method is available); Phase 4 build/contrast check.
+**Files:** worlds/home.jsx, public/scenes/home-trace.svg, public/scenes/home-sky.svg
