@@ -12,7 +12,7 @@ export default function WorldCamera({ world }) {
   useEffect(() => {
     const st = stage.current; const wr = wrap.current;
     if (!st || !wr) return undefined;
-    flattenGradients(wr);
+    if (!world.soft) flattenGradients(wr); // upgraded worlds (soft: true) keep their gradients and glows
     const layers = Array.from(wr.querySelectorAll('.sw-layer')).map((el) => ({ el, d: parseFloat(el.style.getPropertyValue('--d')) }));
     const shot = world.shot || (world.keys && world.keys[0]) || { x: world.w / 2, y: world.h / 2, z: 1 };
     let raf = 0;
