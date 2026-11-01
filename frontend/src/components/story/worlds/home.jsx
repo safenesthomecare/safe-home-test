@@ -1,9 +1,10 @@
 import { asset } from '../../../lib/asset';
-import { C, Cloud, Skyline, LakeHaze, SuburbRow, NearStreet, Woodlot, Neighbour, SideFence, FrontWalk, Driveway, GardenBed, BrickColonial, Tree, PSW, Patient } from './art';
+import { C, Cloud, Skyline, LakeHaze, SuburbRow, NearStreet, Woodlot, Neighbour, SideFence, FrontWalk, Driveway, GardenBed, BrickColonial, Tree, PSW } from './art';
+import { Relative } from './figure';
 import { TONES, SilBush } from './light';
 
 // Home: 8:00 AM (SHOTS.md #1). Opens low, looking up at the nest on the tree branch (nest at the golden point, tree on the left third, empty sky top-right, dark leaf mass as the left foreground).
-// Then the camera cranes down and back across the field to the house: PSW on the left third, patient on the right third, dark hedge across the bottom.
+// Then the camera cranes down and back across the field to the house: PSW on the left third, the patient's relative on the right third, dark hedge across the bottom.
 const W = 2800; const H = 1560; const G = 1040;
 const T = TONES.morning;
 
@@ -33,7 +34,7 @@ export const HOME_WORLD = {
           <PSW view="b34" x={1480} y={G + 190} s={0.82} pose="stand" walk />
           <rect x="1448" y={G + 64} width="34" height="40" rx="8" fill={C.navy} transform="translate(-8 4)" />
         </g>
-        <Patient view="f34" x={2050} y={G + 24} s={0.8} face={-1} pose="wave" />
+        <Relative view="f34" x={2050} y={G + 24} s={0.8} face={-1} pose="wave" />
       </g>
     ) },
     // Foreground (depth 1.3, nothing important in it): leaf mass on the left third at the opening shot, hedge band across the bottom at the closing shot.

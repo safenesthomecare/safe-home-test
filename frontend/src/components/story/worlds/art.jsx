@@ -17,10 +17,11 @@ export function Sky({ w, h, top, mid, bot, id }) {
   );
 }
 
+// Cloud = one path (three ovals joined, same winding, so they show as their union).
+const ovalP = (cx, cy, rx, ry) => `M${cx - rx} ${cy}a${rx} ${ry} 0 1 0 ${2 * rx} 0a${rx} ${ry} 0 1 0 ${-2 * rx} 0Z`;
+const CLOUD = ovalP(0, 0, 90, 26) + ovalP(-34, -18, 40, 26) + ovalP(22, -26, 48, 32);
 export const Cloud = ({ x, y, s = 1, o = 0.9 }) => (
-  <g transform={`translate(${x} ${y}) scale(${s})`} fill="#fff" opacity={o}>
-    <ellipse cx="0" cy="0" rx="90" ry="26" /><ellipse cx="-34" cy="-18" rx="40" ry="26" /><ellipse cx="22" cy="-26" rx="48" ry="32" />
-  </g>
+  <g transform={`translate(${x} ${y}) scale(${s})`} fill="#fff" opacity={o}><path d={CLOUD} /></g>
 );
 
 export const Sun = ({ x, y, r = 60, color = '#FFD66B' }) => (

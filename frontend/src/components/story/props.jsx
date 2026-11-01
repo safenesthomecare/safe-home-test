@@ -3,6 +3,9 @@ import React, { useEffect, useRef, useState } from 'react';
 // Illustrated foreground props (flat, soft, logo colours). 120x120 grid, decorative only.
 // Animations live in story.css and start when the wrapper gets `.is-in` (scrolled into view).
 const C = { navy: '#00263F', blue: '#1F5BA8', orange: '#F47C20', darkOrange: '#D9650F', gold: '#FFC72C', green: '#4CAF2D', darkGreen: '#2F7D1E', brown: '#8B5A2B', cream: '#FFF1DC', white: '#FFFFFF', teal: '#14A89B', violet: '#8B6CD6', rose: '#E0577F', sky: '#9FC4E6' };
+// Merge helpers: several same-colour shapes in one path (one path per part).
+const dot = (x, y, r) => `M${x - r} ${y}a${r} ${r} 0 1 0 ${2 * r} 0a${r} ${r} 0 1 0 ${-2 * r} 0Z`;
+const rr = (x, y, w, h, r) => `M${x} ${y + r}V${y + h - r}Q${x} ${y + h} ${x + r} ${y + h}H${x + w - r}Q${x + w} ${y + h} ${x + w} ${y + h - r}V${y + r}Q${x + w} ${y} ${x + w - r} ${y}H${x + r}Q${x} ${y} ${x} ${y + r}Z`;
 const shadow = <ellipse cx="60" cy="108" rx="40" ry="5" fill={C.navy} opacity=".12" />;
 const shoe = (fill) => (
   <g>
@@ -37,8 +40,8 @@ const ART = {
     <>
       {shadow}
       <rect x="12" y="56" width="96" height="46" rx="9" fill={C.violet} />
-      {[0, 1, 2, 3, 4, 5, 6].map((i) => <rect key={i} x={17 + i * 13} y="64" width="10" height="30" rx="4" fill="#EFEAFA" />)}
-      <circle cx="22" cy="74" r="3.4" fill={C.gold} /><circle cx="48" cy="80" r="3.4" fill={C.rose} /><circle cx="74" cy="72" r="3.4" fill={C.gold} /><circle cx="100" cy="82" r="3.4" fill={C.teal} />
+      <path d={[0, 1, 2, 3, 4, 5, 6].map((i) => rr(17 + i * 13, 64, 10, 30, 4)).join('')} fill="#EFEAFA" />
+      <path d={dot(22, 74, 3.4) + dot(74, 72, 3.4)} fill={C.gold} /><circle cx="48" cy="80" r="3.4" fill={C.rose} /><circle cx="100" cy="82" r="3.4" fill={C.teal} />
       <g className="lid"><rect x="12" y="44" width="96" height="16" rx="7" fill="#6B46C1" /><rect x="22" y="48" width="76" height="3" rx="1.5" fill="#fff" opacity=".4" /></g>
     </>
   ),
@@ -47,7 +50,7 @@ const ART = {
       {shadow}
       <path className="p-a" d="M14 28c18 12 74 12 92 0l-6 52c-2 16-18 26-40 26S22 96 20 80z" fill={C.rose} />
       <path d="M24 44c12 8 60 8 72 0M28 62c10 7 54 7 64 0" stroke="#fff" strokeWidth="3" fill="none" opacity=".45" strokeLinecap="round" />
-      {[28, 40, 52, 64, 76, 88].map((x) => <path key={x} d={`M${x} 104v8`} stroke={C.rose} strokeWidth="3" strokeLinecap="round" />)}
+      <path d={[28, 40, 52, 64, 76, 88].map((x) => `M${x} 104v8`).join('')} stroke={C.rose} strokeWidth="3" strokeLinecap="round" />
     </>
   ),
   plant: (
@@ -64,7 +67,7 @@ const ART = {
       {shadow}
       <g className="paper">
         <path d="M24 12h72v92H24z" fill="#fff" stroke="#E4D6C2" strokeWidth="2" />
-        {[34, 46, 58, 70].map((y) => <path key={y} d={`M32 ${y}h56`} stroke={C.sky} strokeWidth="1.6" opacity=".7" />)}
+        <path d={[34, 46, 58, 70].map((y) => `M32 ${y}h56`).join('')} stroke={C.sky} strokeWidth="1.6" opacity=".7" />
         <path d="M34 30c4-5 6 4 10-1s6 4 10-1 6 4 10-1" stroke={C.navy} strokeWidth="2.4" fill="none" strokeLinecap="round" />
         <path d="M60 80c-8-5-12-9-12-14a6 6 0 0 1 12-1 6 6 0 0 1 12 1c0 5-4 9-12 14z" fill={C.rose} />
         <rect x="42" y="6" width="36" height="14" rx="2" fill={C.gold} opacity=".9" transform="rotate(-4 60 13)" />
@@ -101,8 +104,8 @@ const ART = {
         <rect x="24" y="24" width="72" height="62" rx="3" fill={C.sky} />
         <circle cx="82" cy="40" r="8" fill={C.gold} />
         <path d="M24 86V70c14-12 24-4 36-10 12-6 24 0 36 8v18z" fill={C.green} />
-        <circle cx="48" cy="54" r="6" fill={C.orange} /><path d="M40 78c0-12 4-16 8-16s8 4 8 16z" fill={C.orange} />
-        <circle cx="68" cy="56" r="5" fill={C.blue} /><path d="M61 78c0-10 3-14 7-14s7 4 7 14z" fill={C.blue} />
+        <path d={dot(48, 54, 6) + 'M40 78c0-12 4-16 8-16s8 4 8 16z'} fill={C.orange} />
+        <path d={dot(68, 56, 5) + 'M61 78c0-10 3-14 7-14s7 4 7 14z'} fill={C.blue} />
       </g>
     </>
   ),

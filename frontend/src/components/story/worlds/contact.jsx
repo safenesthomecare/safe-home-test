@@ -1,9 +1,10 @@
 import { asset } from '../../../lib/asset';
-import { C, Skyline, LakeHaze, SuburbRow, NearStreet, Woodlot, Neighbour, SideFence, FrontWalk, Driveway, GardenBed, BrickColonial, Tree, PSW, Patient } from './art';
+import { C, Skyline, LakeHaze, SuburbRow, NearStreet, Woodlot, Neighbour, SideFence, FrontWalk, Driveway, GardenBed, BrickColonial, Tree, PSW } from './art';
+import { Relative } from './figure';
 import { TONES, SilBush, LightShaft } from './light';
 
 // Contact: 7:30 PM (SHOTS.md #6). Low-angle wide on the house at dusk, then the camera pulls out to the nest.
-// House is the main positive shape (flat lit windows on a dark wall). Pair on the left-centre third at the door: the caregiver says goodbye and walks off left, the patient waves from the doorway.
+// House is the main positive shape (flat lit windows on a dark wall). Pair on the left-centre third at the door: the caregiver says goodbye and walks off left, the relative waves from the doorway.
 // Flat dusk sky bands, dark foreground (steps and hedge, bottom-left corner only, depth 1.3), text panel on the right.
 const W = 3300; const H = 1600; const G = 1040;
 const T = TONES.dusk;
@@ -44,7 +45,7 @@ export const CONTACT_WORLD = {
         <LightShaft x={1930} y={G + 22} w={70} h={120} skew={-40} color={T.key} o={0.55} />
         <GardenBed x={1790} y={G + 28} w={190} seed={1} cedar={false} />
         <GardenBed x={2134} y={G + 28} w={170} seed={2} />
-        <Patient top="#3E6AA5" view="f34" x={1962} y={G + 8} s={0.85} face={-1} pose="wave" dusk />
+        <Relative view="f34" x={1962} y={G + 8} s={0.85} face={-1} pose="wave" />
         <g transform="translate(-130 32)">
           <PSW top="#16305A" bottom="#16305A" view="f34" x={1935} y={G + 110} s={0.85} face={-1} pose="stand" walk dusk item={<rect x="-12" y="-4" width="24" height="30" rx="6" fill={C.navy} />} />
           <rect x="1888" y={G + 56} width="24" height="30" rx="6" fill={C.navy} />

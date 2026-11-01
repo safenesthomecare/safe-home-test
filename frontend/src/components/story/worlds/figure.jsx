@@ -3,6 +3,8 @@
 // `view` = which way the figure is turned: front (faces camera), f34 (front three-quarter), side (profile, default), b34 (back three-quarter), back (back to camera).
 // `face` (1 / -1) mirrors the whole figure left/right. Limb angles are degrees: f = swing forward, s = swing outward, both from "hanging straight down".
 // Origin = feet (sole at y = 3). No animation, no outlines, no filters. `flat` removes the one soft shade gradient.
+// v3 "single mesh" parts: every named part (head+neck, hair, shirt, each pair of trousers, each shoe, forearm+hand) is ONE <path>.
+// Sub-shapes are joined into one `d` with identical winding, so the default nonzero fill renders their union; a trim (cardigan front, V-neck) is a reverse-wound hole over a same-position patch.
 import { useId } from 'react';
 
 const D = Math.PI / 180;
@@ -52,6 +54,46 @@ function ring(pts) {
   return `${d}Z`;
 }
 
+
+// ---- Path toolkit: tiny parser for absolute M/L/Q/C/Z paths, used to give every sub-shape the same winding (counter-clockwise on screen) so joined sub-paths union.
+const ARITY = { M: 2, L: 2, Q: 4, C: 6 };
+function parse(d) {
+  const ops = []; const re = /([MLQCZ])([^MLQCZ]*)/g; let m;
+  while ((m = re.exec(d))) {
+    const c = m[1]; if (c === 'Z') continue;
+    const n = (m[2].match(/-?\d*\.?\d+/g) || []).map(Number); const k = ARITY[c];
+    for (let i = 0; i < n.length; i += k) ops.push({ c: i && c === 'M' ? 'L' : c, p: n.slice(i, i + k) });
+  }
+  return ops;
+}
+const str = (ops) => `${ops.map((o) => o.c + o.p.map(f1).join(' ')).join('')}Z`;
+const area = (ops) => {
+  const pts = []; ops.forEach((o) => { for (let i = 0; i < o.p.length; i += 2) pts.push([o.p[i], o.p[i + 1]]); });
+  let s = 0; pts.forEach((a, i) => { const b = pts[(i + 1) % pts.length]; s += a[0] * b[1] - b[0] * a[1]; });
+  return s;
+};
+const rev = (ops) => {
+  const end = (o) => [o.p[o.p.length - 2], o.p[o.p.length - 1]];
+  const out = [{ c: 'M', p: end(ops[ops.length - 1]) }];
+  for (let i = ops.length - 1; i >= 1; i -= 1) {
+    const o = ops[i]; const prev = end(ops[i - 1]);
+    if (o.c === 'L') out.push({ c: 'L', p: prev });
+    else if (o.c === 'Q') out.push({ c: 'Q', p: [o.p[0], o.p[1], ...prev] });
+    else out.push({ c: 'C', p: [o.p[2], o.p[3], o.p[0], o.p[1], ...prev] });
+  }
+  return out;
+};
+const orient = (d, want) => { const ops = parse(d); const s = area(ops); return str((want === 'ccw' ? s > 0 : s < 0) ? rev(ops) : ops); };
+const ccw = (d) => orient(d, 'ccw');
+const cw = (d) => orient(d, 'cw'); // reverse winding = a hole inside a joined path
+const join = (...ds) => ds.filter(Boolean).join('');
+const ell = (cx, cy, rx, ry) => `M${f1(cx - rx)} ${f1(cy)}a${f1(rx)} ${f1(ry)} 0 1 0 ${f1(2 * rx)} 0a${f1(rx)} ${f1(ry)} 0 1 0 ${f1(-2 * rx)} 0Z`;
+// Move + rotate a parsed shape (same as translate(x y) rotate(-a)).
+const place = (d, x, y, aDeg) => {
+  const t = -aDeg * D; const c = Math.cos(t); const s = Math.sin(t);
+  return str(parse(d).map((o) => ({ c: o.c, p: o.p.map((v, i) => (i % 2 === 0 ? x + v * c - o.p[i + 1] * s : y + o.p[i - 1] * s + v * c)) })));
+};
+
 // ---- Poses (3D). a = right limbs (X<0), b = left limbs. Arms: u = upper arm [f, s], l = forearm [f, s] (absolute). Legs: t = thigh, sh = shin.
 // lean = torso pitch forward, tw = torso yaw relative to pelvis (walk counter-rotation), hipZ = pelvis forward/back (sitting back onto a seat).
 const POSES = {
@@ -68,14 +110,9 @@ const POSES = {
   sit: { a: { u: [14, 8], l: [68, -14] }, b: { u: [8, 8], l: [60, -14] }, la: { t: [88, 3], sh: [1, 2] }, lb: { t: [86, 3], sh: [-6, 2] }, lean: 3, tw: 0, hipZ: -5, sit: true },
 };
 
-// ---- Hands and shoes
-function Hand({ x, y, a, skin, open }) {
-  return (
-    <g transform={`translate(${f1(x)} ${f1(y)}) rotate(${f1(-a)})`}>
-      <path d={open ? 'M-5.5 2 Q-8 11 -2 15 Q4 17 7 10 L10 4 Q9 1 6 3 L4 1Z' : 'M-5 2 Q-6.5 11 -1.5 14 Q4 15 5.5 9 Q6 4 4 1Z'} fill={skin} />
-    </g>
-  );
-}
+// ---- Hands (one path each; placed at the wrist by `place`)
+const HAND_OPEN = ccw('M-5.5 2 Q-8 11 -2 15 Q4 17 7 10 L10 4 Q9 1 6 3 L4 1Z');
+const HAND_FIST = ccw('M-5 2 Q-6.5 11 -1.5 14 Q4 15 5.5 9 Q6 4 4 1Z');
 
 // ---- Head: five hand-drawn views. k: 0 front, 1 f34, 2 side, 3 b34, 4 back. Local origin = head centre (top -30, chin +13).
 const SIL_FRONT = 'M-16 -8 C-16.5 -23 -8 -30 0 -30 C8 -30 16.5 -23 16 -8 C15.5 1 10 10 0 13 C-10 10 -15.5 1 -16 -8Z';
@@ -93,53 +130,22 @@ const CAP = [
 const RING = [[-15, -8, 7], [-17, -17, 7.5], [-12, -27, 8], [0, -31, 8.5], [12, -27, 8], [17, -17, 7.5], [15, -8, 7]];
 const RING_SIDE = [[-15, -8, 7], [-18, -17, 7.5], [-12, -27, 8], [-2, -31, 8.5], [9, -29, 8], [17, -20, 7.5], [19, -9, 6.5]];
 const NAPE = [[-11, 3, 7], [0, 6, 7], [11, 3, 7]];
-// Long / wavy hair: curtain behind (side views), side locks (front), full fall over the back (back views).
-const CURTAIN = [
-  null,
-  'M-18 -6 Q-25 14 -19 34 Q-8 39 6 34 Q8 20 6 -8Z',
-  'M-19 -6 Q-27 14 -21 36 Q-8 41 6 36 Q10 20 8 -8Z',
-  'M-19 -8 Q-26 14 -20 36 Q-4 41 14 36 Q18 20 16 -8Z',
-  'M-18 -6 Q-23 16 -18 36 Q0 42 18 36 Q23 16 18 -6Z',
-];
-const LOCK_SIDE = 'M-18.5 -2 C-24 10 -20 24 -14 32 L-9 28 C-13 18 -12 6 -14 -2Z';
-const LOCKS_FRONT = ['M-17 -6 Q-22 12 -19 30 Q-13 34 -9 28 Q-12 12 -12 -6Z', 'M17 -6 Q22 12 19 30 Q13 34 9 28 Q12 12 12 -6Z'];
-
-function headParts({ k, psi, skin, hair, style, id, flat }) {
-  const wavy = style === 'wavy'; const long = style === 'long' || wavy; const curly = style === 'curly'; const bun = style === 'bun'; const bald = style === 'bald';
-  const bunAt = { x: -12 * Math.sin(psi), y: -32, behind: k <= 2 };
-  const behind = []; const after = [];
+// Hair = ONE path: scalp cap + bun (or curls). Long / wavy styles were retired (everyone on screen wears the bun, short, curly or bald).
+const SILS = SIL.map(ccw); const CAPS = CAP.map(ccw);
+function headParts({ k, psi, style }) {
+  const bald = style === 'bald'; const bun = style === 'bun'; const curly = style === 'curly';
+  let hair = '';
   if (!bald) {
-    if (bun) {
-      const node = <circle key="bun" cx={f1(bunAt.x)} cy={bunAt.y} r="9.5" fill={bunAt.behind ? hair : darken(hair, 0.1)} />;
-      (bunAt.behind ? behind : after).push(node);
+    hair = CAPS[k];
+    if (bun) hair += ell(-12 * Math.sin(psi), -32, 9.5, 9.5);
+    if (curly) {
+      const rg = k === 1 || k === 2 || k === 3 ? RING_SIDE : RING;
+      hair += rg.map(([cx, cy, r]) => ell(cx, cy, r, r)).join('');
+      if (k >= 3) hair += NAPE.map(([cx, cy, r]) => ell(cx, cy, r, r)).join('');
+      hair += ell(k === 0 ? 0 : -3, -21, 6, 6);
     }
-    if (long && CURTAIN[k]) {
-      const node = (
-        <g key="curtain" fill={bunAt.behind ? darken(hair, 0.12) : hair}>
-          <path d={CURTAIN[k]} />
-          {wavy && k >= 3 && [[-12, 37], [0, 41], [12, 37]].map(([cx, cy], i) => <circle key={i} cx={cx} cy={cy} r="7" />)}
-        </g>
-      );
-      (k <= 2 ? behind : after).push(node);
-    }
-    if (long && k === 0) after.push(<g key="locks" fill={hair}>{LOCKS_FRONT.map((d, i) => <path key={i} d={d} />)}</g>);
-    if (long && (k === 1 || k === 2)) after.push(<path key="lock" d={LOCK_SIDE} fill={hair} transform={k === 1 ? 'translate(-1 0)' : undefined} />);
   }
-  const main = (
-    <g>
-      <path d={SIL[k]} fill={skin} />
-      {!flat && <path d={SIL[k]} fill={`url(#${id})`} />}
-      {!bald && <path d={CAP[k]} fill={hair} />}
-      {!bald && curly && (
-        <g fill={hair}>
-          {(k === 2 || k === 1 || k === 3 ? RING_SIDE : RING).map(([cx, cy, r], i) => <circle key={i} cx={cx} cy={cy} r={r} />)}
-          {k >= 3 && NAPE.map(([cx, cy, r], i) => <circle key={`n${i}`} cx={cx} cy={cy} r={r} />)}
-          <circle cx={k === 0 ? 0 : -3} cy="-21" r="6" />
-        </g>
-      )}
-    </g>
-  );
-  return { behind, main, after };
+  return { skin: SILS[k], hair };
 }
 
 // Props: pose, view, face, outfit (tee|scrubs|cardigan), hairStyle (short|bun|curly|wavy|long|bald), cane, elder, item (node drawn at the right hand), lean, look (head turn in degrees, + toward the figure's forward-left), walk (shortcut for pose walk).
@@ -152,7 +158,6 @@ export function Figure({
   const P = walk && !P0.wave && !P0.sit ? { ...POSES.walk, open: P0.open } : P0;
   const sit = !!P.sit;
   const style = bald ? 'bald' : hairStyle || 'short';
-  const sleeve = outfit === 'cardigan' ? top : skin;
   const yaw = typeof view === 'number' ? view : (VIEWS[view] ?? 90);
   const L = ((lean ?? 0) + P.lean + (elder ? (sit ? 6 : 9) : 0)) * D;
   const tw = P.tw || 0;
@@ -184,20 +189,14 @@ export function Figure({
   };
   const LG = { a: legGeo('a'), b: legGeo('b') };
   const cp = Math.abs(Math.cos(psiP));
+  const mesh = (key, d, fill) => (d ? <g key={key}><path d={d} fill={fill} />{!flat && <path d={d} fill={`url(#${uid})`} />}</g> : null);
   const legNode = (k) => {
     const g = LG[k]; const o = LG[k === 'a' ? 'b' : 'a'];
     const dim = g.hip.d < o.hip.d - 0.5;
     const c = dim ? darken(bottom, 0.12) : bottom;
     const sc = dim ? darken(shoe, 0.12) : shoe;
-    return (
-      <g key={`leg${k}`}>
-        <path d={limb(g.heel, g.toe, 11, 8, 0.1)} fill={sc} />
-        {cp > 0.25 && <ellipse cx={f1((g.heel.x + g.toe.x) / 2)} cy={f1((g.heel.y + g.toe.y) / 2)} rx={f1(6.5 * cp + 1)} ry="4.6" fill={sc} />}
-        <path d={limb(g.knee, g.ank, 15, 11, 0.06)} fill={c} />
-        <path d={limb(g.hip, g.knee, 21, 15.5, 0.1)} fill={c} />
-        {!flat && <><path d={limb(g.hip, g.knee, 21, 15.5, 0.1)} fill={`url(#${uid})`} /><path d={limb(g.knee, g.ank, 15, 11, 0.06)} fill={`url(#${uid})`} /></>}
-      </g>
-    );
+    const shoeD = join(limb(g.heel, g.toe, 11, 8, 0.1), cp > 0.25 ? ell((g.heel.x + g.toe.x) / 2, (g.heel.y + g.toe.y) / 2, 6.5 * cp + 1, 4.6) : '');
+    return <g key={`leg${k}`}>{mesh('shoe', shoeD, sc)}{mesh('trou', join(limb(g.hip, g.knee, 21, 15.5, 0.1), limb(g.knee, g.ank, 15, 11, 0.06)), c)}</g>;
   };
 
   // Torso frame: lean about the lateral axis, then yaw psiT.
@@ -211,20 +210,16 @@ export function Figure({
     return { sh, el, wr, ang, depth: (sh.d + el.d + wr.d) / 3 };
   };
   const AR = { a: arm('a'), b: arm('b') };
-  const armNode = (k) => {
-    const g = AR[k]; const dim = g.depth < 0 && g.sh.d < -1;
-    const c = dim ? darken(top, 0.16) : top; const fa = dim ? darken(sleeve, 0.16) : sleeve;
-    const open = P.open || P.wave;
-    return (
-      <g key={`arm${k}`}>
-        <path d={limb(g.el, g.wr, 10.5, 8.5, 0.08)} fill={fa} />
-        {!flat && <path d={limb(g.el, g.wr, 10.5, 8.5, 0.08)} fill={`url(#${uid})`} />}
-        <Hand x={g.wr.x} y={g.wr.y} a={g.ang} skin={dim ? darken(skin, 0.16) : skin} open={open} />
-        <path d={limb(g.sh, g.el, 14, 11, 0.12)} fill={c} />
-        {!flat && <path d={limb(g.sh, g.el, 14, 11, 0.12)} fill={`url(#${uid})`} />}
-      </g>
-    );
+  const cardi = outfit === 'cardigan';
+  const dimOf = (k) => AR[k].depth < 0 && AR[k].sh.d < -1;
+  // Sleeve = upper arm (+ forearm when the cardigan covers it). Skin = bare forearm + hand, ONE path.
+  const sleeveD = (k) => join(limb(AR[k].sh, AR[k].el, 14, 11, 0.12), cardi ? limb(AR[k].el, AR[k].wr, 10.5, 8.5, 0.08) : '');
+  const skinD = (k) => {
+    const g = AR[k]; const len = Math.hypot(g.wr.x - g.el.x, g.wr.y - g.el.y); const t = len > 6 ? 3 / len : 0;
+    const st = { x: g.el.x + (g.wr.x - g.el.x) * t, y: g.el.y + (g.wr.y - g.el.y) * t };
+    return join(cardi ? '' : limb(st, g.wr, 10.5, 8.5, 0.08), place(P.open || P.wave ? HAND_OPEN : HAND_FIST, g.wr.x, g.wr.y, g.ang));
   };
+  const dimArm = (k) => <g key={`arm${k}`}>{mesh('skin', skinD(k), darken(skin, 0.16))}{mesh('sleeve', sleeveD(k), darken(top, 0.16))}</g>;
 
   // Torso silhouette, width from yaw: lateral half-width * |cos| and depth half-thickness * |sin|.
   const spine = (h, psi) => proj(psi, Pp, up(h));
@@ -233,47 +228,48 @@ export function Figure({
   const row = (h, a, b, psi, dy = 0) => { const c = spine(h, psi); c.y += dy; return [{ x: c.x - hw(a, b, psi), y: c.y }, { x: c.x + hw(a, b, psi), y: c.y }]; };
   const rows = [row(0, 20.5, 14.5, psiP), row(26, 17.5, 13, psiM), row(54, 20.5, elder ? 16 : 14.5, psiT), row(74, 22, 12, psiT, -1), row(82, 9, 6, psiT, -1)];
   const hemC = spine(-3, psiP); hemC.y += 2;
-  const outline = [...rows.map((r) => r[0]), { ...hemC }, ...[...rows].reverse().map((r) => r[1])];
-  // outline order: left side bottom->top, then right side top->bottom; the hem point sits at the bottom between them, so reorder
   const leftSide = rows.map((r) => r[0]); const rightSide = [...rows].reverse().map((r) => r[1]);
-  const torsoPath = ring([...leftSide, ...rightSide, hemC]);
-  void outline;
+  const torsoPath = ccw(ring([...leftSide, ...rightSide, hemC]));
   const cfT = Math.cos(psiT); const sfT = Math.sin(psiT);
   const dk = darken(top, 0.22);
-  const torsoNode = (
-    <g>
-      <path d={torsoPath} fill={top} />
-      {outfit === 'cardigan' && cfT > 0.12 && (() => {
-        const a0 = spine(78, psiT); const a1 = spine(2, psiP); const o = 11 * sfT;
-        return <path d={`M${f1(a0.x + o - 9 * cfT)} ${f1(a0.y)} Q${f1(a0.x + o)} ${f1(a0.y + 8)} ${f1(a0.x + o + 9 * cfT)} ${f1(a0.y)} L${f1(a1.x + o + 8 * cfT)} ${f1(a1.y)} Q${f1(a1.x + o)} ${f1(a1.y + 3)} ${f1(a1.x + o - 8 * cfT)} ${f1(a1.y)}Z`} fill="#FFF3E0" />;
-      })()}
-      {outfit === 'scrubs' && cfT > 0.1 && (() => {
-        const a0 = spine(79, psiT); const o = 11 * sfT;
-        return <path d={`M${f1(a0.x + o - 10 * cfT)} ${f1(a0.y)} L${f1(a0.x + o)} ${f1(a0.y + 21)} L${f1(a0.x + o + 10 * cfT)} ${f1(a0.y)}Z`} fill={dk} />;
-      })()}
-      {outfit === 'scrubs' && cfT < -0.1 && (() => { const a0 = spine(79, psiT); return <path d={`M${f1(a0.x - 9 * -cfT)} ${f1(a0.y)} Q${f1(a0.x)} ${f1(a0.y + 5)} ${f1(a0.x + 9 * -cfT)} ${f1(a0.y)} L${f1(a0.x + 8 * -cfT)} ${f1(a0.y - 2)} L${f1(a0.x - 8 * -cfT)} ${f1(a0.y - 2)}Z`} fill={dk} />; })()}
-      {!flat && <path d={torsoPath} fill={`url(#${uid})`} />}
-    </g>
-  );
+  // Trim (cardigan front / scrub V-neck): a patch drawn first, then cut out of the shirt path as a reverse-wound hole so arms still cover it.
+  let trimD = ''; let trimFill = dk;
+  if (outfit === 'cardigan' && cfT > 0.12) {
+    const a0 = spine(78, psiT); const a1 = spine(2, psiP); const o = 11 * sfT; trimFill = '#FFF3E0';
+    trimD = `M${f1(a0.x + o - 9 * cfT)} ${f1(a0.y)} Q${f1(a0.x + o)} ${f1(a0.y + 8)} ${f1(a0.x + o + 9 * cfT)} ${f1(a0.y)} L${f1(a1.x + o + 8 * cfT)} ${f1(a1.y)} Q${f1(a1.x + o)} ${f1(a1.y + 3)} ${f1(a1.x + o - 8 * cfT)} ${f1(a1.y)}Z`;
+  } else if (outfit === 'scrubs' && cfT > 0.1) {
+    const a0 = spine(79, psiT); const o = 11 * sfT;
+    trimD = `M${f1(a0.x + o - 10 * cfT)} ${f1(a0.y)} L${f1(a0.x + o)} ${f1(a0.y + 21)} L${f1(a0.x + o + 10 * cfT)} ${f1(a0.y)}Z`;
+  } else if (outfit === 'scrubs' && cfT < -0.1) {
+    const a0 = spine(79, psiT);
+    trimD = `M${f1(a0.x - 9 * -cfT)} ${f1(a0.y)} Q${f1(a0.x)} ${f1(a0.y + 5)} ${f1(a0.x + 9 * -cfT)} ${f1(a0.y)} L${f1(a0.x + 8 * -cfT)} ${f1(a0.y - 2)} L${f1(a0.x - 8 * -cfT)} ${f1(a0.y - 2)}Z`;
+  }
+  const trimNode = trimD ? <path d={ccw(trimD)} fill={trimFill} /> : null;
+  const arms = ['a', 'b'].sort((m, n) => AR[m].depth - AR[n].depth);
+  const armsBehind = arms.filter((k) => AR[k].sh.d < -1 && AR[k].depth < -1); const armsFront = arms.filter((k) => !armsBehind.includes(k));
+  const shirtArms = armsFront.filter((k) => !dimOf(k)); const lateDim = armsFront.filter(dimOf);
+  // THE shirt: torso + every near-side sleeve, one path (with the trim punched out).
+  const shirtNode = mesh('shirt', join(torsoPath, ...shirtArms.map(sleeveD), trimD ? cw(trimD) : ''), top);
 
-  // Neck and head.
+  // Head + neck = ONE skin path (neck drawn in head space); hair = ONE path.
   const hz = elder ? 6 : 0;
   const headAt = proj(psiT, Pp, [0, ...up(104, hz).slice(1)]);
-  const neckBase = spine(74, psiT); const neckTop = proj(psiT, Pp, [0, ...up(95, hz).slice(1)]);
-  const neckNode = <path d={limb(neckBase, neckTop, 13, 12, 0)} fill={darken(skin, 0.1)} />;
-  const hp = headParts({ k: hk, psi: psiH, skin, hair, style, id: uid, flat });
-  const headT = `translate(${f1(headAt.x)} ${f1(headAt.y)}) rotate(${elder ? 4 * Math.sin(psiH) : 0})`;
-  const headBehind = <g transform={headT}>{hp.behind}</g>;
-  const headMain = <g transform={headT}>{hp.main}</g>;
-  const headAfter = <g transform={headT}>{hp.after}</g>;
+  const neckBase = spine(79, psiT); const neckTop = proj(psiT, Pp, [0, ...up(95, hz).slice(1)]);
+  const rot = elder ? 4 * Math.sin(psiH) : 0; const rr = rot * D;
+  const toLocal = (p) => { const dx = p.x - headAt.x; const dy = p.y - headAt.y; return { x: dx * Math.cos(rr) + dy * Math.sin(rr), y: -dx * Math.sin(rr) + dy * Math.cos(rr) }; };
+  const hp = headParts({ k: hk, psi: psiH, style });
+  const headNode = (
+    <g transform={`translate(${f1(headAt.x)} ${f1(headAt.y)}) rotate(${rot})`}>
+      {mesh('skin', join(hp.skin, limb(toLocal(neckBase), toLocal(neckTop), 13, 12, 0)), skin)}
+      {style !== 'bald' && <path d={hp.hair} fill={hair} />}
+    </g>
+  );
 
   const hand = AR.a.wr;
   const shadowRx = 24 + 10 * Math.abs(Math.sin(psiP));
   // Draw order by depth: legs reaching toward the camera and arms in front of the torso come after it.
   const order = ['a', 'b'].sort((m, n) => LG[m].hip.d - LG[n].hip.d);
   const legsBehind = order.filter((k) => LG[k].kd <= 6); const legsFront = order.filter((k) => LG[k].kd > 6);
-  const arms = ['a', 'b'].sort((m, n) => AR[m].depth - AR[n].depth);
-  const armsBehind = arms.filter((k) => AR[k].sh.d < -1 && AR[k].depth < -1); const armsFront = arms.filter((k) => !armsBehind.includes(k));
   return (
     <g transform={`translate(${x} ${y}) scale(${face * s * scale} ${s * scale})`}>
       {!flat && (
@@ -285,14 +281,13 @@ export function Figure({
       )}
       <ellipse cx={f1(O.x + 3 * Math.sin(psiP))} cy="2" rx={f1(shadowRx)} ry="5.5" fill="#000" opacity=".14" />
       {legsBehind.map(legNode)}
-      {armsBehind.map(armNode)}
-      {neckNode}
-      {torsoNode}
-      {headBehind}
-      {headMain}
-      {headAfter}
+      {armsBehind.map(dimArm)}
+      {trimNode}
+      {shirtNode}
+      {headNode}
       {legsFront.map(legNode)}
-      {armsFront.map(armNode)}
+      {lateDim.map(dimArm)}
+      {shirtArms.map((k) => mesh(`hand${k}`, skinD(k), skin))}
       {item && <g transform={`translate(${f1(hand.x)} ${f1(hand.y)})`}>{item}</g>}
       {cane && (
         <g stroke="#8A5A2B" strokeWidth="5" strokeLinecap="round" fill="none">
@@ -305,10 +300,12 @@ export function Figure({
 }
 
 // Story cast (SHOTS.md). Flat solid fills, no shade gradient. dusk = darker tones for the Contact scene.
-// PSW: blue scrubs, navy shoes, hair bun. Patient: orange cardigan, cream trousers, elder posture.
+// PSW: blue scrubs, navy shoes, hair bun. Patient: orange cardigan, cream trousers, elder posture, SAME bun as the PSW (hair colour stays grey).
+// Relative (Home + Contact, the welcoming person at the door): Contact's blue cardigan and stone trousers, the PSW bun in black, upright.
 export const CAST = {
   psw: { top: '#0066B3', bottom: '#003B66', shoe: '#003B66', dusk: '#7FC1F5' },
   patient: { top: '#BC5509', bottom: '#FFF9F2', shoe: '#7B4A1E', dusk: '#FFA24D' },
+  relative: { top: '#3E6AA5', bottom: '#C9BFB2', shoe: '#7B4A1E', hair: '#15110F' },
 };
 export function PSW({ dusk = false, ...p }) {
   const c = CAST.psw;
@@ -316,5 +313,10 @@ export function PSW({ dusk = false, ...p }) {
 }
 export function Patient({ dusk = false, ...p }) {
   const c = CAST.patient;
-  return <Figure outfit="cardigan" hairStyle="wavy" hair="#DADDE3" elder flat top={dusk ? c.dusk : c.top} bottom={dusk ? '#C9BFB2' : c.bottom} shoe={c.shoe} {...p} />;
+  return <Figure outfit="cardigan" hairStyle="bun" hair="#DADDE3" elder flat top={dusk ? c.dusk : c.top} bottom={dusk ? '#C9BFB2' : c.bottom} shoe={c.shoe} {...p} />;
+}
+// `dusk` is accepted so it can replace <Patient dusk> in place; the Relative's colours are the same day and night.
+export function Relative({ dusk = false, ...p }) {
+  const c = CAST.relative; void dusk;
+  return <Figure outfit="cardigan" hairStyle="bun" hair={c.hair} flat top={c.top} bottom={c.bottom} shoe={c.shoe} {...p} />;
 }

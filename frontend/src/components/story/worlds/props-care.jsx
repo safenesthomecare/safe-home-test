@@ -2,22 +2,23 @@
 // Same conventions as indoors.jsx: (x, y) = bottom centre, s = scale, soft shading, no filters, no animation.
 // Walker is ~88 units tall at s=1 (about hip height on a standing figure).
 import { darken, lighten } from './figure';
-import { useUid, dotP, ovalP } from './outdoors';
+import { useUid, dotP, ovalP, rrectP as rP } from './outdoors';
 
 const M = { alu: '#C9CED6', aluD: '#8C95A3', grip: '#3B3F47', rubber: '#2B2F36', glass: '#BFE0F5', water: '#7CC4EE', white: '#FFFFFF', body: '#F3F6FA', accent: '#14A89B', screen: '#BFEBD8' };
+
+// Polygon from [x, y] points, wound like rP/dotP/ovalP (counter-clockwise), so joined shapes show as their union (one path per part).
+const pP = (...p) => { let a = 0; p.forEach((q, i) => { const n = p[(i + 1) % p.length]; a += q[0] * n[1] - n[0] * q[1]; }); return 'M' + (a > 0 ? [...p].reverse() : p).map((q) => `${q[0]} ${q[1]}`).join('L') + 'Z'; };
 
 // Folding walker, side view with the far frame offset up and right for depth. face = -1 mirrors it.
 export function Walker({ x, y, s = 1, face = 1 }) {
   const u = useUid();
   const side = (dx, dy, c, c2) => (
     <g transform={`translate(${dx} ${dy})`}>
-      <path d="M-30 0L-27 -84M30 0L33 -84" stroke={c} strokeWidth="6" strokeLinecap="round" fill="none" />
+      <path d="M-30 0L-27 -84M30 0L33 -84M-27 -84H33" stroke={c} strokeWidth="6" strokeLinecap="round" fill="none" />
       <path d="M-28 -44H31" stroke={c2} strokeWidth="4" strokeLinecap="round" />
-      <path d="M-27 -84H33" stroke={c} strokeWidth="6" strokeLinecap="round" />
       <path d="M-36 -88H-14" stroke={M.grip} strokeWidth="9" strokeLinecap="round" />
       <path d="M-33 -90H-18" stroke="#fff" strokeWidth="1.6" strokeLinecap="round" opacity=".25" />
-      <path d={ovalP(-30, -1, 6, 3)} fill={M.rubber} />
-      <circle cx="30" cy="-6" r="6.5" fill={M.rubber} /><circle cx="30" cy="-6" r="2.4" fill={c2} />
+      <path d={ovalP(-30, -1, 6, 3) + dotP(30, -6, 6.5)} fill={M.rubber} /><circle cx="30" cy="-6" r="2.4" fill={c2} />
     </g>
   );
   return (
@@ -79,12 +80,11 @@ export function Wheelchair({ x, y, s = 1, face = 1 }) {
       <circle cx="-14" cy="-32" r="30" fill="none" stroke={M.rubber} strokeWidth="5" />
       <circle cx="-14" cy="-32" r="26" fill="none" stroke={M.aluD} strokeWidth="2" /><circle cx="-14" cy="-32" r="22" fill="none" stroke={M.alu} strokeWidth="1.6" />
       <path d={spokes} stroke={M.alu} strokeWidth="1" opacity=".8" /><circle cx="-14" cy="-32" r="4" fill={M.aluD} /><circle cx="-14" cy="-32" r="1.6" fill="#fff" opacity=".6" />
-      <path d="M40 -52L46 -20" stroke={fr} strokeWidth="5" strokeLinecap="round" /><circle cx="46" cy="-9" r="9" fill={M.rubber} /><circle cx="46" cy="-9" r="3.2" fill={M.aluD} />
+      <path d="M40 -52L46 -20M-22 -50H42M-22 -50L-29 -104" stroke={fr} strokeWidth="5" strokeLinecap="round" /><circle cx="46" cy="-9" r="9" fill={M.rubber} /><circle cx="46" cy="-9" r="3.2" fill={M.aluD} />
       <path d="M40 -46L58 -16" stroke={fr} strokeWidth="4.5" strokeLinecap="round" /><path d="M50 -15H73L71 -10H49Z" fill={frD} />
-      <path d="M-22 -50H42" stroke={fr} strokeWidth="5" strokeLinecap="round" />
-      <path d="M-22 -50L-29 -104" stroke={fr} strokeWidth="5" strokeLinecap="round" /><path d="M-29 -104H-42" stroke={M.grip} strokeWidth="7" strokeLinecap="round" />
-      <path d="M-22 -58L-28 -102L-18 -102L-12 -58Z" fill={up} /><path d="M-26 -94L-24 -62" stroke="#fff" strokeWidth="1.6" strokeLinecap="round" opacity=".25" />
-      <rect x="-22" y="-60" width="62" height="9" rx="3.5" fill={up} /><rect x="-22" y="-54" width="62" height="3.5" rx="1.7" fill={upD} />
+      <path d="M-29 -104H-42" stroke={M.grip} strokeWidth="7" strokeLinecap="round" />
+      <path d={pP([-22, -58], [-28, -102], [-18, -102], [-12, -58]) + rP(-22, -60, 62, 9, 3.5)} fill={up} /><path d="M-26 -94L-24 -62" stroke="#fff" strokeWidth="1.6" strokeLinecap="round" opacity=".25" />
+      <rect x="-22" y="-54" width="62" height="3.5" rx="1.7" fill={upD} />
       <path d="M-18 -78H30" stroke={fr} strokeWidth="4" strokeLinecap="round" /><rect x="-16" y="-84" width="40" height="7" rx="3.5" fill={M.grip} /><path d="M28 -78V-60" stroke={fr} strokeWidth="4" strokeLinecap="round" />
       <g transform="rotate(45 9 -54)"><rect x="4" y="-56" width="10" height="4.5" rx="1.5" fill={M.rubber} /></g>
       <path d="M9 -54L17 -76" stroke={M.aluD} strokeWidth="3.2" strokeLinecap="round" /><circle cx="17.5" cy="-77.5" r="3.6" fill="#F47C20" />
@@ -105,11 +105,11 @@ export function CPAP({ x, y, s = 1, face = 1 }) {
       <path d={dotP(10, -10, 3.4)} fill={M.accent} /><path d="M-22 -18H18" stroke="#fff" strokeWidth="1.4" strokeLinecap="round" opacity=".8" />
       <rect x="26" y="-23" width="16" height="23" rx="4" fill={M.glass} opacity=".55" />
       <g clipPath={`url(#${u}t)`}><rect x="24" y="-12" width="20" height="14" fill={M.water} opacity=".85" /><path d="M24 -12H44" stroke="#fff" strokeWidth="1.2" opacity=".7" /></g>
-      <rect x="26" y="-23" width="16" height="23" rx="4" fill="none" stroke="#fff" strokeWidth="1.2" opacity=".8" /><rect x="29" y="-26" width="10" height="4" rx="1.6" fill={M.aluD} />
+      <rect x="26" y="-23" width="16" height="23" rx="4" fill="none" stroke="#fff" strokeWidth="1.2" opacity=".8" />
       <path d="M42 -12C58 -16 66 -6 58 -1S66 3 76 -1" stroke={M.accent} strokeWidth="6" fill="none" strokeLinecap="round" />
       <path d="M42 -12C58 -16 66 -6 58 -1S66 3 76 -1" stroke="#fff" strokeWidth="6" fill="none" strokeLinecap="round" strokeDasharray="1.6 3.4" opacity=".4" />
       <path d="M96 -9Q106 -9 112 -2M96 -4Q106 0 112 2" stroke={M.grip} strokeWidth="2.4" fill="none" strokeLinecap="round" />
-      <path d="M74 -3H82V1H73Z" fill={M.aluD} />
+      <path d={rP(29, -26, 10, 4, 1.6) + pP([74, -3], [82, -3], [82, 1], [73, 1])} fill={M.aluD} />
       <path d={ovalP(90, -7, 13, 9)} fill={M.glass} opacity=".75" /><path d={ovalP(90, -7, 13, 9)} fill="none" stroke="#fff" strokeWidth="1.2" opacity=".8" />
       <path d="M80 -2Q90 3 100 -2" stroke="#7CB6DC" strokeWidth="4" fill="none" strokeLinecap="round" /><path d="M84 -12Q90 -15 95 -12" stroke="#fff" strokeWidth="1.6" fill="none" strokeLinecap="round" opacity=".7" />
     </g>
@@ -127,7 +127,7 @@ export function BedsideTable({ x, y, s = 1, lamp = true, cpap = false, lit = tru
         <linearGradient id={`${u}s`} x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor={lit ? '#FFF3C4' : '#F3E3CC'} /><stop offset="1" stopColor={lit ? '#FFC95A' : '#D9C5A8'} /></linearGradient>
       </defs>
       <path d={ovalP(0, 2, 82, 4.4)} fill="#000" opacity=".16" />
-      <rect x="-66" y="-14" width="7" height="14" rx="2" fill={woodD} /><rect x="59" y="-14" width="7" height="14" rx="2" fill={woodD} />
+      <path d={rP(-66, -14, 7, 14, 2) + rP(59, -14, 7, 14, 2)} fill={woodD} />
       <rect x="-68" y="-60" width="136" height="48" rx="3" fill={wood} />
       <rect x="-62" y="-34" width="124" height="18" rx="2" fill={darken(woodD, 0.25)} /><path d="M-62 -34H62" stroke="#000" strokeWidth="5" opacity=".18" />
       <rect x="-62" y="-56" width="124" height="19" rx="2.5" fill={woodL} /><rect x="-62" y="-41" width="124" height="4" rx="2" fill="#000" opacity=".1" /><path d={dotP(0, -47, 3)} fill={woodD} />
@@ -136,7 +136,7 @@ export function BedsideTable({ x, y, s = 1, lamp = true, cpap = false, lit = tru
         <g transform="translate(-10 0)">
           {lit && <circle cx="-46" cy="-92" r="110" fill={`url(#${u}g)`} />}
           <path d={ovalP(-46, -64, 14, 3)} fill="#000" opacity=".14" />
-          <path d="M-58 -64q2 -9 12 -9t12 9Z" fill={woodD} /><rect x="-48" y="-92" width="4" height="26" rx="1.6" fill={woodD} />
+          <path d={`M-34 -64Q-36 -73 -46 -73Q-56 -73 -58 -64Z${rP(-48, -92, 4, 26, 1.6)}`} fill={woodD} />
           <path d="M-62 -90L-54 -116H-38L-30 -90Z" fill={`url(#${u}s)`} stroke={darken('#F3E3CC', 0.3)} strokeWidth="1" strokeOpacity=".5" /><path d={ovalP(-46, -90, 16, 2.6)} fill={lit ? '#FFE9A0' : '#D9C5A8'} />
         </g>
       )}

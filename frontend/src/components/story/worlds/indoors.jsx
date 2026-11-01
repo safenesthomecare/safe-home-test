@@ -1,7 +1,7 @@
 // Indoor kit (Phase 1.2). Same style as figure.jsx / outdoors.jsx: soft gradients, thin detail lines, no filters.
 // Footprints and props match the old flat pieces, so the worlds do not move. (x, y) = bottom centre unless noted (Wall, Win, Frame: top-left).
 import { darken, lighten } from './figure';
-import { f, mk, useUid, leafP, dotP, ovalP, TRIM } from './outdoors';
+import { f, mk, useUid, leafP, dotP, ovalP, rrectP, TRIM } from './outdoors';
 
 const P = { wood: '#B98350', woodD: '#5A3213', glow: '#FFD66B', sand: '#F3E3CC', blueL: '#BFE0F5', leaf: '#4F9D3A', leafL: '#8BD450', orange: '#F47C20', blue: '#1F5BA8', plum: '#6B46C1', rose: '#E0577F', teal: '#14A89B' };
 const grain = (x, y, w, h, n, seed) => { const r = mk(seed); let d = ''; for (let i = 0; i < n; i++) { const yy = y + ((i + 0.5) / n) * h + (r() - 0.5) * 2; d += `M${f(x + r() * w * 0.2)} ${f(yy)}q${f(w * 0.12)} ${f((r() - 0.5) * 3)} ${f(w * 0.25)} 0t${f(w * 0.25)} 0t${f(w * 0.25)} 0`; } return d; };
@@ -44,7 +44,7 @@ export function Win({ x, y, w = 200, h = 220, sky = P.blueL, sun = false, curtai
     <g>
       <defs><Lin id={`${u}s`} c0={lighten(sky, 0.4)} c1={sky} /><Lin id={`${u}c`} c0={lighten(curtain, 0.25)} c1={darken(curtain, 0.2)} v={false} />
         <radialGradient id={`${u}g`}><stop offset="0" stopColor="#FFF3C0" stopOpacity=".9" /><stop offset="1" stopColor="#FFF3C0" stopOpacity="0" /></radialGradient></defs>
-      <rect x={x - 14} y={y - 14} width={w + 28} height={h + 28} rx="9" fill={TRIM} /><rect x={x - 14} y={y - 14} width={w + 28} height={h + 28} rx="9" fill="none" stroke={darken(TRIM, 0.22)} strokeWidth="2" />
+      <path d={rrectP(x - 14, y - 14, w + 28, h + 28, 9)} fill={TRIM} stroke={darken(TRIM, 0.22)} strokeWidth="2" />
       <rect x={x - 5} y={y - 5} width={w + 10} height={h + 10} rx="4" fill={darken(TRIM, 0.14)} />
       <rect x={x} y={y} width={w} height={h} fill={`url(#${u}s)`} />
       {sun && <g><circle cx={x + w * 0.7} cy={y + h * 0.3} r={w * 0.28} fill={`url(#${u}g)`} /><circle cx={x + w * 0.7} cy={y + h * 0.3} r="26" fill="#FFE59A" /></g>}
@@ -53,9 +53,9 @@ export function Win({ x, y, w = 200, h = 220, sky = P.blueL, sun = false, curtai
       <path d={`M${x + w / 2} ${y}V${y + h}M${x} ${y + h / 2}H${x + w}`} stroke={TRIM} strokeWidth="8" />
       <path d={`M${x} ${y}h${w * 0.4}l${-w * 0.4} ${h * 0.3}Z`} fill="#fff" opacity=".18" />
       <rect x={x - 26} y={y + h + 12} width={w + 52} height="13" rx="4" fill={TRIM} /><rect x={x - 22} y={y + h + 25} width={w + 44} height="6" fill="#000" opacity=".1" />
-      <path d={curt(-1)} fill={`url(#${u}c)`} /><path d={curt(1)} fill={`url(#${u}c)`} />
+      <path d={curt(-1) + curt(1)} fill={`url(#${u}c)`} />
       <path d={[0.3, 0.55, 0.78].map((k) => `M${f(x - 14 + cw * k)} ${y - 4}q-3 ${f(h * 0.3)} 0 ${f(h * 0.58)}M${f(x + w + 14 - cw + cw * k)} ${y - 4}q3 ${f(h * 0.3)} 0 ${f(h * 0.58)}`).join('')} stroke={darken(curtain, 0.3)} strokeWidth="1.3" opacity=".4" fill="none" />
-      <rect x={x - 34} y={y - 26} width={w + 68} height="7" rx="3.5" fill={P.woodD} /><circle cx={x - 36} cy={y - 22} r="7" fill={P.wood} /><circle cx={x + w + 36} cy={y - 22} r="7" fill={P.wood} />
+      <rect x={x - 34} y={y - 26} width={w + 68} height="7" rx="3.5" fill={P.woodD} /><path d={dotP(x - 36, y - 22, 7) + dotP(x + w + 36, y - 22, 7)} fill={P.wood} />
     </g>
   );
 }
@@ -102,7 +102,7 @@ export function Table({ x, y, w = 300, h = 120, color = P.wood }) {
     <g>
       <defs><Lin id={`${u}t`} c0={lighten(color, 0.18)} c1={darken(color, 0.1)} /><Lin id={`${u}l`} c0={darken(color, 0.25)} c1={darken(color, 0.55)} v={false} /></defs>
       <Shadow x={x} y={y + 2} rx={w / 2 + 10} />
-      <rect x={x0 + 24} y={y - h + 18} width="14" height={h - 18} fill={`url(#${u}l)`} /><rect x={x0 + w - 38} y={y - h + 18} width="14" height={h - 18} fill={`url(#${u}l)`} />
+      <path d={rrectP(x0 + 24, y - h + 18, 14, h - 18) + rrectP(x0 + w - 38, y - h + 18, 14, h - 18)} fill={`url(#${u}l)`} />
       <path d={`M${x0 + 24} ${y - 5}h14v5h-14ZM${x0 + w - 38} ${y - 5}h14v5h-14Z`} fill="#000" opacity=".18" />
       <rect x={x0 + 36} y={y - h + 18} width={w - 72} height="15" fill={darken(color, 0.32)} />
       <rect x={x0} y={y - h} width={w} height="18" rx="6" fill={`url(#${u}t)`} />
@@ -118,7 +118,7 @@ export function Chair({ x, y, face = 1, color = '#C85E10' }) {
     <g transform={`translate(${x} ${y}) scale(${face} 1)`}>
       <defs><Lin id={`${u}w`} c0={lighten(P.wood, 0.1)} c1={P.woodD} v={false} /><Lin id={`${u}c`} c0={lighten(color, 0.2)} c1={darken(color, 0.18)} /></defs>
       <Shadow x={0} y={2} rx={42} o={0.14} />
-      <rect x="16" y="-48" width="10" height="48" rx="2" fill={`url(#${u}w)`} /><rect x="-26" y="-48" width="10" height="48" rx="2" fill={`url(#${u}w)`} />
+      <path d={rrectP(16, -48, 10, 48, 2) + rrectP(-26, -48, 10, 48, 2)} fill={`url(#${u}w)`} />
       <rect x="-24" y="-24" width="46" height="5" fill={P.woodD} opacity=".7" />
       <path d="M-30 -56 L-30 -132 Q-30 -138 -24 -138 H-20 Q-14 -138 -14 -132 L-14 -56Z" fill={`url(#${u}w)`} />
       <rect x="-30" y="-122" width="22" height="30" rx="8" fill={`url(#${u}c)`} />
@@ -136,10 +136,11 @@ export function Sofa({ x, y, w = 360, color = P.plum }) {
       <Shadow x={x} y={y + 2} rx={w / 2 + 34} />
       <path d={`M${x0 + 8} ${y - 6}v6h14v-6ZM${x0 + w - 22} ${y - 6}v6h14v-6Z`} fill={P.woodD} />
       <rect x={x0} y={y - 118} width={w} height="104" rx="22" fill={`url(#${u}b)`} />
-      {[0, 1, 2].map((i) => <rect key={i} x={x0 + 24 + (i * (w - 48)) / 3 + 3} y={y - 108} width={(w - 48) / 3 - 6} height="62" rx="16" fill={`url(#${u}s)`} stroke={darken(color, 0.25)} strokeWidth="1.2" strokeOpacity=".5" />)}
+      <path d={[0, 1, 2].map((i) => rrectP(x0 + 24 + (i * (w - 48)) / 3 + 3, y - 108, (w - 48) / 3 - 6, 62, 16)).join('')} fill={`url(#${u}s)`} stroke={darken(color, 0.25)} strokeWidth="1.2" strokeOpacity=".5" />
       <rect x={x0 + 10} y={y - 62} width={w - 20} height="46" rx="14" fill={darken(color, 0.12)} />
-      {[0, 1].map((i) => <rect key={i} x={x0 + 26 + (i * (w - 52)) / 2 + 2} y={y - 78} width={(w - 52) / 2 - 4} height="34" rx="12" fill={`url(#${u}s)`} stroke={darken(color, 0.25)} strokeWidth="1.2" strokeOpacity=".5" />)}
-      {[x0 - 20, x0 + w - 20].map((ax) => <g key={ax}><rect x={ax} y={y - 92} width="40" height="88" rx="16" fill={`url(#${u}b)`} /><rect x={ax + 4} y={y - 90} width="32" height="22" rx="11" fill={lighten(color, 0.3)} opacity=".6" /></g>)}
+      <path d={[0, 1].map((i) => rrectP(x0 + 26 + (i * (w - 52)) / 2 + 2, y - 78, (w - 52) / 2 - 4, 34, 12)).join('')} fill={`url(#${u}s)`} stroke={darken(color, 0.25)} strokeWidth="1.2" strokeOpacity=".5" />
+      <path d={[x0 - 20, x0 + w - 20].map((ax) => rrectP(ax, y - 92, 40, 88, 16)).join('')} fill={`url(#${u}b)`} />
+      <path d={[x0 - 20, x0 + w - 20].map((ax) => rrectP(ax + 4, y - 90, 32, 22, 11)).join('')} fill={lighten(color, 0.3)} opacity=".6" />
       <path d={`M${x0 + 28} ${y - 44}h${w - 56}`} stroke={lighten(color, 0.4)} strokeWidth="1.5" opacity=".5" />
     </g>
   );
@@ -167,9 +168,8 @@ export function Bed({ x, y, w = 420, color = P.blue }) {
     <g>
       <defs><Lin id={`${u}h`} c0={lighten(P.wood, 0.1)} c1={P.woodD} v={false} /><Lin id={`${u}q`} c0={lighten(color, 0.2)} c1={darken(color, 0.15)} /></defs>
       <Shadow x={x} y={y - 16} rx={w / 2 + 16} />
-      <rect x={x0 + 4} y={y - 36} width={w - 8} height="36" rx="4" fill={P.woodD} /><rect x={x0 + 10} y={y - 24} width="14" height="26" fill={darken(P.wood, 0.4)} /><rect x={x0 + w - 24} y={y - 24} width="14" height="26" fill={darken(P.wood, 0.4)} />
-      <rect x={x0 - 6} y={y - 164} width="26" height="150" rx="9" fill={`url(#${u}h)`} /><rect x={x0 - 1} y={y - 150} width="16" height="100" rx="6" fill={darken(P.wood, 0.3)} opacity=".4" />
-      <rect x={x0 + w - 20} y={y - 96} width="22" height="82" rx="8" fill={`url(#${u}h)`} />
+      <rect x={x0 + 4} y={y - 36} width={w - 8} height="36" rx="4" fill={P.woodD} /><path d={rrectP(x0 + 10, y - 24, 14, 26) + rrectP(x0 + w - 24, y - 24, 14, 26)} fill={darken(P.wood, 0.4)} />
+      <path d={rrectP(x0 - 6, y - 164, 26, 150, 9) + rrectP(x0 + w - 20, y - 96, 22, 82, 8)} fill={`url(#${u}h)`} /><rect x={x0 - 1} y={y - 150} width="16" height="100" rx="6" fill={darken(P.wood, 0.3)} opacity=".4" />
       <rect x={x0 + 14} y={y - 100} width={w - 30} height="72" rx="12" fill="#fff" /><rect x={x0 + 14} y={y - 46} width={w - 30} height="12" fill="#000" opacity=".08" />
       <g><rect x={x0 + 26} y={y - 134} width="82" height="40" rx="18" fill="#fff" stroke={darken('#EDEDED', 0.1)} strokeWidth="1.5" /><path d={`M${x0 + 44} ${y - 114}q22 -12 48 -2`} stroke="#DDE3EA" strokeWidth="2" fill="none" strokeLinecap="round" /></g>
       <path d={`M${x0 + 84} ${y - 98}Q${x0 + 90} ${y - 112} ${x0 + 112} ${y - 112}H${x0 + w - 12}V${y - 34}H${x0 + 96}Q${x0 + 80} ${y - 40} ${x0 + 84} ${y - 98}Z`} fill={`url(#${u}q)`} />
@@ -187,13 +187,10 @@ export function Counter({ x, y, w = 420, color = P.sand }) {
       <defs><Lin id={`${u}t`} c0={lighten(color, 0.3)} c1={darken(color, 0.1)} /><Lin id={`${u}d`} c0="#FFFDF8" c1="#F1E6D4" /></defs>
       <Shadow x={x} y={y + 2} rx={w / 2 + 10} />
       <rect x={x0} y={y - 170} width={w} height="170" fill="#E4D6C0" /><rect x={x0} y={y - 14} width={w} height="14" fill={P.woodD} />
-      {[...Array(n)].map((_, i) => (
-        <g key={i}>
-          <rect x={x0 + i * dw + 6} y={y - 156} width={dw - 12} height="134" rx="5" fill={i === 0 ? P.blueL : `url(#${u}d)`} opacity={i === 0 ? 0.75 : 1} stroke={darken('#E4D6C0', 0.2)} strokeWidth="1.4" />
-          <rect x={x0 + i * dw + 16} y={y - 146} width={dw - 32} height="114" rx="3" fill="none" stroke={darken('#E4D6C0', 0.12)} strokeWidth="1.3" />
-          <rect x={x0 + i * dw + dw / 2 - 14} y={y - 150} width="28" height="5" rx="2.5" fill="#9AA3AE" />
-        </g>
-      ))}
+      <path d={rrectP(x0 + 6, y - 156, dw - 12, 134, 5)} fill={P.blueL} opacity=".75" stroke={darken('#E4D6C0', 0.2)} strokeWidth="1.4" />
+      <path d={[...Array(n - 1)].map((_, k) => rrectP(x0 + (k + 1) * dw + 6, y - 156, dw - 12, 134, 5)).join('')} fill={`url(#${u}d)`} stroke={darken('#E4D6C0', 0.2)} strokeWidth="1.4" />
+      <path d={[...Array(n)].map((_, i) => rrectP(x0 + i * dw + 16, y - 146, dw - 32, 114, 3)).join('')} fill="none" stroke={darken('#E4D6C0', 0.12)} strokeWidth="1.3" />
+      <path d={[...Array(n)].map((_, i) => rrectP(x0 + i * dw + dw / 2 - 14, y - 150, 28, 5, 2.5)).join('')} fill="#9AA3AE" />
       <rect x={x0 - 6} y={y - 182} width={w + 12} height="22" rx="6" fill={`url(#${u}t)`} /><rect x={x0 - 4} y={y - 181} width={w + 8} height="3" rx="1.5" fill="#fff" opacity=".6" />
       <path d={`M${x0 + 70} ${y - 182}v-24q0 -12 14 -12h10`} stroke="#9AA3AE" strokeWidth="6" fill="none" strokeLinecap="round" /><path d={`M${x0 + 70} ${y - 182}v-22`} stroke="#fff" strokeWidth="1.5" opacity=".6" />
     </g>
@@ -245,7 +242,9 @@ export function FruitBowl({ x, y, s = 1 }) {
     <g transform={`translate(${x} ${y}) scale(${s})`}>
       <defs><Lin id={`${u}b`} c0={lighten(P.blueL, 0.2)} c1={darken(P.blueL, 0.2)} /></defs>
       <path d={ovalP(0, 0, 40, 5)} fill="#000" opacity=".14" />
-      {[[-18, -26, 14, '#D8402F'], [10, -28, 15, P.orange], [-2, -38, 13, '#E5C02E']].map(([cx, cy, r, c], i) => <g key={i}><circle cx={cx} cy={cy} r={r} fill={c} /><circle cx={cx - r * 0.35} cy={cy - r * 0.35} r={r * 0.28} fill="#fff" opacity=".4" /></g>)}
+      {[[-18, -26, 14, '#D8402F'], [10, -28, 15, P.orange]].map(([cx, cy, r, c], i) => <path key={i} d={dotP(cx, cy, r)} fill={c} />)}
+      <path d={dotP(-18 - 14 * 0.35, -26 - 14 * 0.35, 14 * 0.28) + dotP(10 - 15 * 0.35, -28 - 15 * 0.35, 15 * 0.28)} fill="#fff" opacity=".4" />
+      <path d={dotP(-2, -38, 13)} fill="#E5C02E" /><path d={dotP(-2 - 13 * 0.35, -38 - 13 * 0.35, 13 * 0.28)} fill="#fff" opacity=".4" />
       <path d="M-18 -40 q2 -6 6 -6" stroke={P.woodD} strokeWidth="2" fill="none" /><path d={leafP(-12, -44, 12, 4, 50)} fill={P.leaf} />
       <path d="M-40 -28 Q-36 0 0 0 Q36 0 40 -28Z" fill={`url(#${u}b)`} /><path d="M-40 -28 H40" stroke="#fff" strokeWidth="3" opacity=".7" />
     </g>
@@ -265,16 +264,15 @@ export const Plate = ({ x, y }) => (
 // 7-day pill organiser: coloured lids, two open with pills inside.
 export function Pillbox({ x, y }) {
   const cols = ['#9CCBEA', '#C7B4EE', '#F6B98A', '#9CCBEA', '#C7B4EE', '#F6B98A', '#9CCBEA']; const x0 = x - 38;
+  const cx = (i) => x0 + 3 + i * 10.1; const opened = [2, 4]; const closed = [0, 1, 3, 5, 6];
   return (
     <g>
       <path d={ovalP(x, y, 42, 3.6)} fill="#000" opacity=".14" />
       <rect x={x0} y={y - 22} width="76" height="22" rx="5" fill="#fff" stroke="#CBD5DF" strokeWidth="1.3" /><rect x={x0} y={y - 5} width="76" height="5" rx="2" fill="#000" opacity=".07" />
-      {cols.map((c, i) => {
-        const cx = x0 + 3 + i * 10.1; const open = i === 2 || i === 4;
-        return open
-          ? <g key={i}><rect x={cx} y={y - 19} width="8.6" height="14" rx="2" fill="#E6ECF2" /><path d={ovalP(cx + 4.3, y - 11, 3, 1.8)} fill={i === 2 ? P.orange : P.plum} /><path d={`M${cx} ${y - 19}l-1 -7h8.6l1 7Z`} fill={c} opacity=".9" /></g>
-          : <g key={i}><rect x={cx} y={y - 19} width="8.6" height="14" rx="2" fill={c} /><rect x={cx} y={y - 19} width="8.6" height="3" rx="1.5" fill="#fff" opacity=".5" /></g>;
-      })}
+      {[...new Set(cols)].map((c) => <path key={c} d={closed.filter((i) => cols[i] === c).map((i) => rrectP(cx(i), y - 19, 8.6, 14, 2)).join('')} fill={c} />)}
+      <path d={closed.map((i) => rrectP(cx(i), y - 19, 8.6, 3, 1.5)).join('')} fill="#fff" opacity=".5" />
+      <path d={opened.map((i) => rrectP(cx(i), y - 19, 8.6, 14, 2)).join('')} fill="#E6ECF2" />
+      {opened.map((i) => <g key={i}><path d={ovalP(cx(i) + 4.3, y - 11, 3, 1.8)} fill={i === 2 ? P.orange : P.plum} /><path d={`M${cx(i)} ${y - 19}l-1 -7h8.6l1 7Z`} fill={cols[i]} opacity=".9" /></g>)}
     </g>
   );
 }
@@ -333,6 +331,8 @@ export function Clock({ x, y, r = 36 }) {
 export const Books = ({ x, y, s = 1 }) => (
   <g transform={`translate(${x} ${y}) scale(${s})`}>
     <path d={ovalP(0, 0, 40, 4)} fill="#000" opacity=".13" />
-    {[[-38, -14, 76, P.blue], [-32, -28, 66, P.orange], [-36, -42, 72, P.teal]].map(([bx, by, bw, c], i) => <g key={i}><rect x={bx} y={by} width={bw} height="14" rx="2" fill={c} /><rect x={bx + bw - 4} y={by + 2} width="3" height="10" fill="#fff" opacity=".75" /><rect x={bx + 6} y={by + 2} width="10" height="3" rx="1.5" fill="#fff" opacity=".5" /></g>)}
+    {[[-38, -14, 76, P.blue], [-32, -28, 66, P.orange], [-36, -42, 72, P.teal]].map(([bx, by, bw, c], i) => <path key={i} d={rrectP(bx, by, bw, 14, 2)} fill={c} />)}
+    <path d={[[-38, -14, 76], [-32, -28, 66], [-36, -42, 72]].map(([bx, by, bw]) => rrectP(bx + bw - 4, by + 2, 3, 10)).join('')} fill="#fff" opacity=".75" />
+    <path d={[[-38, -14], [-32, -28], [-36, -42]].map(([bx, by]) => rrectP(bx + 6, by + 2, 10, 3, 1.5)).join('')} fill="#fff" opacity=".5" />
   </g>
 );

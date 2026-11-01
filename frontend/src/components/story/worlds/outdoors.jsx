@@ -19,10 +19,13 @@ const leafP = (x, y, L, W, a) => {
 const dotP = (cx, cy, r) => `M${f(cx - r)} ${f(cy)}a${f(r)} ${f(r)} 0 1 0 ${f(2 * r)} 0a${f(r)} ${f(r)} 0 1 0 ${f(-2 * r)} 0Z`;
 const ovalP = (cx, cy, rx, ry) => `M${f(cx - rx)} ${f(cy)}a${f(rx)} ${f(ry)} 0 1 0 ${f(2 * rx)} 0a${f(rx)} ${f(ry)} 0 1 0 ${f(-2 * rx)} 0Z`;
 
+// Rounded rectangle, same winding as dotP/ovalP, so shapes joined in one path render as their union (one path per part).
+const rrectP = (x, y, w, h, r = 0) => `M${f(x)} ${f(y + r)}V${f(y + h - r)}${r ? `Q${f(x)} ${f(y + h)} ${f(x + r)} ${f(y + h)}` : ''}H${f(x + w - r)}${r ? `Q${f(x + w)} ${f(y + h)} ${f(x + w)} ${f(y + h - r)}` : ''}V${f(y + r)}${r ? `Q${f(x + w)} ${f(y)} ${f(x + w - r)} ${f(y)}` : ''}H${f(x + r)}${r ? `Q${f(x)} ${f(y)} ${f(x)} ${f(y + r)}` : ''}Z`;
+
 const TRIM = '#FFF4E4';
 
 // ---------------------------------------------------------------- Tree
-// Bark-textured trunk with root flare and a side branch (the SafeNest nest sits on its tip), layered canopy of individual leaves.
+// Bark-textured trunk with root flare and a side branch (trunk + branch = one path; both are wound the same way, so the fill is their union) (the SafeNest nest sits on its tip), layered canopy of individual leaves.
 export function Tree({ x, y, s = 1, leaf = '#4F9D3A', leafL = '#8BD450', trunk = '#8A5A2B' }) {
   const u = useUid(); const r = mk(7);
   const leafDk = darken(leaf, 0.3); const bark = darken(trunk, 0.5);
@@ -52,22 +55,20 @@ export function Tree({ x, y, s = 1, leaf = '#4F9D3A', leafL = '#8BD450', trunk =
   return (
     <g transform={`translate(${x} ${y}) scale(${s})`}>
       <defs>
-        <linearGradient id={`${u}t`} x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor={lighten(trunk, 0.22)} /><stop offset=".42" stopColor={trunk} /><stop offset="1" stopColor={darken(trunk, 0.4)} /></linearGradient>
-        <linearGradient id={`${u}b`} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor={lighten(trunk, 0.12)} /><stop offset="1" stopColor={darken(trunk, 0.3)} /></linearGradient>
+        <linearGradient id={`${u}t`} gradientUnits="userSpaceOnUse" x1="-84" y1="0" x2="90" y2="0"><stop offset="0" stopColor={lighten(trunk, 0.22)} /><stop offset=".42" stopColor={trunk} /><stop offset="1" stopColor={darken(trunk, 0.4)} /></linearGradient>
       </defs>
       <ellipse cx="20" cy="2" rx="128" ry="14" fill="#000" opacity=".1" />
-      <path d="M-84 2 C-54 -4 -50 -40 -45 -120 C-40 -230 -57 -320 -35 -440 L35 -440 C57 -320 39 -230 47 -120 C52 -40 58 -6 90 2Z" fill={`url(#${u}t)`} />
+      <path d="M-84 2 C-54 -4 -50 -40 -45 -120 C-40 -230 -57 -320 -35 -440 L35 -440 C57 -320 39 -230 47 -120 C52 -40 58 -6 90 2ZM8 -296 C80 -330 170 -352 252 -362 L254 -340 C176 -322 100 -296 24 -250Z" fill={`url(#${u}t)`} />
       <path d="M-70 0 C-52 -10 -46 -36 -42 -70" fill="none" stroke={bark} strokeWidth="2.4" strokeLinecap="round" opacity=".5" />
       <path d="M66 0 C50 -10 46 -34 44 -66" fill="none" stroke={bark} strokeWidth="2.4" strokeLinecap="round" opacity=".5" />
       <path d={barkD} fill="none" stroke={bark} strokeWidth="2.6" strokeLinecap="round" opacity=".38" />
       <path d={barkL} fill="none" stroke={lighten(trunk, 0.45)} strokeWidth="2.2" strokeLinecap="round" opacity=".38" />
       <ellipse cx="-8" cy="-168" rx="9" ry="14" fill={darken(trunk, 0.5)} opacity=".55" /><ellipse cx="-8" cy="-170" rx="5" ry="9" fill={darken(trunk, 0.65)} opacity=".7" />
-      <path d="M8 -296 C80 -330 170 -352 252 -362 L254 -340 C176 -322 100 -296 24 -250Z" fill={`url(#${u}b)`} />
       <path d="M40 -296 C100 -318 160 -332 226 -344" fill="none" stroke={bark} strokeWidth="2" strokeLinecap="round" opacity=".35" />
       <path d="M152 -336 C170 -362 190 -380 214 -394" fill="none" stroke={trunk} strokeWidth="7" strokeLinecap="round" />
-      <g fill={leafDk}><circle cx="-96" cy="-454" r="126" /><circle cx="54" cy="-544" r="156" /><circle cx="204" cy="-454" r="121" /><circle cx="4" cy="-424" r="126" /></g>
-      <g fill={leaf}>{blobs.map((b, i) => <circle key={i} cx={b[0]} cy={b[1]} r={b[2]} />)}</g>
-      <g fill={leafL} opacity=".5"><circle cx="-60" cy="-540" r="70" /><circle cx="110" cy="-590" r="60" /><circle cx="230" cy="-500" r="50" /></g>
+      <path d={dotP(-96, -454, 126) + dotP(54, -544, 156) + dotP(204, -454, 121) + dotP(4, -424, 126)} fill={leafDk} />
+      <path d={blobs.map((b) => dotP(b[0], b[1], b[2])).join('')} fill={leaf} />
+      <path d={dotP(-60, -540, 70) + dotP(110, -590, 60) + dotP(230, -500, 50)} fill={leafL} opacity=".5" />
       <path d={lD} fill={leafDk} /><path d={lM} fill={leaf} /><path d={lL} fill={leafL} />
       <path d={bl} fill={leafDk} /><path d={bl2} fill={leaf} />
       <path d={leafP(250, -352, 26, 10, 70) + leafP(250, -352, 24, 9, 110)} fill={leafL} />
@@ -112,9 +113,7 @@ export function House({ x, y, s = 1, wall = '#2E6DB8', roof = '#F47C20', door = 
   const glowCol = ['#FFF6D2', C_GLOW, '#F5A53A'];
   const Win = ({ wx }) => (
     <g>
-      <g fill={darken(door, 0.05)}>
-        <rect x={wx - 20} y="-150" width="12" height="88" rx="2" /><rect x={wx + 84} y="-150" width="12" height="88" rx="2" />
-      </g>
+      <path d={rrectP(wx - 20, -150, 12, 88, 2) + rrectP(wx + 84, -150, 12, 88, 2)} fill={darken(door, 0.05)} />
       <path d={[...Array(10)].map((_, i) => `M${wx - 20} ${-144 + i * 8.6}h12M${wx + 84} ${-144 + i * 8.6}h12`).join('')} stroke={darken(door, 0.4)} strokeWidth="1.2" opacity=".55" />
       <rect x={wx - 6} y="-150" width="88" height="88" rx="6" fill={TRIM} />
       <rect x={wx} y="-144" width="76" height="76" rx="3" fill={`url(#${u}${lit ? 'gl' : 'gs'})`} />
@@ -151,14 +150,14 @@ export function House({ x, y, s = 1, wall = '#2E6DB8', roof = '#F47C20', door = 
       <rect x="110" y="-345" width="40" height="115" fill={`url(#${u}br)`} />
       <path d={brick} stroke="#F2C8B0" strokeWidth="1.2" opacity=".5" fill="none" />
       <rect x="105" y="-353" width="50" height="10" rx="3" fill={darken(TRIM, 0.12)} />
-      {lit && <g fill="#fff"><circle cx="128" cy="-372" r="9" opacity=".55" /><circle cx="140" cy="-394" r="12" opacity=".4" /><circle cx="134" cy="-422" r="15" opacity=".26" /></g>}
+      {lit && <path d={dotP(128, -372, 9) + dotP(140, -394, 12) + dotP(134, -422, 15)} fill="#fff" opacity=".4" />}
       {/* walls */}
       <rect x="-210" y="-200" width="420" height="200" fill={`url(#${u}w)`} />
       <path d={sid} stroke={darken(wall, 0.3)} strokeWidth="1.6" opacity=".55" /><path d={sidL} stroke={lighten(wall, 0.3)} strokeWidth="1.2" opacity=".3" />
       <rect x="-210" y="-30" width="420" height="30" fill={`url(#${u}st)`} />
       <path d={stone} stroke="#6F675C" strokeWidth="1.4" opacity=".6" fill="none" />
       <rect x="-210" y="-32" width="420" height="4" fill={darken(TRIM, 0.15)} />
-      <rect x="-210" y="-200" width="9" height="170" fill={TRIM} /><rect x="201" y="-200" width="9" height="170" fill={TRIM} opacity=".92" />
+      <path d={rrectP(-210, -200, 9, 170) + rrectP(201, -200, 9, 170)} fill={TRIM} opacity=".96" />
       <rect x="-210" y="-200" width="420" height="22" fill={`url(#${u}es)`} />
       {/* roof */}
       <path d="M-252 -194 L0 -352 L252 -194Z" fill={`url(#${u}r)`} />
@@ -185,8 +184,7 @@ export function House({ x, y, s = 1, wall = '#2E6DB8', roof = '#F47C20', door = 
       ) : (
         <g>
           <rect x="-34" y="-128" width="68" height="128" rx="5" fill={`url(#${u}d)`} />
-          {[[-26, -118], [2, -118]].map(([px, py]) => <g key={px}><rect x={px} y={py} width="24" height="42" rx="3" fill={darken(door, 0.14)} opacity=".4" /><rect x={px} y={py} width="24" height="42" rx="3" fill="none" stroke={lighten(door, 0.35)} strokeWidth="1.3" opacity=".7" /></g>)}
-          {[[-26, -68], [2, -68]].map(([px, py]) => <g key={px}><rect x={px} y={py} width="24" height="54" rx="3" fill={darken(door, 0.14)} opacity=".4" /><rect x={px} y={py} width="24" height="54" rx="3" fill="none" stroke={lighten(door, 0.35)} strokeWidth="1.3" opacity=".7" /></g>)}
+          <path d={rrectP(-26, -118, 24, 42, 3) + rrectP(2, -118, 24, 42, 3) + rrectP(-26, -68, 24, 54, 3) + rrectP(2, -68, 24, 54, 3)} fill={darken(door, 0.14)} fillOpacity=".4" stroke={lighten(door, 0.35)} strokeWidth="1.3" strokeOpacity=".7" />
           <circle cx="20" cy="-62" r="5.5" fill="#C9951C" /><circle cx="20" cy="-62" r="4.6" fill="#FFC72C" /><circle cx="18.6" cy="-63.4" r="1.5" fill="#fff" opacity=".8" />
         </g>
       )}
@@ -194,7 +192,7 @@ export function House({ x, y, s = 1, wall = '#2E6DB8', roof = '#F47C20', door = 
       <path d="M-8 -156 L0 -164 L8 -156Z" fill={darken(TRIM, 0.4)} /><rect x="-6" y="-156" width="12" height="15" rx="2" fill={lit ? C_GLOW : lighten(glass, 0.2)} stroke={darken(TRIM, 0.4)} strokeWidth="1.4" />
       {lit && <circle cx="0" cy="-149" r="40" fill={`url(#${u}hl)`} />}
       {/* steps */}
-      <rect x="-76" y="-2" width="152" height="8" rx="3" fill={`url(#${u}st)`} /><rect x="-60" y="-9" width="120" height="9" rx="3" fill={`url(#${u}st)`} /><rect x="-60" y="-9" width="120" height="2.5" rx="1" fill="#fff" opacity=".35" />
+      <path d={rrectP(-76, -2, 152, 8, 3) + rrectP(-60, -9, 120, 9, 3)} fill={`url(#${u}st)`} /><rect x="-60" y="-9" width="120" height="2.5" rx="1" fill="#fff" opacity=".35" />
     </g>
   );
 }
@@ -291,17 +289,20 @@ export function Fence({ x, y, w = 500, h = 84, color = '#FFF9F2' }) {
     sh += `M${f(px + 3)} ${f(y)}V${f(y - h + 8)}L${f(px + 8)} ${f(y - h + 11)}V${f(y)}Z`;
     hi += `M${f(px - 6.5)} ${f(y - 2)}V${f(y - h + 12)}`;
   }
-  const rail = (yy) => (<g key={yy}><rect x={x0 - 6} y={yy} width={w + 12} height="10" rx="3" fill={darken(color, 0.1)} /><rect x={x0 - 6} y={yy} width={w + 12} height="3" rx="1.5" fill="#fff" opacity=".7" /></g>);
+  const railY = [y - h * 0.68, y - h * 0.26]; const posts = [x0 - 4, x0 + w + 4];
   return (
     <g>
       <ellipse cx={x} cy={y + 1} rx={w / 2 + 10} ry="5" fill="#000" opacity=".12" />
-      {rail(y - h * 0.68)}{rail(y - h * 0.26)}
+      <path d={railY.map((yy) => rrectP(x0 - 6, yy, w + 12, 10, 3)).join('')} fill={darken(color, 0.1)} />
+      <path d={railY.map((yy) => rrectP(x0 - 6, yy, w + 12, 3, 1.5)).join('')} fill="#fff" opacity=".7" />
       <path d={pk} fill={color} stroke={darken(color, 0.3)} strokeWidth="1.1" strokeLinejoin="round" />
       <path d={sh} fill={darken(color, 0.16)} opacity=".6" />
       <path d={hi} stroke="#fff" strokeWidth="1.6" strokeLinecap="round" opacity=".8" fill="none" />
-      {[x0 - 4, x0 + w + 4].map((px) => <g key={px}><rect x={px - 9} y={y - h - 12} width="18" height={h + 12} rx="2" fill={color} stroke={darken(color, 0.3)} strokeWidth="1.1" /><rect x={px - 12} y={y - h - 18} width="24" height="9" rx="3" fill={darken(color, 0.08)} stroke={darken(color, 0.3)} strokeWidth="1.1" /><rect x={px + 2} y={y - h - 10} width="7" height={h + 10} fill={darken(color, 0.16)} opacity=".5" /></g>)}
+      <path d={posts.map((px) => rrectP(px - 9, y - h - 12, 18, h + 12, 2)).join('')} fill={color} stroke={darken(color, 0.3)} strokeWidth="1.1" />
+      <path d={posts.map((px) => rrectP(px - 12, y - h - 18, 24, 9, 3)).join('')} fill={darken(color, 0.08)} stroke={darken(color, 0.3)} strokeWidth="1.1" />
+      <path d={posts.map((px) => rrectP(px + 2, y - h - 10, 7, h + 10)).join('')} fill={darken(color, 0.16)} opacity=".5" />
     </g>
   );
 }
 
-export { f, mk, useUid, leafP, dotP, ovalP, TRIM };
+export { f, mk, useUid, leafP, dotP, ovalP, rrectP, TRIM };

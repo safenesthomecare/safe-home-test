@@ -3,40 +3,35 @@ import { Townhouses, Street } from './gta-street';
 // Same conventions as art.jsx: world units, (x, y) is the bottom centre. Decorative only.
 const rnd = (seed) => { let s = seed * 9301 + 49297; return () => { s = (s * 9301 + 49297) % 233280; return s / 233280; }; };
 
-// Skyline. `base` is the waterline y; `tint` is the hazy silhouette colour, `lit` the highlight edge. Width w; CN Tower sits at tx (fraction of w).
+// Path helpers. Every shape is wound counter-clockwise, so shapes joined in one path render as their union (one path per part).
+const f = (n) => +n.toFixed(2);
+const rP = (x, y, w, h, r = 0) => `M${f(x)} ${f(y + r)}V${f(y + h - r)}${r ? `Q${f(x)} ${f(y + h)} ${f(x + r)} ${f(y + h)}` : ''}H${f(x + w - r)}${r ? `Q${f(x + w)} ${f(y + h)} ${f(x + w)} ${f(y + h - r)}` : ''}V${f(y + r)}${r ? `Q${f(x + w)} ${f(y)} ${f(x + w - r)} ${f(y)}` : ''}H${f(x + r)}${r ? `Q${f(x)} ${f(y)} ${f(x)} ${f(y + r)}` : ''}Z`;
+const oP = (cx, cy, rx, ry) => `M${f(cx - rx)} ${f(cy)}a${f(rx)} ${f(ry)} 0 1 0 ${f(2 * rx)} 0a${f(rx)} ${f(ry)} 0 1 0 ${f(-2 * rx)} 0Z`;
+// Polygon from [x, y] points; reversed if needed so it winds like rP.
+const pP = (...p) => { let a = 0; p.forEach((q, i) => { const n = p[(i + 1) % p.length]; a += q[0] * n[1] - n[0] * q[1]; }); const pts = a > 0 ? [...p].reverse() : p; return 'M' + pts.map((q) => `${f(q[0])} ${f(q[1])}`).join('L') + 'Z'; };
+
+// Skyline. `base` is the waterline y; `tint` is the hazy silhouette colour, `lit` the highlight edge. Width w; CN Tower sits at tx (fraction of w). One path for all tinted buildings + lakefront, one for the tower.
 export function Skyline({ x = 0, y, w = 3000, tint = '#8FA9C0', lit = '#B5C9DB', tx = 0.62, seed = 3, glow = null }) {
   const r = rnd(seed); const cx = w * tx;
-  const filler = [];
+  let fill = '';
   for (let px = 0; px < w; px += 38 + r() * 30) {
     const d = Math.abs(px - cx); const near = d < 520;
     const h = 40 + r() * (near ? 190 : 80); const bw = 30 + r() * 34;
-    filler.push(<rect key={px} x={px} y={-h} width={bw} height={h + 4} fill={tint} />);
+    fill += rP(px, -h, bw, h + 4);
   }
+  // First Canadian Place, Scotia Plaza (stepped top), TD Centre boxes, Commerce Court slab, Brookfield boxes, Rogers Centre dome, lakefront strip
+  const towers = rP(cx - 330, -300, 58, 304) + pP([cx - 240, 4], [cx - 240, -230], [cx - 226, -248], [cx - 180, -248], [cx - 166, -230], [cx - 166, 4])
+    + rP(cx - 170, -200, 46, 204) + rP(cx - 120, -130, 64, 134) + rP(cx - 220, -110, 40, 114)
+    + pP([cx + 110, 4], [cx + 110, -170], [cx + 146, -184], [cx + 182, -170], [cx + 182, 4]) + rP(cx + 190, -120, 44, 124) + rP(cx + 240, -150, 30, 154)
+    + `M${cx + 450} 4V-12C${cx + 440} -70 ${cx + 290} -70 ${cx + 280} -12V4Z` + rP(cx + 276, -14, 178, 18) + rP(-200, 2, w + 400, 10);
+  const tower = pP([-11, 0], [-3.2, -380], [3.2, -380], [11, 0]) + pP([-3.2, -380], [-1.4, -520], [1.4, -520], [3.2, -380]) + oP(0, -352, 23, 9) + rP(-18, -364, 36, 12, 3) + pP([-18, -364], [-10, -376], [10, -376], [18, -364]) + oP(0, -432, 7, 4);
+  let gl = ''; if (glow) for (let i = 0; i < 70; i++) { const px = r() * w; const hh = 20 + r() * 150; gl += rP(px, -hh, 4, 6); }
   return (
     <g transform={`translate(${x} ${y})`}>
-      <g>{filler}</g>
-      {/* First Canadian Place: tallest bank tower, plain slab */}
-      <rect x={cx - 330} y={-300} width="58" height="304" fill={tint} /><rect x={cx - 330} y={-300} width="6" height="304" fill={lit} />
-      {/* Scotia Plaza: stepped, angled top */}
-      <path d={`M${cx - 240} 4V-230l14-18h46l14 18V4Z`} fill={tint} />
-      {/* TD Centre: low dark boxes with a taller tower */}
-      <rect x={cx - 170} y={-200} width="46" height="204" fill={tint} /><rect x={cx - 120} y={-130} width="64" height="134" fill={tint} /><rect x={cx - 220} y={-110} width="40" height="114" fill={tint} />
-      {/* Commerce Court / Brookfield Place glassy slab */}
-      <path d={`M${cx + 110} 4V-170l36 -14l36 14V4Z`} fill={tint} />
-      <rect x={cx + 190} y={-120} width="44" height="124" fill={tint} /><rect x={cx + 240} y={-150} width="30" height="154" fill={tint} />
-      {/* Rogers Centre dome, right of the tower */}
-      <path d={`M${cx + 280} 4V-12C${cx + 290} -70 ${cx + 440} -70 ${cx + 450} -12V4Z`} fill={tint} /><rect x={cx + 276} y={-14} width="178" height="18" fill={tint} />
+      <path d={fill + towers} fill={tint} /><path d={rP(cx - 330, -300, 6, 304)} fill={lit} />
       {/* CN Tower: tapering shaft, main pod, sky pod, antenna */}
-      <g transform={`translate(${cx} 4) scale(1.2 0.85)`}>
-        <path d="M-11 0 L-3.2 -380 L3.2 -380 L11 0Z" fill={tint} />
-        <path d="M-3.2 -380 L-1.4 -520 L1.4 -520 L3.2 -380Z" fill={tint} />
-        <ellipse cx="0" cy="-352" rx="23" ry="9" fill={tint} /><rect x="-18" y="-364" width="36" height="12" rx="3" fill={tint} /><path d="M-18 -364 L-10 -376 L10 -376 L18 -364Z" fill={tint} />
-        <ellipse cx="0" cy="-432" rx="7" ry="4" fill={tint} />
-        <rect x="-2" y="-352" width="2" height="8" fill={lit} opacity=".8" />
-      </g>
-      {glow && Array.from({ length: 70 }, (_, i) => { const px = r() * w; const hh = 20 + r() * 150; return <rect key={`g${i}`} x={px} y={-hh} width="4" height="6" fill={glow} opacity=".85" />; })}
-      {/* Islands / lakefront strip */}
-      <rect x="-200" y="2" width={w + 400} height="10" fill={tint} />
+      <g transform={`translate(${cx} 4) scale(1.2 0.85)`}><path d={tower} fill={tint} /><rect x="-2" y="-352" width="2" height="8" fill={lit} opacity=".8" /></g>
+      {glow && <path d={gl} fill={glow} opacity=".85" />}
     </g>
   );
 }
@@ -51,30 +46,25 @@ export const Maple = ({ x, y, s = 1, crown = '#4F9D3A', dark = '#2E7D32', seed =
   return (
     <g transform={`translate(${x} ${y}) scale(${s})`}>
       <path d="M-5 0L-4 -60L-2 -90H2L4 -60L5 0Z" fill="#5A3213" />
-      <ellipse cx="0" cy="-122" rx="52" ry="46" fill={dark} />
-      <ellipse cx={-26 + r() * 6} cy="-108" rx="34" ry="30" fill={crown} /><ellipse cx={24 - r() * 6} cy="-112" rx="36" ry="32" fill={crown} /><ellipse cx="0" cy="-146" rx="34" ry="28" fill={crown} />
+      <path d={oP(0, -122, 52, 46)} fill={dark} />
+      <path d={oP(-26 + r() * 6, -108, 34, 30) + oP(24 - r() * 6, -112, 36, 32) + oP(0, -146, 34, 28)} fill={crown} />
     </g>
   );
 };
 
-// Brick semi-detached (two mirrored units), the GTA workhorse. Footprint ~ 260 x 190 at s=1.
+// Brick semi-detached (two mirrored units), the GTA workhorse. Footprint ~ 260 x 190 at s=1. One path per part; both mirrored units are drawn into the same path.
+const both = (x, y, w, h, r = 0) => rP(x, y, w, h, r) + rP(-x - w, y, w, h, r);
 export const Semi = ({ x, y, s = 1, brick = '#B4573E', roof = '#4A4F5A', trim = '#F4EBDD', door = '#1F5BA8' }) => (
   <g transform={`translate(${x} ${y}) scale(${s})`}>
     <rect x="-130" y="-118" width="260" height="118" fill={brick} />
     <path d="M-142 -118 L-65 -176 L0 -118Z M0 -118 L65 -176 L142 -118Z" fill={roof} />
     <path d="M-65 -176 L0 -118 L65 -176Z" fill={roof} opacity=".7" />
-    <rect x="-92" y="-176" width="14" height="40" fill="#8E3F2B" /><rect x="78" y="-176" width="14" height="40" fill="#8E3F2B" />
-    {[-1, 1].map((m) => (
-      <g key={m} transform={`scale(${m} 1)`}>
-        <rect x="26" y="-96" width="34" height="38" fill={trim} /><rect x="30" y="-92" width="26" height="30" fill="#7FA6C4" />
-        <rect x="76" y="-96" width="34" height="38" fill={trim} /><rect x="80" y="-92" width="26" height="30" fill="#7FA6C4" />
-        <rect x="26" y="-52" width="22" height="52" fill={door} /><rect x="14" y="-8" width="46" height="8" fill="#C9CED6" />
-        <rect x="66" y="-44" width="46" height="26" fill={trim} /><rect x="70" y="-40" width="38" height="18" fill="#7FA6C4" />
-      </g>
-    ))}
+    <path d={rP(-92, -176, 14, 40) + rP(78, -176, 14, 40)} fill="#8E3F2B" />
+    <path d={both(26, -96, 34, 38) + both(76, -96, 34, 38) + both(66, -44, 46, 26)} fill={trim} />
+    <path d={both(30, -92, 26, 30) + both(80, -92, 26, 30) + both(70, -40, 38, 18)} fill="#7FA6C4" />
+    <path d={both(26, -52, 22, 52)} fill={door} /><path d={both(14, -8, 46, 8)} fill="#C9CED6" />
     <rect x="-2" y="-118" width="4" height="118" fill="#7A3626" opacity=".6" />
-    <rect x="-52" y="0" width="22" height="24" fill="#C9C5BB" /><rect x="30" y="0" width="22" height="24" fill="#C9C5BB" />
-    <rect x="-52" y="-12" width="0" height="0" />
+    <path d={rP(-52, 0, 22, 24) + rP(30, 0, 22, 24)} fill="#C9C5BB" />
   </g>
 );
 
@@ -84,7 +74,7 @@ export const Bungalow = ({ x, y, s = 1, brick = '#C9A27A', roof = '#59606B', doo
     <rect x="-130" y="-74" width="260" height="74" fill={brick} />
     <path d="M-146 -74 L-100 -118 H100 L146 -74Z" fill={roof} />
     <rect x="30" y="-66" width="90" height="66" fill="#E8E1D4" /><rect x="38" y="-58" width="74" height="58" fill="#D8D3C8" />
-    {[0, 1, 2, 3].map((i) => <rect key={i} x={40} y={-52 + i * 13} width="70" height="2" fill="#C2BCB0" />)}
+    <path d={[0, 1, 2, 3].map((i) => rP(40, -52 + i * 13, 70, 2)).join('')} fill="#C2BCB0" />
     <rect x="-96" y="-60" width="50" height="34" fill="#F4EBDD" /><rect x="-91" y="-55" width="40" height="24" fill="#7FA6C4" />
     <rect x="-24" y="-52" width="22" height="52" fill={door} />
     <path d="M30 0 H120 L128 24 H22Z" fill="#B8B4AA" /><rect x="-24" y="0" width="22" height="24" fill="#C9C5BB" />
@@ -92,12 +82,12 @@ export const Bungalow = ({ x, y, s = 1, brick = '#C9A27A', roof = '#59606B', doo
   </g>
 );
 
-// Hydro pole with crossarm; wires run to the next pole at (x + span).
+// Hydro pole with crossarm; wires run to the next pole at (x + span). Wood = one path, wires = one path, insulators = one path.
 export const HydroPole = ({ x, y, h = 300, span = 520, color = '#5A4632', wire = '#3A3F48' }) => (
   <g>
-    <rect x={x - 5} y={y - h} width="10" height={h} fill={color} /><rect x={x - 46} y={y - h + 20} width="92" height="7" fill={color} /><rect x={x - 38} y={y - h + 60} width="76" height="6" fill={color} />
-    {[-40, -14, 14, 40].map((o) => <path key={o} d={`M${x + o} ${y - h + 20} Q${x + o + span / 2} ${y - h + 70} ${x + o + span} ${y - h + 20}`} stroke={wire} strokeWidth="2" fill="none" />)}
-    {[-40, -14, 14, 40].map((o) => <rect key={`i${o}`} x={x + o - 2} y={y - h + 14} width="4" height="8" fill="#D8D3C8" />)}
+    <path d={rP(x - 5, y - h, 10, h) + rP(x - 46, y - h + 20, 92, 7) + rP(x - 38, y - h + 60, 76, 6)} fill={color} />
+    <path d={[-40, -14, 14, 40].map((o) => `M${x + o} ${y - h + 20} Q${x + o + span / 2} ${y - h + 70} ${x + o + span} ${y - h + 20}`).join('')} stroke={wire} strokeWidth="2" fill="none" />
+    <path d={[-40, -14, 14, 40].map((o) => rP(x + o - 2, y - h + 14, 4, 8)).join('')} fill="#D8D3C8" />
   </g>
 );
 
@@ -124,7 +114,7 @@ export function SuburbRow({ x0 = 0, x1 = 3000, y, s = 1, seed = 1, haze = 0, haz
       <rect x={x0 - 400} y={y - 2} width={x1 - x0 + 800} height={400} fill={lawn} />
       <g>{items}</g>
       {street && <Street x0={x0} x1={x1} y={y} s={s} seed={seed} />}
-      {lit && <g fill={lit}>{items.map((_, n) => (n % 2 ? null : <rect key={`w${n}`} x={x0 + n * 180 * s + 20} y={y - 70 * s} width={14 * s} height={16 * s} />))}</g>}
+      {lit && <path d={items.map((_, n) => (n % 2 ? '' : rP(x0 + n * 180 * s + 20, y - 70 * s, 14 * s, 16 * s))).join('')} fill={lit} />}
       {dim > 0 && <rect x={x0 - 400} y={top} width={x1 - x0 + 800} height={bot - top} fill="#0B2038" opacity={dim} />}
       {haze > 0 && <rect x={x0 - 400} y={top} width={x1 - x0 + 800} height={bot - top} fill={hazeColor} opacity={haze} />}
     </g>
