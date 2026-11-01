@@ -3,8 +3,8 @@ import { flattenGradients } from '../../lib/flatten';
 import { worldTransform, baseScale, fitZoom } from '../../lib/camera';
 
 // Renders a page's world (layered SVG) as ONE still frame (world.shot = { x, y, z, xN?, yN? }; xN / yN are the phone centre).
-// Nothing moves with scroll. The frame is exactly the space between the bottom of the header and the top of the footer:
-// when the footer scrolls into view the frame gets shorter and the picture scales down with it, so nothing is cropped.
+// Nothing moves with scroll except one thing: when the footer scrolls into view the whole scene slides up (see .sn-story in story.css).
+// The frame stays the full space below the header, so the picture is never scaled down or re-framed.
 export default function WorldCamera({ world }) {
   const stage = useRef(null);
   const wrap = useRef(null);
@@ -22,9 +22,7 @@ export default function WorldCamera({ world }) {
       const hd = document.querySelector('header.header-nav');
       const hdrH = hd ? Math.max(0, Math.round(hd.getBoundingClientRect().bottom)) : 80;
       const vh = Math.max(1, window.innerHeight - hdrH);
-      const ft = document.querySelector('footer');
-      const clip = ft ? Math.max(0, window.innerHeight - ft.getBoundingClientRect().top) : 0;
-      const fh = Math.max(120, vh - clip);
+      const fh = Math.max(120, vh); // full frame always: the footer pushes the whole scene up (story.css), it never shrinks the picture
       const k = baseScale(vw, vh);
       const narrow = vw < 700;
       const cam = { x: narrow && shot.xN != null ? shot.xN : shot.x, y: narrow ? (shot.yN != null ? shot.yN : shot.y - 190) : shot.y, z: ((narrow && shot.zN != null ? shot.zN : shot.z) == null ? 1 : (narrow && shot.zN != null ? shot.zN : shot.z)) * fitZoom(vw) * (fh / vh) };
@@ -42,13 +40,12 @@ export default function WorldCamera({ world }) {
     const queue = () => { if (!raf) raf = requestAnimationFrame(apply); };
     document.body.dataset.snSide = world.side || 'left';
     apply();
-    window.addEventListener('scroll', queue, { passive: true }); // only to follow the footer edge
     window.addEventListener('resize', queue);
     let ro;
     if (typeof ResizeObserver !== 'undefined') { ro = new ResizeObserver(queue); ro.observe(document.body); }
     const t = setTimeout(queue, 150);
     return () => {
-      window.removeEventListener('scroll', queue); window.removeEventListener('resize', queue);
+      window.removeEventListener('resize', queue);
       if (ro) ro.disconnect(); clearTimeout(t); if (raf) cancelAnimationFrame(raf);
       delete document.body.dataset.snSide;
     };
