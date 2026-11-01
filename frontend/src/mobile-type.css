@@ -144,3 +144,55 @@
   }
   .sn-peek-btn { left: calc(.75rem + env(safe-area-inset-left)); }
 }
+
+/* ---- Phase 6: smaller icons, menu tabs and section spacing to match the 9-12px text (phones) ---- */
+@media (max-width: 699px) {
+  /* Icons (about 70%). Sources set width/height attributes; CSS wins over them. */
+  :is(main.sn-content, footer, .mobile-menu, .portal-prompt) svg[width="12"] { width: 10px; height: 10px; }
+  :is(main.sn-content, footer, .mobile-menu, .portal-prompt) svg[width="16"] { width: 12px; height: 12px; }
+  :is(main.sn-content, footer, .mobile-menu, .portal-prompt) svg[width="18"] { width: 13px; height: 13px; }
+  :is(main.sn-content, footer, .mobile-menu, .portal-prompt) svg[width="20"] { width: 14px; height: 14px; }
+  :is(main.sn-content, footer, .mobile-menu, .portal-prompt) svg[width="26"] { width: 18px; height: 18px; }
+  :is(main.sn-content, footer, .mobile-menu, .portal-prompt) svg[width="28"] { width: 20px; height: 20px; }
+  :is(main.sn-content, footer, .mobile-menu, .portal-prompt) svg[width="30"] { width: 20px; height: 20px; }
+  main.sn-content svg:is(.h-4, .h-5, .h-6) { width: 12px; height: 12px; }
+  .sn-ai-tile { padding: 6px !important; border-width: 1.5px !important; } /* round icon badges */
+  .mobile-menu-btn { min-width: 44px; min-height: 44px; display: inline-flex !important; align-items: center; justify-content: center; }
+  .mobile-menu-btn svg { width: 22px; height: 22px; } /* header bar height unchanged: logo sets it */
+
+  /* Round number/icon circles inside sections */
+  main.sn-content [style*="width: 48px"][style*="height: 48px"] { width: 36px !important; height: 36px !important; }
+  main.sn-content [style*="width: 80px"][style*="height: 80px"] { width: 56px !important; height: 56px !important; }
+  footer img[style*="height: 84px"] { height: 56px !important; }
+
+  /* Menu tabs (the dropdown under the header; the header bar itself is not resized) */
+  .mobile-menu { padding: .6rem .8rem !important; max-height: calc(100svh - 80px) !important; }
+  .mobile-menu nav { gap: .2rem !important; }
+  .mobile-menu .mobile-nav-link { font-size: 12px !important; padding: .4rem .7rem !important; min-height: 44px; gap: .5rem !important; letter-spacing: .03em; }
+  .mobile-menu :is(a[href^="tel"], .btn-primary, .btn-portal) { font-size: 12px !important; min-height: 44px; }
+  .mobile-menu :is(.btn-primary, .btn-portal) { margin-top: .2rem !important; }
+  main.sn-content :is(.btn-primary, .btn-secondary, .btn-portal) { padding: .5rem 1.1rem; }
+  main.sn-content .faq-trigger svg { width: 12px; height: 12px; }
+
+  /* Section and card spacing (about 55%) */
+  body.sn-story-on main.sn-content section { padding-bottom: 1rem !important; }
+  body.sn-story-on main.sn-content .hero-section { padding-bottom: 1rem; }
+  main.sn-content [style*="margin-bottom: 3rem"] { margin-bottom: 1.2rem !important; }
+  main.sn-content [style*="margin-bottom: 2rem"] { margin-bottom: .9rem !important; }
+  main.sn-content :is([style*="margin-bottom: 1.2rem"], [style*="margin-bottom: 1rem"]) { margin-bottom: .6rem !important; }
+  main.sn-content [style*="margin-bottom: 0.75rem"] { margin-bottom: .45rem !important; }
+  main.sn-content [style*="margin-top: 2rem"] { margin-top: .9rem !important; }
+  main.sn-content [style*="gap: 2rem"] { gap: 1rem !important; }
+  main.sn-content :is([style*="gap: 1.2rem"], [style*="gap: 1rem"]) { gap: .65rem !important; }
+  main.sn-content [style*="padding: 2rem"] { padding: .9rem !important; }
+  main.sn-content [style*="padding: 1.2rem"] { padding: .7rem !important; }
+}
+
+/* ---- Phase 7: smaller header (phones). The scene and menu follow the real header height via --sn-hdr (set by RouteStory.jsx). ---- */
+@media (max-width: 699px) {
+  .header-nav { height: 56px; padding: 0 .8rem; }
+  .header-nav .logo { height: 38px !important; }
+  .mobile-menu { top: var(--sn-hdr, 56px) !important; max-height: calc(100svh - var(--sn-hdr, 56px)) !important; }
+  main.sn-content div[style*="padding-top: 80px"] { padding-top: var(--sn-hdr, 56px) !important; }
+  div[role="note"][style*="position: fixed"] { top: calc(var(--sn-hdr, 56px) + 6px) !important; padding: 2px 9px !important; font-size: 9px !important; }
+}
