@@ -1,0 +1,146 @@
+/* Phone-only type scale and compact panels (Phase 2). Phones = 699px and narrower.
+   Desktop and tablet are untouched. Edit the --sn-m-* numbers below to retune every size at once.
+   Header is left alone on purpose (its height drives the scene). */
+@media (max-width: 699px) {
+  :root {
+    --sn-m-title: 12px;   /* all headings and lead text */
+    --sn-m-body: 12px;    /* paragraphs, buttons, list text */
+    --sn-m-small: 11px;   /* Tailwind text-sm, secondary lines */
+    --sn-m-caption: 10px; /* Tailwind text-xs, captions, badges */
+    --sn-m-micro: 9px;    /* stat labels and tiny tags only */
+    --sn-font-script: var(--sn-font-body); /* no script font on phones */
+    --sn-text-caption: 10px; --sn-text-body: 12px; --sn-text-lead: 12px;
+    --sn-text-h3: 12px; --sn-text-h2: 12px; --sn-text-h1: 12px; --sn-text-display: 12px;
+    --sn-lh-caption: 1.4; --sn-lh-body: 1.5; --sn-lh-lead: 1.5;
+    --sn-lh-h3: 1.35; --sn-lh-h2: 1.35; --sn-lh-h1: 1.35; --sn-lh-display: 1.35;
+  }
+
+  /* Base: everything in the page body and footer */
+  main.sn-content, footer, .portal-prompt { font-size: var(--sn-m-body); line-height: 1.5; }
+  main.sn-content :is(p, li, span, div, a, button, label, td, th, blockquote),
+  footer :is(p, li, span, div, a, button, label) { font-size: inherit; }
+
+  /* Headings: same size as body, set apart by weight and Fredoka */
+  main.sn-content :is(h1, h2, h3, h4, h5, h6, .heading-hero, .heading-1, .heading-2, .heading-3),
+  footer :is(h1, h2, h3, h4, h5, h6) {
+    font-size: var(--sn-m-title) !important; line-height: 1.35 !important; font-weight: 700;
+    letter-spacing: .01em;
+  }
+  main.sn-content :is(.body-large, .body-medium, .faq-trigger, .faq-content) { font-size: var(--sn-m-body); line-height: 1.5; }
+  main.sn-content .faq-trigger { font-weight: 700; padding-top: .65rem; padding-bottom: .65rem; }
+  main.sn-content .faq-item { padding: .25rem .8rem; margin-bottom: .6rem; }
+  main.sn-content .body-small { font-size: var(--sn-m-small); }
+  main.sn-content .hero-tagline { font-size: var(--sn-m-body); }
+  main.sn-content .hero-announcement { font-size: var(--sn-m-caption); }
+  .portal-prompt-text { font-size: var(--sn-m-small); }
+
+  /* Tailwind size classes */
+  main.sn-content :is(.text-base, .text-lg, .text-xl, .text-2xl, .text-3xl, .text-4xl, .text-5xl, .text-6xl),
+  footer :is(.text-base, .text-lg, .text-xl, .text-2xl) { font-size: var(--sn-m-body) !important; line-height: 1.5 !important; }
+  main.sn-content .text-sm, footer .text-sm { font-size: var(--sn-m-small) !important; line-height: 1.45 !important; }
+  main.sn-content .text-xs, footer .text-xs { font-size: var(--sn-m-caption) !important; line-height: 1.4 !important; }
+
+  /* Inline fontSize in JSX: default to body, then pick out the small ones */
+  main.sn-content [style*="font-size"], footer [style*="font-size"] { font-size: var(--sn-m-body) !important; }
+  main.sn-content :is([style*="font-size: 0.875rem"], [style*="font-size: .875rem"]),
+  footer :is([style*="font-size: 0.875rem"], [style*="font-size: .875rem"]) { font-size: var(--sn-m-small) !important; }
+  main.sn-content :is([style*="font-size: 0.75rem"], [style*="font-size: .75rem"], [style*="font-size: 0.8125rem"], [style*="font-size: .8125rem"]),
+  footer :is([style*="font-size: 0.75rem"], [style*="font-size: .75rem"], [style*="font-size: 0.8125rem"], [style*="font-size: .8125rem"]) { font-size: var(--sn-m-caption) !important; }
+
+  /* Hero stats: number reads as a title, label is the smallest text */
+  main.sn-content .hero-stats > div > div:first-child { font-size: var(--sn-m-title) !important; font-weight: 800; }
+  main.sn-content .hero-stats > div > div:last-child { font-size: var(--sn-m-micro) !important; }
+
+  /* Form fields stay 16px: iOS zooms the page on focus if a field is smaller */
+  main.sn-content :is(input, textarea, select) { font-size: 16px !important; }
+
+  /* Compact panels (same selectors as story.css so these win by order) */
+  body.sn-story-on main.sn-content section > .container,
+  body.sn-story-on main.sn-content .hero-content {
+    border-radius: 16px;
+    padding: .9rem .85rem;
+    box-shadow: 0 6px 22px rgba(0, 38, 63, .12);
+  }
+  body.sn-story-on main.sn-content :is(section > .container, .hero-content) :is(p, ul, ol) { margin-top: 0; margin-bottom: .6rem; }
+  body.sn-story-on main.sn-content :is(section > .container, .hero-content) :is(h1, h2, h3) { margin-bottom: .5rem; }
+
+  /* Touch targets stay 44px even though text shrinks */
+  main.sn-content :is(.btn-primary, .btn-secondary, .btn-portal), footer a.btn-primary { min-height: 44px; }
+  .portal-prompt-close { min-width: 44px; min-height: 44px; }
+}
+
+/* ---- Phase 3: see-through panels (phones) ---- */
+@media (max-width: 699px) {
+  body.sn-story-on { --sn-m-panel-a: .84; }
+  body.sn-story-on:is([data-sn-page="contact"], [data-sn-page="faq"]) { --sn-m-panel-a: .9; } /* darker scenes: a little more cream */
+  body.sn-story-on main.sn-content section > .container,
+  body.sn-story-on main.sn-content .hero-content {
+    background: rgba(255, 249, 242, var(--sn-m-panel-a));
+    -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
+  }
+  /* No blur support: near-solid so text never sits on a busy scene */
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    body.sn-story-on { --sn-m-panel-a: .95 !important; }
+  }
+}
+/* People who ask for less transparency or more contrast get near-solid panels */
+@media (max-width: 699px) and (prefers-reduced-transparency: reduce), (max-width: 699px) and (prefers-contrast: more) {
+  body.sn-story-on { --sn-m-panel-a: .97 !important; }
+  body.sn-story-on main.sn-content section > .container,
+  body.sn-story-on main.sn-content .hero-content { -webkit-backdrop-filter: none; backdrop-filter: none; }
+}
+
+/* ---- Phase 4.1: peek-scene button (phones) ---- */
+.sn-peek-btn { display: none; }
+@media (max-width: 699px) {
+  .sn-peek-btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    position: fixed; z-index: 900; left: .75rem; bottom: calc(.75rem + env(safe-area-inset-bottom));
+    width: 44px; height: 44px; padding: 0; border-radius: 50%;
+    background: rgba(255, 249, 242, .92); color: var(--sn-nest-navy, #003B66);
+    border: 1px solid rgba(255, 255, 255, .8); box-shadow: 0 4px 14px rgba(0, 38, 63, .22);
+    -webkit-tap-highlight-color: transparent; cursor: pointer;
+  }
+  .sn-peek-btn:focus-visible { outline: 3px solid var(--sn-hearth-blue, #0066B3); outline-offset: 2px; }
+  body:not(.sn-story-on) .sn-peek-btn { display: none; }
+  /* Panels fade to 10% and stop catching taps while peeking */
+  body.sn-story-on main.sn-content :is(section > .container, .hero-content) { transition: opacity .35s ease; }
+  body.sn-peek.sn-story-on main.sn-content :is(section > .container, .hero-content) { opacity: .1 !important; animation-name: none; pointer-events: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  body.sn-story-on main.sn-content :is(section > .container, .hero-content) { transition: none; }
+}
+
+/* ---- Phase 4.2: panels fade as they scroll out of focus (phones) ---- */
+@keyframes sn-m-focus {
+  0%   { opacity: .15; -webkit-backdrop-filter: none; backdrop-filter: none; }
+  22%  { opacity: 1;   -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
+  78%  { opacity: 1;   -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
+  100% { opacity: .15; -webkit-backdrop-filter: none; backdrop-filter: none; }
+}
+@media (max-width: 699px) and (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    body.sn-story-on main.sn-content :is(section > .container, .hero-content) {
+      animation-name: sn-m-focus; animation-timing-function: linear; animation-fill-mode: both; animation-timeline: view(); animation-range: cover 0% cover 100%; /* longhands: the minifier would reorder a shorthand and reset the timeline */
+    }
+  }
+}
+
+/* ---- Phase 4.3: gaps between panels follow screen height (phones) ---- */
+@media (max-width: 699px) {
+  body.sn-story-on main.sn-content section + section { padding-top: clamp(64px, 9svh, 110px) !important; }
+  body.sn-story-on:is([data-sn-page="about"], [data-sn-page="services"], [data-sn-page="testimonials"], [data-sn-page="faq"]) main.sn-content section:first-of-type + section { padding-top: clamp(210px, 32svh, 300px) !important; }
+  main.sn-content .hero-section { min-height: 80svh; }
+  .App { min-height: 100svh; }
+}
+
+/* ---- Phase 4.4: notch and home-bar spacing (needs viewport-fit=cover in index.html) ---- */
+@media (max-width: 699px) {
+  main.sn-content { padding-left: env(safe-area-inset-left); padding-right: env(safe-area-inset-right); }
+  footer {
+    padding-left: calc(1.2rem + env(safe-area-inset-left)) !important;
+    padding-right: calc(1.2rem + env(safe-area-inset-right)) !important;
+    padding-bottom: calc(1.2rem + env(safe-area-inset-bottom)) !important;
+  }
+  .sn-peek-btn { left: calc(.75rem + env(safe-area-inset-left)); }
+}

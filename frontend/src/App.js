@@ -1,5 +1,6 @@
 import "@/App.css";
 import "./story.css";
+import "./mobile-type.css";
 import { BrowserRouter, HashRouter, Routes, Route } from "react-router-dom";
 import ScrollReveal from "./components/ScrollReveal";
 import { Toaster } from "./components/ui/sonner";
@@ -13,6 +14,7 @@ import FAQ from "./pages/FAQ";
 import Contact from "./pages/Contact";
 import PortalPrompt from "./components/PortalPrompt";
 import DemoBanner from "./components/DemoBanner";
+import PeekScene from "./components/PeekScene";
 import RouteStory from "./components/story/RouteStory";
 import { DEMO } from "./lib/demo";
 
@@ -38,6 +40,7 @@ function App() {
         </main>
         <Footer />
         <PortalPrompt />
+        <PeekScene />
         <DemoBanner />
         <Toaster position="top-right" />
       </Router>

@@ -4,7 +4,7 @@
         <!-- DEMO/TEST SITE: keep out of search engines. Remove this line (and the robots.txt + vercel.json header) when promoting to live. -->
         <meta name="robots" content="noindex, nofollow" />
         <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
         <meta name="theme-color" content="#0066B3" />
         <link rel="icon" href="%PUBLIC_URL%/favicon.svg" type="image/svg+xml" />
         <link rel="icon" href="%PUBLIC_URL%/favicon.ico" sizes="48x48" />
@@ -12,7 +12,9 @@
         <meta name="description" content="SafeNest Home Care - compassionate, reliable home care in Ontario, Canada." />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&family=Satisfy&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&family=Satisfy&display=swap" rel="stylesheet" media="(min-width: 700px)" />
+        <!-- Phones load fewer weights (Fredoka x2, Nunito x3, no Satisfy) -->
+        <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet" media="(max-width: 699px)" />
         <!--
         manifest.json provides metadata used when your web app is installed on a
         user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
